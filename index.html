@@ -548,11 +548,12 @@ button { font: inherit; color: inherit; letter-spacing: inherit; }
 .news-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
 .news-item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 18px 4px; border-bottom: 1px solid var(--line); color: var(--fg); text-decoration: none; }
 .news-item:hover .news-title { color: var(--primary-ink); }
-.news-tag { min-width: 52px; padding: 4px 10px; border-radius: 999px; font-size: 0.8125rem; font-weight: 700; text-align: center; }
+.news-tag { min-width: 62px; padding: 4px 10px; border-radius: 999px; font-size: 0.8125rem; font-weight: 700; text-align: center; }
 .news-tag[data-type="recruit"] { background: var(--primary-soft); color: var(--primary-ink); }
 .news-tag[data-type="notice"] { background: var(--navy-soft); color: var(--navy-ink); }
 .news-tag[data-type="blog"] { background: var(--green-soft); color: var(--green-ink); }
-.news-tag[data-type="video"] { background: var(--purple-soft); color: var(--purple-ink); }
+.news-tag[data-type="video"], .news-tag[data-type="youtube"] { background: var(--purple-soft); color: var(--purple-ink); }
+.news-tag[data-type="tiktok"] { background: var(--sky-soft); color: var(--sky-ink); }
 .news-body { display: grid; gap: 2px; min-width: 0; }
 .news-title { font-weight: 700; }
 .news-desc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.875rem; color: var(--muted); }
@@ -827,6 +828,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.3 4.3L19 7.2"/></symbol>
   <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M12 11v6"/><circle cx="12" cy="7.6" r="1.3" fill="currentColor"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M10 9.2v5.6l4.8-2.8z"/></symbol>
+  <symbol id="i-short" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M10.4 9.1v5.8l4.9-2.9z"/></symbol>
   <symbol id="i-doc" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M6.5 3h7.5l4.5 4.5V21h-12z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M9.5 12h5.5M9.5 16h5.5"/></symbol>
   <symbol id="i-out" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M8 16L16 8M10 8h6v6"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
@@ -1079,7 +1081,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
               <p class="fuel-diff down" data-fuel="gasolineDiff"><svg class="ic" aria-hidden="true"><use href="#i-arrow-down"></use></svg>전주 대비 0.9원</p>
             </div>
           </div>
-          <p class="fuel-src">한국석유공사 오피넷 주간 평균 판매가격 기준</p>
+          <p class="fuel-src" data-fuel="src">한국석유공사 오피넷 주간 평균 판매가격 기준</p>
           <div class="card-actions">
             <button class="btn btn-secondary btn-sm" type="button" id="use-diesel">이 경유가로 수입 계산</button>
             <a class="link-btn" href="https://www.opinet.co.kr" target="_blank" rel="noopener">내 주변 최저가<svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg></a>
@@ -1101,7 +1103,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
             <h3 class="card-title" id="fortune-title"><svg class="ic" aria-hidden="true"><use href="#i-sparkle"></use></svg>오늘의 운세</h3>
             <span class="badge" id="fortune-date">오늘</span>
           </div>
-          <p class="card-desc">띠를 고르면 오늘의 운세와 운전 한마디를 알려 드려요. 재미로 봐 주세요.</p>
+          <p class="card-desc">띠를 고르면 오늘의 운세와 운전 한마디를 알려 드려요. 매일 자정에 새 운세로 바뀌어요. 재미로 봐 주세요.</p>
           <div class="zodiac" id="zodiac" role="group" aria-label="띠 고르기"></div>
           <div class="fortune-result" id="fortune-result" aria-live="polite"></div>
         </article>
@@ -1127,14 +1129,13 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   </section>
 
   <section class="section section-white" id="news" aria-labelledby="news-title">
-    <div class="wrap news-grid">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="news-title">우진뉴스</h2>
+      </div>
+      <div class="news-grid">
       <div>
-        <div class="sec-head">
-          <div>
-            <p class="eyebrow">우진뉴스</p>
-            <h2 id="news-title">새 소식</h2>
-          </div>
-        </div>
+        <h3 class="side-title">새 소식</h3>
         <ul class="news-list" id="news-list"></ul>
       </div>
       <div>
@@ -1155,7 +1156,13 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
             <span class="ch-text"><span class="ch-platform">네이버 블로그</span><span class="ch-name">우진물류 공식 블로그</span><span class="ch-desc">지입·자격증·안전 운행 정보 연재</span></span>
             <svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg>
           </a>
+          <a class="channel" href="https://www.tiktok.com/@wjqmffhrm" target="_blank" rel="noopener">
+            <span class="ch-ic c-sky"><svg class="ic" aria-hidden="true"><use href="#i-short"></use></svg></span>
+            <span class="ch-text"><span class="ch-platform">틱톡</span><span class="ch-name">우진물류 틱톡</span><span class="ch-desc">지입·화물 이야기를 짧은 영상으로</span></span>
+            <svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg>
+          </a>
         </div>
+      </div>
       </div>
     </div>
   </section>
@@ -1340,6 +1347,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
           <li><a href="https://blog.naver.com/wjanffblog" target="_blank" rel="noopener">공식 블로그</a></li>
           <li><a href="https://www.youtube.com/@wjlogis" target="_blank" rel="noopener">우진물류TV</a></li>
           <li><a href="https://www.youtube.com/@wjanffrndls" target="_blank" rel="noopener">기사모집 채널</a></li>
+          <li><a href="https://www.tiktok.com/@wjqmffhrm" target="_blank" rel="noopener">우진물류 틱톡</a></li>
         </ul>
       </div>
       <div class="f-col">
@@ -1422,9 +1430,10 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   const YT_RECRUIT = 'https://www.youtube.com/@wjanffrndls';
   const CONTRACT = '지입(위수탁) 차주';
 
-  /* ▼ 전국 평균 유가 (한국석유공사 오피넷 주간 평균)
-     매주 period(기간)와 가격만 바꿔 주세요. diff는 전주 대비 변동이고, 내렸으면 마이너스로 적습니다. */
-  const FUEL = { period: '10월 둘째 주', diesel: 1842.8, dieselDiff: -0.5, gasoline: 1856.6, gasolineDiff: -0.9 };
+  /* ▼ 전국 평균 유가
+     자동 갱신(fuel.json)을 설정했다면 그 값을 먼저 보여 주고, 아래 값은 fuel.json이 없을 때만 보여요.
+     직접 바꿀 때: period(기간)와 가격을 적고, diff는 전주 대비 변동(내렸으면 마이너스)으로 적습니다. */
+  let FUEL = { basis: 'week', period: '10월 둘째 주', diesel: 1842.8, dieselDiff: -0.5, gasoline: 1856.6, gasolineDiff: -0.9 };
 
   const TAG_LABEL = {
     noStay: '차숙 없음',
@@ -1518,24 +1527,64 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   const AREAS = [...new Set(JOBS.map((j) => j.area.split(' ')[0]))].join('·');
 
   /* ▼ 우진뉴스: 위에 있는 소식이 먼저 보입니다.
-     type: recruit(모집) · notice(공지) · blog(블로그) · video(영상) / href: 눌렀을 때 갈 곳 / date는 비워도 됩니다. */
+     type: youtube(유튜브) · blog(블로그) · tiktok(틱톡) · recruit(모집) · notice(공지)
+     title: 제목 / desc: 제목 아래 작은 글씨 / date: 날짜(비워도 됩니다) / href: 눌렀을 때 갈 곳 */
   const NEWS = [
-    { type: 'recruit', title: `5톤 윙바디 고정노선 ${JOBS.length}곳 모집 중`, desc: `${AREAS} 노선의 조건을 확인해 보세요.`, date: '2026.10.20', href: '#jobs' },
-    { type: 'notice', title: '카카오톡 상담 안내', desc: '카카오톡 오픈채팅으로도 노선과 계약 상담을 받을 수 있어요.', date: '2026.10.20', href: KAKAO_URL },
-    { type: 'notice', title: '전화 상담 시간 안내', desc: '전화 상담은 평일 09:30~17:00에 받아요. 그 밖의 시간에는 문자나 카카오톡을 남겨 주세요.', date: '2026.10.20', href: '#apply' },
-    { type: 'blog', title: '화물운송종사 자격증 연재', desc: '자격증 개요부터 응시자격, 적성검사 예약, 원서접수까지 정리했어요.', date: '', href: BLOG_URL },
-    { type: 'video', title: '노선별 기사 모집 영상', desc: '우진물류 기사모집 채널에서 노선 영상을 볼 수 있어요.', date: '', href: YT_RECRUIT },
+    { type: 'youtube', title: '큰 사고로 번지지 않으려면? 평범해 보이는 버튼 하나가 생명줄입니다', desc: '우진물류TV · 우진연수 EP.01', date: '', href: 'https://youtu.be/kVQgJFkI5EI' },
+    { type: 'youtube', title: '까대기 없는 5톤 찾으셨죠? 손 하나 까딱 안 하는 대구 골판지 납품', desc: '우진물류 기사모집 · 쇼츠', date: '', href: 'https://www.youtube.com/shorts/9QCfdVsehRc' },
+    { type: 'blog', title: '화물운송자격 시험장 선택부터 합격까지 한 번에 정리', desc: '우진물류 공식 블로그', date: '', href: 'https://blog.naver.com/wjanffblog/224435323499' },
+    { type: 'blog', title: '지입차란? 치킨집 가맹점 하나면 5분 만에 이해됩니다', desc: '우진물류 공식 블로그', date: '', href: 'https://blog.naver.com/wjanffblog/224407129213' },
+    { type: 'tiktok', title: '직영기사와 지입기사. 나에게 딱 맞는 선택은?', desc: '우진물류 틱톡', date: '', href: 'https://www.tiktok.com/@wjqmffhrm/video/7697258114503970100' },
   ];
-  const NEWS_LABEL = { recruit: '모집', notice: '공지', blog: '블로그', video: '영상' };
+  const NEWS_LABEL = { youtube: '유튜브', blog: '블로그', tiktok: '틱톡', video: '영상', recruit: '모집', notice: '공지' };
 
-  /* ▼ 모의시험 문제: answer는 정답 보기의 순서(0부터 시작)입니다. */
+  /* ▼ 모의시험 문제 은행
+     시작할 때마다 과목별로 골고루 EXAM_SIZE개를 뽑고, 보기 순서도 섞어서 냅니다(숫자 보기는 순서 그대로).
+     바로 전에 푼 문제는 되도록 다시 나오지 않아요.
+     subj: 과목 / q: 문제 / opts: 보기 4개 / answer: 정답 보기의 순서(0부터 시작) / exp: 해설
+     group: 이름이 같은 문제는 한 번에 함께 나오지 않아요(서로 답을 알려 주는 문제끼리 묶음). */
+  const EXAM_SIZE = 10;
+  const EXAM_MIX = { '법규': 3, '안전운행': 3, '화물취급': 2, '운송서비스': 1, '응시 안내': 1 };
   const EXAM = [
+    /* 교통 및 화물자동차 운수사업 관련 법규 */
+    { subj: '법규', group: 'size', q: '자동차관리법상 최대적재량이 5톤인 화물자동차는 규모별로 어디에 속하나요?',
+      opts: ['경형', '소형', '중형', '대형'], answer: 3,
+      exp: '최대적재량 5톤 이상이거나 총중량 10톤 이상이면 대형이에요. 최대적재량 1톤 초과 5톤 미만(또는 총중량 3.5톤 초과 10톤 미만)은 중형이에요.' },
+    { subj: '법규', q: '지붕 구조의 덮개가 있는 화물운송용 화물자동차는 유형별로 무엇에 해당하나요?',
+      opts: ['일반형', '덤프형', '밴형', '특수용도형'], answer: 2,
+      exp: '밴형은 지붕 구조의 덮개가 있는 화물운송용이에요. 덤프형은 적재함을 기울여 짐을 내리는 구조이고, 특수용도형은 특정 용도에 맞춘 특수한 구조나 기구를 갖춘 차예요.' },
+    { subj: '법규', q: '도로법에 따라 도로 운행이 제한되는 차량 기준으로 옳은 것은?',
+      opts: ['축하중 8톤 초과', '축하중 10톤 초과', '총중량 30톤 초과', '차량 폭 2.0미터 초과'], answer: 1,
+      exp: '축하중 10톤 초과, 총중량 40톤 초과, 폭 2.5미터·높이 4.0미터(고시한 노선은 4.2미터)·길이 16.7미터 초과 차량은 운행이 제한돼요.' },
+    { subj: '법규', group: 'hwy', q: '편도 2차로 이상 고속도로에서 5톤 화물자동차의 최고속도는? (속도를 따로 지정하지 않은 구간)',
+      opts: ['시속 60km', '시속 80km', '시속 90km', '시속 100km'], answer: 1,
+      exp: '편도 2차로 이상 고속도로의 최고속도는 시속 100km지만, 적재중량 1.5톤을 넘는 화물자동차는 시속 80km예요.' },
+    { subj: '법규', group: 'hwy', q: '편도 2차로 이상 고속도로의 최저속도는?',
+      opts: ['시속 30km', '시속 40km', '시속 50km', '시속 60km'], answer: 2,
+      exp: '편도 2차로 이상 고속도로의 최저속도는 시속 50km예요. 너무 느리게 달려도 뒤차와 부딪힐 위험이 커져요.' },
+    { subj: '법규', group: 'points', q: '운전면허 정지 처분이 시작되는 처분벌점은 몇 점 이상인가요?',
+      opts: ['20점', '30점', '40점', '60점'], answer: 2,
+      exp: '처분벌점이 40점 이상이 되면 운전면허 정지 처분을 받아요. 벌점은 법규 위반이나 사고가 있을 때마다 쌓여요.' },
+    { subj: '법규', group: 'points', q: '최근 1년간 누산 벌점이 몇 점 이상이면 운전면허가 취소되나요?',
+      opts: ['81점', '101점', '121점', '201점'], answer: 2,
+      exp: '누산 벌점이 1년간 121점, 2년간 201점, 3년간 271점 이상이면 면허가 취소돼요.' },
+    { subj: '법규', q: '앞지르기가 금지된 장소가 아닌 곳은?',
+      opts: ['교차로', '터널 안', '다리 위', '앞지르기 금지 표시가 없는 편도 3차로 직선 도로'], answer: 3,
+      exp: '교차로, 터널 안, 다리 위, 도로가 구부러진 곳, 비탈길의 고갯마루 부근, 가파른 비탈길의 내리막 등에서는 앞지르기를 할 수 없어요.' },
+    { subj: '법규', group: 'size', q: '운송사업자가 적재물배상책임보험(또는 공제)에 반드시 가입해야 하는 화물자동차 기준은?',
+      opts: ['최대적재량 1톤 이상', '최대적재량 2.5톤 이상', '최대적재량 5톤 이상', '최대적재량 10톤 이상'], answer: 2,
+      exp: '최대적재량 5톤 이상이거나 총중량 10톤 이상인 사업용 화물자동차를 가진 운송사업자는 적재물배상책임보험(공제)에 가입해야 해요.' },
+
+    /* 안전운행 */
     { subj: '안전운행', q: '위험을 느끼고 브레이크를 밟아 차가 완전히 멈출 때까지 이동한 거리를 무엇이라고 하나요?',
       opts: ['공주거리', '제동거리', '정지거리', '안전거리'], answer: 2,
       exp: '정지거리는 공주거리와 제동거리를 더한 거리예요. 공주거리는 위험을 느끼고 브레이크가 듣기 시작할 때까지, 제동거리는 브레이크가 듣기 시작해 멈출 때까지 간 거리예요.' },
-    { subj: '안전운행', q: '긴 내리막길에서 풋 브레이크를 계속 쓰면 브레이크액이 끓어 기포가 생기고 브레이크가 잘 듣지 않게 됩니다. 이 현상은?',
+    { subj: '안전운행', group: 'brake', q: '긴 내리막길에서 풋 브레이크를 계속 쓰면 브레이크액이 끓어 기포가 생기고 브레이크가 잘 듣지 않게 됩니다. 이 현상은?',
       opts: ['페이드 현상', '베이퍼 록 현상', '스탠딩 웨이브 현상', '수막현상'], answer: 1,
       exp: '베이퍼 록은 브레이크액에 기포가 생겨 브레이크가 잘 듣지 않는 현상이에요. 페이드는 라이닝이 과열돼 마찰력이 떨어지는 현상이고요. 긴 내리막에서는 엔진 브레이크를 함께 쓰세요.' },
+    { subj: '안전운행', group: 'brake', q: '내리막길에서 풋 브레이크를 반복해서 쓰면 라이닝이 과열돼 마찰력이 떨어지고 브레이크가 잘 듣지 않게 됩니다. 이 현상은?',
+      opts: ['페이드 현상', '수막현상', '스탠딩 웨이브 현상', '모닝록 현상'], answer: 0,
+      exp: '페이드 현상은 브레이크 마찰열 때문에 제동력이 떨어지는 현상이에요. 긴 내리막에서는 저단 기어로 엔진 브레이크를 함께 쓰세요.' },
     { subj: '안전운행', q: '비 오는 날 빠르게 달릴 때 타이어와 노면 사이에 물막이 생겨 타이어가 물 위에 뜨는 현상은?',
       opts: ['수막현상', '모닝록 현상', '베이퍼 록 현상', '페이드 현상'], answer: 0,
       exp: '수막현상(하이드로플레이닝)은 속도가 빠를수록, 타이어가 많이 닳았을수록 잘 생겨요. 빗길에서는 속도를 줄이고 타이어 홈 깊이를 확인하세요.' },
@@ -1545,24 +1594,71 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     { subj: '안전운행', q: '커브길에서 속도를 2배로 높이면 차에 작용하는 원심력은 몇 배가 되나요?',
       opts: ['2배', '3배', '4배', '8배'], answer: 2,
       exp: '원심력은 속도의 제곱에 비례해요. 속도가 2배면 원심력은 4배가 되니 커브에 들어가기 전에 충분히 속도를 줄이세요.' },
-    { subj: '안전운행', q: '밝은 곳에서 어두운 터널 안으로 들어갈 때 잠시 앞이 잘 보이지 않는 현상을 무엇이라고 하나요?',
+    { subj: '안전운행', group: 'eye', q: '밝은 곳에서 어두운 터널 안으로 들어갈 때 잠시 앞이 잘 보이지 않는 현상을 무엇이라고 하나요?',
       opts: ['명순응', '암순응', '현혹현상', '증발현상'], answer: 1,
       exp: '어두운 곳에 눈이 적응하는 것을 암순응이라고 해요. 시력이 돌아오는 데 시간이 걸리니 터널에 들어가기 전에 속도를 줄이고 전조등을 켜세요.' },
+    { subj: '안전운행', group: 'eye', q: '어두운 터널을 빠져나와 밝은 곳으로 나올 때 눈이 밝기에 적응하는 것을 무엇이라고 하나요?',
+      opts: ['명순응', '암순응', '현혹현상', '증발현상'], answer: 0,
+      exp: '밝은 곳에 눈이 적응하는 것을 명순응이라고 해요. 암순응보다 빨리 적응하지만, 터널 출구에서는 눈부심에 대비해 속도를 줄이세요.' },
+    { subj: '안전운행', q: '대형 화물자동차가 회전할 때 뒷바퀴가 앞바퀴보다 안쪽을 지나가면서 생기는 궤적의 차이를 무엇이라고 하나요?',
+      opts: ['내륜차', '외륜차', '공주거리', '제동거리'], answer: 0,
+      exp: '회전할 때 뒷바퀴는 앞바퀴보다 안쪽으로 지나가요. 축간거리가 긴 화물차일수록 차이가 커서, 우회전할 때는 오른쪽 뒤의 보행자와 이륜차를 꼭 확인해야 해요.' },
+    { subj: '안전운행', q: '타이어 트레드(홈) 깊이는 최소 몇 mm 이상 남아 있어야 하나요?',
+      opts: ['0.8mm', '1.6mm', '3.2mm', '5.0mm'], answer: 1,
+      exp: '홈 깊이가 1.6mm보다 얕으면 빗길에서 미끄러지기 쉬워 타이어를 바꿔야 해요. 타이어 옆면의 ▲ 표시가 가리키는 홈에서 마모 한계선을 확인할 수 있어요.' },
+
+    /* 화물취급요령 */
     { subj: '화물취급', q: '화물을 적재하는 방법으로 올바른 것은?',
       opts: ['무거운 화물은 위쪽에 실어 무게를 고르게 한다', '무거운 화물은 아래쪽에, 한쪽으로 쏠리지 않게 싣는다', '화물은 적재함 뒤쪽에 몰아서 싣는다', '결박은 출발한 뒤 첫 휴게소에서 한다'], answer: 1,
       exp: '무게중심이 높거나 한쪽으로 쏠리면 커브나 급제동 때 넘어질 위험이 커져요. 결박은 출발 전에 하고 운행 중에도 다시 확인하세요.' },
     { subj: '화물취급', q: '경사진 곳에 화물차를 세워 둘 때 올바른 조치는?',
       opts: ['기어를 중립에 둔다', '주차 브레이크를 채우고 바퀴에 고임목을 받친다', '시동을 켠 채로 내린다', '비상등만 켜 둔다'], answer: 1,
       exp: '경사진 곳에서는 주차 브레이크를 채우고 고임목을 받쳐 차가 밀리지 않게 해야 해요.' },
+    { subj: '화물취급', q: '운송장의 기능으로 보기 어려운 것은?',
+      opts: ['계약서 기능', '화물인수증 기능', '운송요금 영수증 기능', '자동차 등록증 기능'], answer: 3,
+      exp: '운송장은 계약서, 화물인수증, 운송요금 영수증, 배달 증빙 같은 역할을 해요. 차량 등록과는 관계가 없어요.' },
+    { subj: '화물취급', q: '무거운 물건을 손으로 들어 올릴 때 올바른 자세는?',
+      opts: ['무릎을 펴고 허리를 굽혀 든다', '허리를 곧게 펴고 무릎을 굽혀 다리 힘으로 든다', '물건을 몸에서 멀리 두고 팔 힘으로만 든다', '몸을 비틀면서 한 번에 들어 올린다'], answer: 1,
+      exp: '허리를 곧게 펴고 무릎을 굽혀 다리 힘으로 들어야 허리를 다치지 않아요. 물건은 몸 가까이 붙여서 드세요.' },
+    { subj: '화물취급', q: '짐을 내리려고 적재함 문을 열 때 안전한 방법은?',
+      opts: ['문 정면에 서서 한 번에 활짝 연다', '화물이 쏟아질 수 있으니 옆으로 비켜서 천천히 연다', '차를 천천히 움직이면서 연다', '문을 열자마자 화물을 끌어당긴다'], answer: 1,
+      exp: '운행 중에 화물이 쏠려 문에 기대 있을 수 있어요. 문 정면을 피해 옆에서 천천히 열고, 화물 상태를 확인한 뒤 내리세요.' },
+
+    /* 운송서비스 */
+    { subj: '운송서비스', q: '화주 기업이 물류 업무를 외부의 전문 물류업체에 맡기는 방식을 무엇이라고 하나요?',
+      opts: ['자가물류', '제3자 물류(3PL)', '역물류', '직송'], answer: 1,
+      exp: '제3자 물류(3PL)는 화주가 물류 업무를 전문 물류업체에 맡기는 방식이에요. 화주는 핵심 업무에 집중하고 물류비를 줄일 수 있어요.' },
+    { subj: '운송서비스', q: '여러 화주의 화물을 한 차량에 모아 함께 실어 나르는 방식으로, 차량 이용 효율을 높이는 것은?',
+      opts: ['공동수배송', '자가물류', '역물류', '긴급 배송'], answer: 0,
+      exp: '공동수배송은 여러 화주의 화물을 모아 함께 배송해서 빈 차로 다니는 거리와 물류비를 줄이는 방식이에요.' },
+    { subj: '운송서비스', q: '고객이 배송에 대해 불만을 말할 때 바람직한 응대는?',
+      opts: ['고객의 말을 끝까지 듣고 사과한 뒤 해결 방법을 안내한다', '회사 규정이라며 말을 끊는다', '다른 사람 탓을 한다', '대답하지 않고 자리를 뜬다'], answer: 0,
+      exp: '불만은 끝까지 듣고 공감한 뒤, 사과와 함께 해결 방법을 안내하는 것이 기본이에요.' },
+    { subj: '운송서비스', q: '화물을 배달하러 갔는데 받는 사람이 없을 때 바람직한 조치는?',
+      opts: ['연락 없이 문 앞에 두고 간다', '부재중 방문표를 남기고 연락해 배달 방법을 정한다', '다음 주에 다시 방문한다', '바로 반송 처리한다'], answer: 1,
+      exp: '받는 사람이 없으면 부재중 방문표를 남기고 연락해서 다시 배달할 시간이나 맡길 곳을 정해요.' },
+
+    /* 응시 안내 */
     { subj: '응시 안내', q: '화물운송종사 자격시험에 응시하기 전에 받아야 하는 검사는?',
       opts: ['건강검진', '운전적성정밀검사(신규검사)', '차량 정기검사', '운전면허 적성검사'], answer: 1,
       exp: '응시하려면 한국교통안전공단의 운전적성정밀검사(신규검사) 기준에 맞아야 해요. 원스톱 접수를 하면 오전에 검사를 받고 같은 날 오후에 시험을 볼 수 있어요.' },
     { subj: '응시 안내', q: '화물운송종사 자격시험(80문항)의 합격 기준은?',
       opts: ['40점 이상', '50점 이상', '60점 이상', '70점 이상'], answer: 2,
       exp: '100점 만점에 60점 이상, 80문항 중 48문항 이상 맞히면 합격이에요.' },
+    { subj: '응시 안내', group: 'apply', q: '화물운송종사 자격시험은 몇 세 이상부터 응시할 수 있나요?',
+      opts: ['18세 이상', '19세 이상', '20세 이상', '21세 이상'], answer: 2,
+      exp: '20세 이상이어야 하고, 운전경력 같은 다른 요건도 갖춰야 응시할 수 있어요.' },
+    { subj: '응시 안내', group: 'apply', q: '사업용 자동차를 운전한 경력이 없다면, 화물운송종사 자격시험 응시에 필요한 운전경력은?',
+      opts: ['6개월 이상', '1년 이상', '2년 이상', '3년 이상'], answer: 2,
+      exp: '운전경력이 2년 이상이어야 해요. 버스·택시·화물차 같은 사업용 자동차를 운전한 경력이 있으면 1년 이상이면 돼요.' },
+    { subj: '응시 안내', q: '화물운송종사 자격시험 과목이 아닌 것은?',
+      opts: ['교통 및 화물자동차 운수사업 관련 법규', '화물취급요령', '안전운행 요령', '자동차 정비'], answer: 3,
+      exp: '시험은 법규(25문항), 화물취급요령(15문항), 안전운행 요령(25문항), 운송서비스(15문항) 4과목 80문항이에요.' },
   ];
 
-  /* ▼ 오늘의 운세 문구 (재미로 보는 운세) */
+  /* ▼ 오늘의 운세 문구 (재미로 보는 운세)
+     같은 날에는 12띠가 모두 다른 문구를 받고, 한 띠는 목록을 한 바퀴 다 돌 때까지 같은 문구를 다시 받지 않아요.
+     문구를 더하거나 뺄 때는 개수를 12의 배수로 맞춰 주세요. (지금: 운세 48개, 운전 한마디 24개, 행운의 색 12개) */
   const ZODIAC = ['쥐', '소', '호랑이', '토끼', '용', '뱀', '말', '양', '원숭이', '닭', '개', '돼지'];
   const FORTUNE_MAIN = [
     '막혀 있던 일이 풀리는 날이에요. 오늘 받은 연락은 미루지 말고 바로 답해 보세요.',
@@ -1577,6 +1673,42 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     '운이 오르는 흐름이에요. 미뤄 둔 결정을 내리기 좋은 날이에요.',
     '말 한마디로 분위기가 바뀌는 날이에요. 함께 일하는 분께 고맙다고 말해 보세요.',
     '정리 정돈이 복을 부르는 날이에요. 운전석과 적재함을 한 번 정리해 보세요.',
+    '기다리던 소식이 들려올 수 있어요. 휴대폰 알림을 틈틈이 확인해 보세요.',
+    '오전보다 오후에 운이 좋은 날이에요. 중요한 일은 점심 뒤로 미뤄 보세요.',
+    '듣는 만큼 얻는 날이에요. 현장 담당자의 말을 끝까지 들어 보세요.',
+    '예상하지 못한 도움을 받는 날이에요. 고마운 마음은 그때그때 표현하세요.',
+    '무리하지 않아도 일이 술술 풀리는 날이에요. 평소 속도만 지키세요.',
+    '작은 실수를 미리 막는 날이에요. 서류와 운송장을 한 번 더 확인해 보세요.',
+    '꼼꼼함이 칭찬으로 돌아오는 날이에요. 상하차 마무리를 깔끔하게 해 보세요.',
+    '오랜만에 반가운 사람과 연락이 닿는 날이에요. 먼저 안부를 물어보세요.',
+    '마음먹은 일을 시작하기 좋은 날이에요. 미뤄 둔 계획을 오늘 한 걸음 시작해 보세요.',
+    '돈 관리에 운이 따르는 날이에요. 이번 달 수입과 지출을 한번 정리해 보세요.',
+    '웃는 얼굴이 행운을 부르는 날이에요. 거래처에서 밝게 인사해 보세요.',
+    '한 박자 쉬어 가는 것이 이득인 날이에요. 급하게 차로를 바꾸지 마세요.',
+    '생각하지 못한 곳에서 좋은 정보를 얻는 날이에요. 동료 기사님 이야기에 귀 기울여 보세요.',
+    '체력이 운을 좌우하는 날이에요. 끼니를 거르지 말고 물을 자주 마시세요.',
+    '차분하게 움직이면 손해 볼 일이 없는 날이에요. 결정은 천천히 내려도 괜찮아요.',
+    '하루가 순조롭게 흘러가는 날이에요. 퇴근길에 나를 위한 작은 선물을 챙겨 보세요.',
+    '신뢰가 쌓이는 날이에요. 약속한 시간을 지키는 것만으로도 충분해요.',
+    '뜻밖의 여유 시간이 생기는 날이에요. 차량 점검이나 세차에 써 보세요.',
+    '운이 서서히 오르는 날이에요. 조급해하지 않으면 원하는 결과가 따라와요.',
+    '협력이 빛나는 날이에요. 혼자 하기보다 함께 하면 더 빨리 끝나요.',
+    '작은 절약이 큰 기쁨이 되는 날이에요. 주유하기 전에 가격을 한 번 비교해 보세요.',
+    '마음이 편해지는 소식이 있는 날이에요. 걱정하던 일이 생각보다 쉽게 풀려요.',
+    '새로운 길이 열리는 날이에요. 익숙한 일도 다른 방법으로 해 보세요.',
+    '주변의 응원이 힘이 되는 날이에요. 가족에게 오늘 하루를 이야기해 보세요.',
+    '집중력이 좋은 날이에요. 까다로운 일은 오늘 처리해 두세요.',
+    '기다림이 보람으로 바뀌는 날이에요. 대기가 길어져도 여유를 잃지 마세요.',
+    '사소한 친절이 좋은 인연이 되는 날이에요. 먼저 길을 양보해 보세요.',
+    '계획한 대로 착착 진행되는 날이에요. 내일 일정도 미리 챙겨 두세요.',
+    '좋은 기운이 들어오는 날이에요. 쉬는 시간에 창문을 열고 바람을 쐬어 보세요.',
+    '실속을 챙기는 날이에요. 당장의 이익보다 오래 갈 이익을 고르세요.',
+    '컨디션 관리가 곧 수입이 되는 날이에요. 휴게소에서 가볍게 스트레칭을 해 보세요.',
+    '묵묵히 해 온 일이 인정받는 날이에요. 오늘도 평소처럼만 하면 돼요.',
+    '귀인이 가까이 있는 날이에요. 처음 만나는 사람에게도 친절하게 대해 보세요.',
+    '마음의 짐을 내려놓는 날이에요. 고민은 믿을 만한 사람과 나눠 보세요.',
+    '안전이 곧 행운인 날이에요. 안전띠와 결박을 한 번 더 확인하세요.',
+    '하루를 잘 마무리하는 날이에요. 일찍 쉬면 내일 운이 더 좋아져요.',
   ];
   const FORTUNE_DRIVE = [
     '오늘은 앞차와의 거리를 평소보다 한 대 더 두세요.',
@@ -1585,12 +1717,26 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     '두 시간마다 휴게소에서 쉬어 가세요.',
     '휴게소에 들를 때마다 결박 상태를 다시 확인하세요.',
     '해가 진 뒤에는 규정 속도보다 조금 더 천천히 달리세요.',
-    '비 소식이 있다면 제동거리를 두 배로 생각하세요.',
+    '비 소식이 있다면 제동거리가 훨씬 길어진다고 생각하세요.',
     '터널에 들어가기 전에 선글라스를 벗고 전조등을 켜세요.',
     '졸릴 때는 15분 쪽잠이 커피보다 나아요.',
     '후진할 때는 내려서 뒤를 한 번 확인하세요.',
+    '우회전할 때는 오른쪽 뒤 사각지대를 한 번 더 보세요.',
+    '커브길에 들어가기 전에 미리 속도를 줄이세요.',
+    '출발 전에 사이드미러 각도를 내 자리에 맞추세요.',
+    '신호가 바뀌어도 교차로에서는 한 박자 쉬고 출발하세요.',
+    '차로를 바꿀 때는 방향지시등을 미리 켜고 천천히 들어가세요.',
+    '짐을 내린 뒤에는 적재함 문이 잘 닫혔는지 확인하세요.',
+    '안개가 끼면 전조등과 안개등을 켜고 속도를 줄이세요.',
+    '운전 중에는 휴대폰을 내려 두고, 통화는 쉬면서 하세요.',
+    '출발 전에 브레이크등과 방향지시등이 잘 켜지는지 보세요.',
+    '고속도로 갓길은 비상시에만 쓰세요.',
+    '졸음쉼터가 보이면 잠깐이라도 쉬어 가세요.',
+    '경사로에 세울 때는 고임목을 꼭 받치세요.',
+    '골목길에서는 아이들이 갑자기 나올 수 있으니 천천히 가세요.',
+    '장거리 운행 전에는 냉각수와 엔진오일을 확인하세요.',
   ];
-  const LUCKY_COLORS = ['파란색', '하늘색', '남색', '흰색', '노란색', '초록색', '회색', '주황색'];
+  const LUCKY_COLORS = ['파란색', '하늘색', '남색', '흰색', '노란색', '초록색', '회색', '주황색', '빨간색', '보라색', '갈색', '연두색'];
 
   /* ───────── 아래는 동작 코드입니다 ───────── */
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -1785,21 +1931,27 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   $('#hero-notif-net').textContent = `예상 순수익 ${moneyText(lead.net)}`;
 
   /* ───────── 유가 ───────── */
-  const diffHTML = (d) => {
-    if (!d) return '전주와 같음';
-    return `${icon(d < 0 ? 'arrow-down' : 'arrow-up')}전주 대비 ${fmt(Math.abs(d))}원`;
+  const diffHTML = (d, basis) => {
+    const daily = basis === 'day';
+    if (!d) return daily ? '전일과 같음' : '전주와 같음';
+    return `${icon(d < 0 ? 'arrow-down' : 'arrow-up')}${daily ? '전일' : '전주'} 대비 ${fmt(Math.abs(d), 2)}원`;
   };
-  $$('[data-fuel]').forEach((el) => {
-    const key = el.dataset.fuel;
-    if (key === 'period') el.textContent = FUEL.period;
-    else if (key === 'diesel' || key === 'gasoline') el.textContent = fmt(FUEL[key]);
-    else {
-      const d = FUEL[key];
-      el.classList.toggle('down', d < 0);
-      el.classList.toggle('up', d > 0);
-      el.innerHTML = diffHTML(d);
-    }
-  });
+  const renderFuel = () => {
+    const daily = FUEL.basis === 'day';
+    $$('[data-fuel]').forEach((el) => {
+      const key = el.dataset.fuel;
+      if (key === 'period') el.textContent = FUEL.period;
+      else if (key === 'src') el.textContent = daily ? '한국석유공사 오피넷 전국 주유소 평균가격 · 매일 자동 갱신' : '한국석유공사 오피넷 주간 평균 판매가격 기준';
+      else if (key === 'diesel' || key === 'gasoline') el.textContent = fmt(FUEL[key], 2);
+      else {
+        const d = FUEL[key];
+        el.classList.toggle('down', d < 0);
+        el.classList.toggle('up', d > 0);
+        el.innerHTML = diffHTML(d, FUEL.basis);
+      }
+    });
+  };
+  renderFuel();
 
   /* ───────── 수입 계산기 ───────── */
   const CALC_KEYS = ['revenue', 'days', 'km', 'eff', 'price', 'toll', 'loan', 'fee', 'etc'];
@@ -1845,32 +1997,83 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   setExample();
   calc();
 
+  /* 자동 갱신 파일(fuel.json)이 있으면 오늘 유가로 바꿈. 없으면 위 FUEL 값을 그대로 씀 */
+  const loadFuel = async () => {
+    try {
+      const res = await fetch(`fuel.json?t=${Date.now()}`, { cache: 'no-store' });
+      if (!res.ok) return;
+      const f = await res.json();
+      const m = String(f.date || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      const ok = ['diesel', 'gasoline'].every((k) => Number.isFinite(Number(f[k])) && Number(f[k]) > 0);
+      if (!m || !ok) return;
+      const wasExample = isExample();
+      FUEL = {
+        basis: 'day', period: `${Number(m[2])}월 ${Number(m[3])}일 기준`,
+        diesel: Number(f.diesel), dieselDiff: Number(f.dieselDiff) || 0,
+        gasoline: Number(f.gasoline), gasolineDiff: Number(f.gasolineDiff) || 0,
+      };
+      renderFuel();
+      CALC_EXAMPLE.price = FUEL.diesel;
+      if (wasExample) { setExample(); calc(); }
+    } catch (err) { /* 파일이 없거나 읽을 수 없으면 기본값 유지 */ }
+  };
+  loadFuel();
+
   /* ───────── 오늘의 운세 ───────── */
-  const now = new Date();
-  const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
   const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
-  $('#fortune-date').textContent = `${now.getMonth() + 1}월 ${now.getDate()}일 (${WEEK[now.getDay()]})`;
   const hash = (str) => {
     let h = 2166136261;
     for (const ch of str) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619); }
     return h >>> 0;
   };
+  /* 한국 시간 기준 오늘 (기기 시간대와 상관없이 한국 자정에 바뀜) */
+  const kstToday = () => {
+    const t = new Date(Date.now() + 9 * 3600000);
+    return { day: Math.floor(t.getTime() / 86400000), m: t.getUTCMonth() + 1, d: t.getUTCDate(), w: t.getUTCDay(), key: t.toISOString().slice(0, 10) };
+  };
+  /* 문구 목록을 한 번 섞어 둔 고정 순서 */
+  const fixedOrder = (n, salt) => {
+    const order = Array.from({ length: n }, (_, i) => i);
+    let x = hash(salt) || 1;
+    for (let i = n - 1; i > 0; i -= 1) {
+      x = (x ^ (x << 13)) >>> 0; x = (x ^ (x >>> 17)) >>> 0; x = (x ^ (x << 5)) >>> 0;
+      const j = x % (i + 1);
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+    return order;
+  };
+  const ORDER_MAIN = fixedOrder(FORTUNE_MAIN.length, 'main');
+  const ORDER_DRIVE = fixedOrder(FORTUNE_DRIVE.length, 'drive');
+  const ORDER_COLOR = fixedOrder(LUCKY_COLORS.length, 'color');
+  /* 같은 날 12띠는 서로 다른 칸을, 다음 날에는 한 칸씩 옆 문구를 받음
+     → 같은 날 띠끼리 중복 없음, 목록을 한 바퀴 돌기 전에는 같은 띠에 같은 문구가 다시 나오지 않음 */
+  const pickDaily = (list, order, day, zi) => {
+    const step = Math.max(1, Math.floor(list.length / 12));
+    const n = list.length;
+    return list[order[(((day + zi * step) % n) + n) % n]];
+  };
   const stars = (n) => '★'.repeat(n) + '☆'.repeat(5 - n);
   const zodiacEl = $('#zodiac');
   zodiacEl.innerHTML = ZODIAC.map((z, i) => `<button class="zd" type="button" data-z="${i}" aria-pressed="false">${z}</button>`).join('');
+  let fortuneZ = 6;
+  let fortuneDay = -1;
   const showFortune = (zi) => {
-    const seed = (salt) => hash(`${dateKey}|${zi}|${salt}`);
+    const today = kstToday();
+    fortuneZ = zi;
+    fortuneDay = today.day;
+    $('#fortune-date').textContent = `${today.m}월 ${today.d}일 (${WEEK[today.w]})`;
+    const seed = (salt) => hash(`${today.key}|${zi}|${salt}`);
     const money = 2 + (seed('money') % 4);
     const cond = 2 + (seed('cond') % 4);
     $$('.zd', zodiacEl).forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.z) === zi)));
     $('#fortune-result').innerHTML = `
       <p class="fr-title">${ZODIAC[zi]}띠 오늘의 운세</p>
-      <p class="fr-main">${FORTUNE_MAIN[seed('main') % FORTUNE_MAIN.length]}</p>
+      <p class="fr-main">${pickDaily(FORTUNE_MAIN, ORDER_MAIN, today.day, zi)}</p>
       <dl class="fr-rows">
         <div class="row"><dt>재물운</dt><dd><span class="stars" aria-label="5점 중 ${money}점">${stars(money)}</span></dd></div>
         <div class="row"><dt>컨디션</dt><dd><span class="stars" aria-label="5점 중 ${cond}점">${stars(cond)}</span></dd></div>
-        <div class="row"><dt>운전 한마디</dt><dd>${FORTUNE_DRIVE[seed('drive') % FORTUNE_DRIVE.length]}</dd></div>
-        <div class="row"><dt>행운</dt><dd>숫자 ${1 + (seed('num') % 9)} · ${LUCKY_COLORS[seed('color') % LUCKY_COLORS.length]}</dd></div>
+        <div class="row"><dt>운전 한마디</dt><dd>${pickDaily(FORTUNE_DRIVE, ORDER_DRIVE, today.day, zi)}</dd></div>
+        <div class="row"><dt>행운</dt><dd>숫자 ${1 + (seed('num') % 9)} · ${pickDaily(LUCKY_COLORS, ORDER_COLOR, today.day, zi)}</dd></div>
       </dl>`;
     store.set('wj-zodiac', String(zi));
   };
@@ -1881,6 +2084,10 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   const savedRaw = store.get('wj-zodiac');
   const savedZ = savedRaw === null ? NaN : Number(savedRaw);
   showFortune(Number.isInteger(savedZ) && savedZ >= 0 && savedZ < 12 ? savedZ : 6);
+  /* 페이지를 열어 둔 채 자정이 지나면 새 운세로 바꿈 */
+  const refreshFortune = () => { if (kstToday().day !== fortuneDay) showFortune(fortuneZ); };
+  setInterval(refreshFortune, 30000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshFortune(); });
 
   /* ───────── 우진뉴스 ───────── */
   $('#news-list').innerHTML = NEWS.map((n) => {
@@ -1893,34 +2100,76 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   }).join('');
 
   /* ───────── 모의시험 ───────── */
+  const shuffle = (arr) => {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+  /* 과목별로 골고루, 바로 전에 푼 문제는 피해서 뽑고 보기 순서를 섞음 */
+  const drawExam = () => {
+    let last = [];
+    try { last = JSON.parse(store.get('wj-exam-last') || '[]'); } catch (err) { last = []; }
+    const lastSet = new Set(Array.isArray(last) ? last : []);
+    const picked = [];
+    const groups = new Set();
+    const take = (pool, count) => {
+      let n = count;
+      const fresh = shuffle(pool.filter((i) => !lastSet.has(i)));
+      const seen = shuffle(pool.filter((i) => lastSet.has(i)));
+      for (const i of fresh.concat(seen)) {
+        if (n <= 0) break;
+        const g = EXAM[i].group;
+        if (picked.includes(i) || (g && groups.has(g))) continue;
+        picked.push(i);
+        if (g) groups.add(g);
+        n -= 1;
+      }
+    };
+    const all = EXAM.map((_, i) => i);
+    Object.entries(EXAM_MIX).forEach(([subj, n]) => take(all.filter((i) => EXAM[i].subj === subj), n));
+    take(all, Math.min(EXAM_SIZE, EXAM.length) - picked.length);
+    store.set('wj-exam-last', JSON.stringify(picked));
+    return shuffle(picked).map((i) => {
+      const item = EXAM[i];
+      const keep = item.opts.every((o) => /\d/.test(o)); /* 숫자 보기는 작은 수부터 그대로 */
+      const order = keep ? item.opts.map((_, k) => k) : shuffle(item.opts.map((_, k) => k));
+      return { subj: item.subj, q: item.q, exp: item.exp, opts: order.map((k) => item.opts[k]), answer: order.indexOf(item.answer) };
+    });
+  };
   const examBody = $('#exam-body');
-  let exam = { i: 0, score: 0 };
+  let exam = { i: 0, score: 0, set: [] };
   const examQuestion = () => {
-    const item = EXAM[exam.i];
+    const item = exam.set[exam.i];
+    const total = exam.set.length;
     examBody.innerHTML = `
-      <div class="exam-top"><span class="exam-subj">${esc(item.subj)}</span><span class="exam-step">${exam.i + 1} / ${EXAM.length}</span></div>
-      <div class="exam-progress" aria-hidden="true"><i style="width:${(exam.i / EXAM.length) * 100}%"></i></div>
+      <div class="exam-top"><span class="exam-subj">${esc(item.subj)}</span><span class="exam-step">${exam.i + 1} / ${total}</span></div>
+      <div class="exam-progress" aria-hidden="true"><i style="width:${(exam.i / total) * 100}%"></i></div>
       <h3 class="exam-q" id="exam-title" tabindex="-1">${esc(item.q)}</h3>
       <div class="exam-opts" role="group" aria-label="보기">
         ${item.opts.map((o, k) => `<button class="opt" type="button" data-opt="${k}"><span class="opt-no">${k + 1}</span><span>${esc(o)}</span></button>`).join('')}
       </div>
       <div class="exam-explain" id="exam-explain" hidden></div>
-      <button class="btn btn-primary btn-block" type="button" id="exam-next" hidden>${exam.i + 1 < EXAM.length ? '다음 문제' : '결과 보기'}</button>`;
+      <button class="btn btn-primary btn-block" type="button" id="exam-next" hidden>${exam.i + 1 < total ? '다음 문제' : '결과 보기'}</button>`;
     $('#exam-title').focus({ preventScroll: true });
     $('#exam-sheet').scrollTop = 0;
   };
+  const startExam = () => { exam = { i: 0, score: 0, set: drawExam() }; examQuestion(); };
   const examIntro = () => {
+    const size = Math.min(EXAM_SIZE, EXAM.length);
     examBody.innerHTML = `
       <p class="eyebrow">화물운송종사 자격시험</p>
       <h3 id="exam-title">모의시험</h3>
-      <ul class="exam-facts"><li><b>${EXAM.length}</b>문제</li><li><b>4</b>지선다</li><li><b>${Math.ceil(EXAM.length * 0.6)}</b>문제 이상 합격선</li></ul>
-      <p class="sheet-sub">실제 시험은 법규, 화물취급요령, 안전운행, 운송서비스 4과목 80문항(80분)이고 60점 이상이면 합격이에요. 연습용 문제라 실제 시험 문제와는 다를 수 있어요.</p>
+      <ul class="exam-facts"><li><b>${size}</b>문제</li><li><b>4</b>지선다</li><li><b>${Math.ceil(size * 0.6)}</b>문제 이상 합격선</li></ul>
+      <p class="sheet-sub">풀 때마다 문제 ${EXAM.length}개 중에서 ${size}개를 과목별로 골고루 뽑고, 보기 순서도 바꿔서 내요. 실제 시험은 법규, 화물취급요령, 안전운행, 운송서비스 4과목 80문항(80분)이고 60점 이상이면 합격이에요. 연습용 문제라 실제 시험 문제와는 다를 수 있어요.</p>
       <button class="btn btn-primary btn-block" type="button" id="exam-start">시작하기</button>
       <div class="link-row"><a class="link-btn" href="https://lic.kotsa.or.kr" target="_blank" rel="noopener">시험 접수 사이트 (TS국가자격시험)${icon('out')}</a></div>`;
-    $('#exam-start').addEventListener('click', () => { exam = { i: 0, score: 0 }; examQuestion(); });
+    $('#exam-start').addEventListener('click', startExam);
   };
   const examAnswer = (k) => {
-    const item = EXAM[exam.i];
+    const item = exam.set[exam.i];
     const ok = k === item.answer;
     if (ok) exam.score += 1;
     $$('.opt', examBody).forEach((b) => {
@@ -1938,7 +2187,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     exp.scrollIntoView({ block: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
   };
   const examResult = () => {
-    const total = EXAM.length;
+    const total = exam.set.length;
     const point = Math.round((exam.score / total) * 100);
     const pass = point >= 60;
     examBody.innerHTML = `
@@ -1946,12 +2195,12 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       <h3 id="exam-title" tabindex="-1">${total}문제 중 ${exam.score}문제 맞혔어요</h3>
       <div class="exam-score ${pass ? 'pass' : 'fail'}"><b>${point}</b><span>점 · 합격선 60점</span></div>
       <p class="sheet-sub">${pass ? '합격선을 넘었어요. 실제 시험은 80문항이니 과목별로 꾸준히 복습해 보세요.' : '조금만 더 하면 돼요. 해설을 다시 보고 한 번 더 풀어 보세요.'}</p>
-      <button class="btn btn-primary btn-block" type="button" id="exam-retry">다시 풀기</button>
+      <button class="btn btn-primary btn-block" type="button" id="exam-retry">새 문제로 다시 풀기</button>
       <div class="link-row">
         <a class="link-btn" href="${BLOG_URL}" target="_blank" rel="noopener">블로그에서 자격증 정보 보기${icon('out')}</a>
         <a class="link-btn" href="https://lic.kotsa.or.kr" target="_blank" rel="noopener">시험 접수 사이트${icon('out')}</a>
       </div>`;
-    $('#exam-retry').addEventListener('click', () => { exam = { i: 0, score: 0 }; examQuestion(); });
+    $('#exam-retry').addEventListener('click', startExam);
     $('#exam-title').focus({ preventScroll: true });
   };
   examBody.addEventListener('click', (e) => {
@@ -1959,7 +2208,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     if (opt && !opt.disabled) { examAnswer(Number(opt.dataset.opt)); return; }
     if (e.target.closest('#exam-next')) {
       exam.i += 1;
-      if (exam.i < EXAM.length) examQuestion(); else examResult();
+      if (exam.i < exam.set.length) examQuestion(); else examResult();
     }
   });
   const openExam = () => { examIntro(); openSheet('exam-sheet'); };
