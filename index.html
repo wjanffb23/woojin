@@ -1487,9 +1487,11 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   const CONTRACT = '지입(위수탁) 차주';
 
   /* ▼ 전국 평균 유가
-     자동 갱신(fuel.json)을 설정했다면 그 값을 먼저 보여 주고, 아래 값은 fuel.json이 없을 때만 보여요.
-     직접 바꿀 때: period(기간)와 가격을 적고, diff는 전주 대비 변동(내렸으면 마이너스)으로 적습니다. */
-  let FUEL = { basis: 'week', period: '10월 둘째 주', diesel: 1842.8, dieselDiff: -0.5, gasoline: 1856.6, gasolineDiff: -0.9 };
+     자동 갱신(fuel.json)을 켜 두면 그 값을 먼저 보여 주고, 아래 값은 fuel.json이 없을 때만 보여요.
+     'O월 O째 주'는 date(가격 기준일)로 저절로 계산돼요. 그 주의 목요일이 있는 달로 셉니다.
+     예: 10월 21일 → 10월 넷째 주, 11월 1일(일) → 10월 다섯째 주, 11월 2일(월) → 11월 첫째 주
+     직접 바꿀 때: date('2026-10-09'처럼)와 가격을 적고, diff는 전주 대비 변동(내렸으면 마이너스)으로 적습니다. */
+  let FUEL = { basis: 'week', date: '2026-10-09', diesel: 1842.8, dieselDiff: -0.5, gasoline: 1856.6, gasolineDiff: -0.9 };
 
   const TAG_LABEL = {
     noStay: '차숙 없음',
@@ -2027,12 +2029,29 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     if (!d) return daily ? '전일과 같음' : '전주와 같음';
     return `${icon(d < 0 ? 'arrow-down' : 'arrow-up')}${daily ? '전일' : '전주'} 대비 ${fmt(Math.abs(d), 2)}원`;
   };
+  /* 날짜('2026-10-21') → '10월 넷째 주'. 월요일~일요일을 한 주로 보고, 그 주의 목요일이 있는 달과 순서로 셉니다 */
+  const WEEK_NO = ['첫째', '둘째', '셋째', '넷째', '다섯째'];
+  const parseDay = (iso) => {
+    const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return m ? new Date(Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3]))) : null;
+  };
+  const weekLabel = (iso) => {
+    const d = parseDay(iso);
+    if (!d) return '';
+    const thu = new Date(d.getTime());
+    thu.setUTCDate(d.getUTCDate() + 3 - ((d.getUTCDay() + 6) % 7));
+    return `${thu.getUTCMonth() + 1}월 ${WEEK_NO[Math.ceil(thu.getUTCDate() / 7) - 1]} 주`;
+  };
+  const dayLabel = (iso) => {
+    const d = parseDay(iso);
+    return d ? `${d.getUTCMonth() + 1}월 ${d.getUTCDate()}일` : '';
+  };
   const renderFuel = () => {
     const daily = FUEL.basis === 'day';
     $$('[data-fuel]').forEach((el) => {
       const key = el.dataset.fuel;
-      if (key === 'period') el.textContent = FUEL.period;
-      else if (key === 'src') el.textContent = daily ? '한국석유공사 오피넷 전국 주유소 평균가격 · 매일 자동 갱신' : '한국석유공사 오피넷 주간 평균 판매가격 기준';
+      if (key === 'period') el.textContent = weekLabel(FUEL.date);
+      else if (key === 'src') el.innerHTML = daily ? `한국석유공사 오피넷 전국 주유소 평균가격 · <span class="nw">${dayLabel(FUEL.date)} 기준</span> · <span class="nw">매일 자동 갱신</span>` : '한국석유공사 오피넷 주간 평균 판매가격 기준';
       else if (key === 'diesel' || key === 'gasoline') el.textContent = fmt(FUEL[key], 2);
       else {
         const d = FUEL[key];
@@ -2099,7 +2118,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       if (!m || !ok) return;
       const wasExample = isExample();
       FUEL = {
-        basis: 'day', period: `${Number(m[2])}월 ${Number(m[3])}일 기준`,
+        basis: 'day', date: f.date,
         diesel: Number(f.diesel), dieselDiff: Number(f.dieselDiff) || 0,
         gasoline: Number(f.gasoline), gasolineDiff: Number(f.gasolineDiff) || 0,
       };
