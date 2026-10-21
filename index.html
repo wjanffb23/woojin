@@ -824,6 +824,9 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   .contact-card.is-call { grid-template-columns: 44px minmax(0, 1fr) auto; }
   .call-go { width: 40px; height: 40px; }
   .contact-ic { width: 44px; height: 44px; }
+  /* 전화번호가 오른쪽 둥근 버튼을 침범하지 않게: 칸이 좁으면 번호 글자를 칸 너비에 맞춰 줄임 */
+  .contact-card > div { container-type: inline-size; }
+  .contact-num { font-size: min(1.3125rem, 12cqi); }
   /* 소식: 꼬리표를 제목 위에 두어 제목이 한 줄을 다 쓰고 왼쪽 끝이 맞게 */
   .news-item { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 16px 2px; }
   .news-tag { justify-self: start; min-width: 0; padding: 2px 9px; font-size: 0.75rem; }
@@ -849,6 +852,18 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 }
 @media (max-width: 359px) {
   .nb-call { display: none; }
+  /* 아이폰에서 '디스플레이 확대(텍스트 크게)'를 켜면 화면 폭이 320px: 좁은 폭에서 겹치던 곳 정리 */
+  .contact-card.is-call { grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; padding: 14px; }
+  .contact-card .contact-ic { width: 36px; height: 36px; border-radius: 12px; }
+  .contact-card .contact-ic .ic { width: 20px; height: 20px; }
+  .contact-num { font-size: 1.1875rem; font-size: min(1.3125rem, 12cqi); }
+  .fuel-item { grid-template-columns: minmax(0, 1fr); }
+  .fuel-diff { justify-self: start; }
+  .bk li { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 8px; }
+  .bk-label { grid-column: 1; grid-row: 1; }
+  .bk-val { grid-column: 2; grid-row: 1; }
+  .bk-bar { grid-column: 1 / -1; grid-row: 2; }
+  .sheet-money { grid-template-columns: minmax(0, 1fr) auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -1363,7 +1378,6 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     <div class="footer-top">
       <div class="f-brand">
         <span class="f-logo"><svg class="f-mark" aria-hidden="true"><use href="#logo-mark"></use></svg>(주)우진물류</span>
-        <p>5톤 윙바디 고정노선 기사 모집</p>
       </div>
       <div class="f-col">
         <h3>채용</h3>
@@ -1410,8 +1424,8 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
         <li>대표번호 1600-4438</li>
       </ul>
       <div class="legal">
-        <a href="#" data-placeholder="개인정보처리방침 페이지를 만들면 여기에 연결해요">개인정보처리방침</a>
-        <a href="#" data-placeholder="이용약관 페이지를 만들면 여기에 연결해요">이용약관</a>
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="terms.html">이용약관</a>
       </div>
       <p>© 2026 (주)우진물류</p>
     </div>

@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>우진물류 개인정보처리방침</title>
+<meta name="description" content="(주)우진물류 화물기사 모집 사이트의 개인정보처리방침입니다.">
+<link rel="icon" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: navy title band with the back link and title (as on the reference page), then one white document sheet that overlaps the band's lower edge, numbered sections in a reading column, contact rows as label/value pairs, effective date and cross-links in the closing line. */
+:root {
+  /* ▼ 색: 메인 페이지(index.html)와 같은 이름·같은 값입니다. 다크 모드 블록 두 곳도 함께 바꾸세요. */
+  --hero-a: #071A2E;          /* 머리 띠 (가장 어두운 남색) */
+  --hero-b: #183B56;          /* 머리 띠 (남색) */
+  --on-dark: #FFFFFF;
+  --on-dark-2: #C3D0E0;
+  --brand-sky: #1FB6E3;
+  --primary-ink: #1559B7;     /* 번호·링크 파란 글자 */
+  --primary-soft: #EBF3FE;    /* 연한 파란 바탕 */
+  --bg: #F5F7FB;              /* 페이지 바탕 */
+  --surface: #FFFFFF;         /* 문서 바탕 */
+  --fg: #101828;              /* 본문 글자 */
+  --fg-2: #344054;            /* 설명 글자 */
+  --muted: #667085;           /* 라벨 글자 */
+  --line: #EAECF0;
+  --focus: #1E6FD9;
+  --shadow-md: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 24px rgba(16, 24, 40, 0.08);
+  --font: "Inter", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --hero-a: #040E1B;
+    --hero-b: #0F2A43;
+    --primary-ink: #8AB8FF;
+    --primary-soft: #14294A;
+    --bg: #0A1220;
+    --surface: #111B2B;
+    --fg: #F2F4F7;
+    --fg-2: #D0D5DD;
+    --muted: #98A2B3;
+    --line: #1F2A3C;
+    --focus: #8AB8FF;
+    --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --hero-a: #040E1B;
+  --hero-b: #0F2A43;
+  --primary-ink: #8AB8FF;
+  --primary-soft: #14294A;
+  --bg: #0A1220;
+  --surface: #111B2B;
+  --fg: #F2F4F7;
+  --fg-2: #D0D5DD;
+  --muted: #98A2B3;
+  --line: #1F2A3C;
+  --focus: #8AB8FF;
+  --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2 { margin: 0; letter-spacing: -0.03em; text-wrap: balance; }
+p { margin: 0; }
+p, li, dt, dd { text-wrap: pretty; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.doc-head :focus-visible { outline-color: var(--brand-sky); }
+.num { font-family: "Inter", var(--font); }
+.nw { white-space: nowrap; }
+.wrap {
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* 머리 띠 */
+.doc-head { color: var(--on-dark); background: linear-gradient(135deg, var(--hero-a), var(--hero-b)); }
+.doc-head .wrap {
+  display: grid; gap: 12px;
+  padding-top: calc(24px + env(safe-area-inset-top, 0px));
+  padding-bottom: 76px;
+}
+.back {
+  display: inline-flex; align-items: center; gap: 6px; justify-self: start; min-height: 36px;
+  color: var(--on-dark-2); font-size: 0.875rem; font-weight: 600; text-decoration: none;
+}
+.back:hover { color: var(--on-dark); }
+.doc-head h1 { font-size: clamp(1.625rem, 4.2vw, 2.125rem); font-weight: 800; line-height: 1.25; }
+.doc-meta { font-size: 0.875rem; color: var(--on-dark-2); }
+
+/* 문서 */
+.sheet {
+  display: grid; gap: 34px;
+  margin-top: -48px;
+  padding: 36px 40px 30px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow-md);
+}
+.intro { color: var(--fg-2); }
+.sec { display: grid; gap: 10px; min-width: 0; scroll-margin-top: 16px; }
+.sec h2 { font-size: 1.125rem; font-weight: 800; line-height: 1.45; }
+.sec h2 .no { margin-right: 6px; color: var(--primary-ink); }
+.sec p, .bul li { font-size: 0.9375rem; line-height: 1.75; color: var(--fg-2); }
+.bul { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.bul li { position: relative; padding-left: 16px; }
+.bul li::before { content: ""; position: absolute; left: 4px; top: 0.8em; width: 5px; height: 5px; border-radius: 50%; background: var(--primary-ink); }
+.bul b { margin-right: 6px; color: var(--fg); font-weight: 700; }
+.sec .note { padding: 14px 16px; border-radius: 14px; background: var(--primary-soft); color: var(--fg); font-weight: 600; }
+.rows { margin: 2px 0 0; border-top: 1px solid var(--line); }
+.rows .row { display: grid; grid-template-columns: 11.5rem minmax(0, 1fr); gap: 4px 16px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.rows .row:last-child { border-bottom: 0; }
+.rows dt { padding-top: 2px; font-size: 0.875rem; font-weight: 700; color: var(--muted); }
+.rows dd { margin: 0; font-size: 0.9375rem; font-weight: 600; color: var(--fg); }
+.rows .sub { margin-left: 4px; font-size: 0.875rem; font-weight: 500; color: var(--muted); }
+.rows a, a.inline { color: var(--primary-ink); font-weight: 700; text-decoration: none; }
+.rows a:hover, a.inline:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* 맺음말 */
+.closing { display: grid; gap: 12px; padding-top: 22px; border-top: 1px solid var(--line); }
+.closing p { font-size: 0.875rem; color: var(--muted); }
+.closing-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.closing-links a { display: inline-flex; align-items: center; min-height: 36px; font-size: 0.9375rem; font-weight: 700; color: var(--fg); text-decoration: none; }
+.closing-links a:hover { color: var(--primary-ink); }
+.foot { padding-block: 22px calc(32px + env(safe-area-inset-bottom, 0px)); font-size: 0.8125rem; color: var(--muted); }
+
+@media (max-width: 640px) {
+  .doc-head .wrap { padding-bottom: 64px; }
+  .sheet { gap: 30px; margin-top: -40px; padding: 26px 20px 22px; border-radius: 18px; }
+  /* 휴대폰: 문장마다 줄을 바꾸고, 줄 길이를 고르게 맞춤 (메인 페이지와 같은 방식) */
+  .s { display: block; }
+  .s, .sec p, .bul li, .closing p { text-wrap: balance; }
+  .rows .row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+</style>
+</head>
+<body>
+<header class="doc-head">
+  <div class="wrap">
+    <a class="back" href="index.html">← 우진물류 기사모집 홈으로</a>
+    <h1 id="doc-title">개인정보처리방침</h1>
+    <p class="doc-meta">(주)우진물류 · 2026년 10월 21일 시행</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <article class="sheet" aria-labelledby="doc-title">
+      <p class="intro">(주)우진물류(이하 “회사”)는 「개인정보 보호법」 등 관련 법령을 지키며, 화물기사 모집 사이트(이하 “사이트”)와 지원·상담 과정에서 받은 개인정보를 보호하기 위해 다음과 같이 처리방침을 둡니다.</p>
+      <section class="sec" id="s1">
+        <h2><span class="no num">1.</span>수집하는 개인정보 항목</h2>
+        <p>회사는 지원과 상담에 필요한 최소한의 정보만 받습니다.</p>
+        <ul class="bul"><li><b>필수</b> 이름, 연락처(휴대전화)</li><li><b>선택</b> 사는 지역, 희망 근무 지역, 관심 노선, 차량 보유 여부, 갖고 있는 면허·자격, 문의 내용</li><li><b>상담 시</b> 전화·문자·카카오톡 상담 내용, 카카오톡 프로필 이름(카카오톡 상담에 한함)</li></ul>
+        <p>위수탁(지입) 계약을 맺을 때 필요한 정보는 계약 과정에서 항목과 목적을 따로 알리고 동의를 받은 뒤 받습니다.</p>
+      </section>
+      <section class="sec" id="s2">
+        <h2><span class="no num">2.</span>개인정보를 받는 방법</h2>
+        <p class="note">사이트는 회원가입을 받지 않으며, 간편 지원 칸에 적은 내용을 저장하거나 회사로 보내지 않습니다.</p>
+        <p><span class="s">‘지원 문자 만들기’를 누르면 이용자의 휴대폰에서 보낼 문자 내용만 만들어집니다.</span> <span class="s">회사는 이용자가 그 문자를 직접 보내거나 전화·카카오톡으로 상담할 때 개인정보를 받습니다.</span></p>
+      </section>
+      <section class="sec" id="s3">
+        <h2><span class="no num">3.</span>개인정보의 수집 및 이용 목적</h2>
+        <ul class="bul"><li>기사 지원 접수와 지원자 확인</li><li>모집 노선, 계약 조건, 차량 준비(구매) 상담과 안내</li><li>상담 결과 연락</li><li>위수탁(지입) 계약 검토와 체결</li></ul>
+      </section>
+      <section class="sec" id="s4">
+        <h2><span class="no num">4.</span>개인정보의 보유 및 이용 기간</h2>
+        <p><span class="s">지원·상담 정보는 상담과 안내가 끝나면 지체 없이 파기합니다.</span> <span class="s">위수탁(지입) 계약을 맺은 경우에는 계약이 끝날 때까지 보관하며, 관계 법령에 따라 보존해야 하는 정보는 그 법령에서 정한 기간 동안 보관합니다.</span></p>
+      </section>
+      <section class="sec" id="s5">
+        <h2><span class="no num">5.</span>개인정보의 제3자 제공</h2>
+        <p><span class="s">회사는 이용자의 동의 없이 개인정보를 외부에 제공하지 않습니다.</span> <span class="s">차량 구매나 할부 상담처럼 다른 회사에 정보를 전달해야 하는 경우에는 받는 곳, 목적, 항목, 보유 기간을 미리 알리고 동의를 받은 범위에서만 제공합니다.</span> <span class="s">다만 법령에 특별한 규정이 있는 경우는 예외로 합니다.</span></p>
+      </section>
+      <section class="sec" id="s6">
+        <h2><span class="no num">6.</span>개인정보의 파기 절차 및 방법</h2>
+        <p><span class="s">파기 사유가 생긴 개인정보는 지체 없이 파기합니다.</span> <span class="s">전자 파일과 문자·대화 기록은 복구할 수 없는 방법으로 삭제하고, 종이 문서는 분쇄하거나 소각합니다.</span></p>
+      </section>
+      <section class="sec" id="s7">
+        <h2><span class="no num">7.</span>이용자의 권리와 행사 방법</h2>
+        <p><span class="s">이용자는 언제든지 자신의 개인정보를 열람하거나 정정·삭제·처리정지를 요청할 수 있습니다.</span> <span class="s">전화, 문자, 카카오톡으로 요청하면 회사는 지체 없이 조치하고 결과를 알려 드립니다.</span> <span class="s">법정대리인이나 위임을 받은 사람을 통해서도 요청할 수 있습니다.</span></p>
+      </section>
+      <section class="sec" id="s8">
+        <h2><span class="no num">8.</span>쿠키 등 자동 수집 장치</h2>
+        <p>사이트는 쿠키를 사용하지 않으며 방문 기록을 따로 분석하지 않습니다.</p>
+        <p><span class="s">‘오늘의 운세’에서 고른 띠와 모의시험에서 최근에 푼 문제 번호는 이용자 기기의 브라우저에만 저장되고 회사로 전송되지 않습니다.</span> <span class="s">브라우저 설정에서 사이트 데이터를 지우면 함께 삭제됩니다.</span></p>
+        <p><span class="s">사이트를 열 때 사이트를 호스팅하는 서버와 글꼴을 제공하는 구글 폰트 서버가 접속 기록(IP 주소, 브라우저 정보 등)을 남길 수 있으며, 회사는 이 기록을 받거나 이용하지 않습니다.</span> <span class="s">사이트에서 연결되는 카카오톡, 유튜브, 네이버 블로그, 틱톡 등 외부 서비스에서는 각 회사의 개인정보처리방침이 적용됩니다.</span></p>
+      </section>
+      <section class="sec" id="s9">
+        <h2><span class="no num">9.</span>개인정보의 안전성 확보 조치</h2>
+        <p>회사는 개인정보를 다루는 사람을 지원·상담 담당자로 최소화하고, 개인정보가 담긴 업무용 기기에 잠금을 설정하며, 종이 문서는 잠긴 곳에 보관합니다.</p>
+      </section>
+      <section class="sec" id="s10">
+        <h2><span class="no num">10.</span>개인정보 보호책임자 및 문의</h2>
+        <p><span class="s">개인정보와 관련한 문의, 불만, 피해 구제 요청은 아래로 연락해 주세요.</span> <span class="s">회사는 지체 없이 답변하고 처리합니다.</span></p>
+        <dl class="rows"><div class="row"><dt>책임자</dt><dd>(주)우진물류 대표이사</dd></div><div class="row"><dt>담당 부서</dt><dd>영업부</dd></div><div class="row"><dt>대표번호</dt><dd><a href="tel:16004438" class="num">1600-4438</a> <span class="sub">평일 09:30~17:00</span></dd></div><div class="row"><dt>채용 문의</dt><dd><a href="tel:01080294438" class="num">010-8029-4438</a> <span class="sub">전화·문자</span></dd></div><div class="row"><dt>카카오톡 상담</dt><dd><a href="https://open.kakao.com/o/sc74MZji" target="_blank" rel="noopener">오픈채팅으로 문의</a></dd></div><div class="row"><dt>사업자등록번호</dt><dd><span class="num">510-87-02904</span></dd></div><div class="row"><dt>주소</dt><dd><span class="nw">경기 광명시 덕안로 104번길 17</span> <span class="nw">광명역M클러스터 1502호</span></dd></div></dl>
+      </section>
+      <section class="sec" id="s11">
+        <h2><span class="no num">11.</span>권익침해 구제 방법</h2>
+        <p>개인정보 침해에 대한 상담이나 구제가 필요하면 아래 기관에도 문의할 수 있습니다.</p>
+        <dl class="rows"><div class="row"><dt>개인정보침해신고센터</dt><dd>(국번 없이) <span class="num">118</span> · <a href="https://privacy.kisa.or.kr" target="_blank" rel="noopener">privacy.kisa.or.kr</a></dd></div><div class="row"><dt>개인정보분쟁조정위원회</dt><dd><span class="num">1833-6972</span> · <a href="https://www.kopico.go.kr" target="_blank" rel="noopener">www.kopico.go.kr</a></dd></div><div class="row"><dt>경찰청 사이버범죄신고시스템</dt><dd>(국번 없이) <span class="num">182</span> · <a href="https://ecrm.police.go.kr" target="_blank" rel="noopener">ecrm.police.go.kr</a></dd></div></dl>
+      </section>
+      <div class="closing">
+        <p><span class="s">이 방침은 <span class="nw">2026년 10월 21일</span>부터 시행합니다.</span> <span class="s">내용이 바뀌면 시행 전에 사이트에 알립니다.</span></p>
+        <div class="closing-links">
+          <a href="terms.html">이용약관 보기</a>
+          <a href="index.html">기사모집 홈으로</a>
+        </div>
+      </div>
+  </article>
+</main>
+
+<footer class="wrap foot">
+  <p>© 2026 (주)우진물류 · <span class="nw">사업자등록번호 <span class="num">510-87-02904</span></span></p>
+</footer>
+
+<script>
+/* 줄 끝에서 어색하게 갈라지지 않게 보이지 않는 이음 글자(U+2060)를 넣음
+   · '정정·삭제·처리정지'처럼 가운뎃점으로 이은 짧은 말(12글자 이하)
+   · '(이하 “회사”)가'처럼 닫는 괄호·따옴표 바로 뒤에 붙는 조사 */
+(() => {
+  const WJ = '⁠';
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const list = [];
+  for (let n = w.nextNode(); n; n = w.nextNode()) list.push(n);
+  list.forEach((n) => {
+    if (n.parentElement && n.parentElement.closest('script, style')) return;
+    const v = n.nodeValue
+      .replace(/[가-힣A-Za-z0-9]+(?:·[가-힣A-Za-z0-9]+)+/g,
+        (m) => (m.replace(/·/g, '').length <= 12 ? m.replace(/·/g, WJ + '·' + WJ) : m))
+      .replace(/([)”’」])(?=[가-힣])/g, '$1' + WJ);
+    if (v !== n.nodeValue) n.nodeValue = v;
+  });
+})();
+</script>
+</body>
+</html>

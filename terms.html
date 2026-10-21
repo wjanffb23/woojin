@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>우진물류 이용약관</title>
+<meta name="description" content="(주)우진물류 화물기사 모집 사이트의 이용약관입니다.">
+<link rel="icon" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: navy title band with the back link and title (as on the reference page), then one white document sheet that overlaps the band's lower edge, numbered sections in a reading column, contact rows as label/value pairs, effective date and cross-links in the closing line. */
+:root {
+  /* ▼ 색: 메인 페이지(index.html)와 같은 이름·같은 값입니다. 다크 모드 블록 두 곳도 함께 바꾸세요. */
+  --hero-a: #071A2E;          /* 머리 띠 (가장 어두운 남색) */
+  --hero-b: #183B56;          /* 머리 띠 (남색) */
+  --on-dark: #FFFFFF;
+  --on-dark-2: #C3D0E0;
+  --brand-sky: #1FB6E3;
+  --primary-ink: #1559B7;     /* 번호·링크 파란 글자 */
+  --primary-soft: #EBF3FE;    /* 연한 파란 바탕 */
+  --bg: #F5F7FB;              /* 페이지 바탕 */
+  --surface: #FFFFFF;         /* 문서 바탕 */
+  --fg: #101828;              /* 본문 글자 */
+  --fg-2: #344054;            /* 설명 글자 */
+  --muted: #667085;           /* 라벨 글자 */
+  --line: #EAECF0;
+  --focus: #1E6FD9;
+  --shadow-md: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 24px rgba(16, 24, 40, 0.08);
+  --font: "Inter", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --hero-a: #040E1B;
+    --hero-b: #0F2A43;
+    --primary-ink: #8AB8FF;
+    --primary-soft: #14294A;
+    --bg: #0A1220;
+    --surface: #111B2B;
+    --fg: #F2F4F7;
+    --fg-2: #D0D5DD;
+    --muted: #98A2B3;
+    --line: #1F2A3C;
+    --focus: #8AB8FF;
+    --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --hero-a: #040E1B;
+  --hero-b: #0F2A43;
+  --primary-ink: #8AB8FF;
+  --primary-soft: #14294A;
+  --bg: #0A1220;
+  --surface: #111B2B;
+  --fg: #F2F4F7;
+  --fg-2: #D0D5DD;
+  --muted: #98A2B3;
+  --line: #1F2A3C;
+  --focus: #8AB8FF;
+  --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2 { margin: 0; letter-spacing: -0.03em; text-wrap: balance; }
+p { margin: 0; }
+p, li, dt, dd { text-wrap: pretty; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.doc-head :focus-visible { outline-color: var(--brand-sky); }
+.num { font-family: "Inter", var(--font); }
+.nw { white-space: nowrap; }
+.wrap {
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* 머리 띠 */
+.doc-head { color: var(--on-dark); background: linear-gradient(135deg, var(--hero-a), var(--hero-b)); }
+.doc-head .wrap {
+  display: grid; gap: 12px;
+  padding-top: calc(24px + env(safe-area-inset-top, 0px));
+  padding-bottom: 76px;
+}
+.back {
+  display: inline-flex; align-items: center; gap: 6px; justify-self: start; min-height: 36px;
+  color: var(--on-dark-2); font-size: 0.875rem; font-weight: 600; text-decoration: none;
+}
+.back:hover { color: var(--on-dark); }
+.doc-head h1 { font-size: clamp(1.625rem, 4.2vw, 2.125rem); font-weight: 800; line-height: 1.25; }
+.doc-meta { font-size: 0.875rem; color: var(--on-dark-2); }
+
+/* 문서 */
+.sheet {
+  display: grid; gap: 34px;
+  margin-top: -48px;
+  padding: 36px 40px 30px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow-md);
+}
+.intro { color: var(--fg-2); }
+.sec { display: grid; gap: 10px; min-width: 0; scroll-margin-top: 16px; }
+.sec h2 { font-size: 1.125rem; font-weight: 800; line-height: 1.45; }
+.sec h2 .no { margin-right: 6px; color: var(--primary-ink); }
+.sec p, .bul li { font-size: 0.9375rem; line-height: 1.75; color: var(--fg-2); }
+.bul { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.bul li { position: relative; padding-left: 16px; }
+.bul li::before { content: ""; position: absolute; left: 4px; top: 0.8em; width: 5px; height: 5px; border-radius: 50%; background: var(--primary-ink); }
+.bul b { margin-right: 6px; color: var(--fg); font-weight: 700; }
+.sec .note { padding: 14px 16px; border-radius: 14px; background: var(--primary-soft); color: var(--fg); font-weight: 600; }
+.rows { margin: 2px 0 0; border-top: 1px solid var(--line); }
+.rows .row { display: grid; grid-template-columns: 11.5rem minmax(0, 1fr); gap: 4px 16px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.rows .row:last-child { border-bottom: 0; }
+.rows dt { padding-top: 2px; font-size: 0.875rem; font-weight: 700; color: var(--muted); }
+.rows dd { margin: 0; font-size: 0.9375rem; font-weight: 600; color: var(--fg); }
+.rows .sub { margin-left: 4px; font-size: 0.875rem; font-weight: 500; color: var(--muted); }
+.rows a, a.inline { color: var(--primary-ink); font-weight: 700; text-decoration: none; }
+.rows a:hover, a.inline:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* 맺음말 */
+.closing { display: grid; gap: 12px; padding-top: 22px; border-top: 1px solid var(--line); }
+.closing p { font-size: 0.875rem; color: var(--muted); }
+.closing-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.closing-links a { display: inline-flex; align-items: center; min-height: 36px; font-size: 0.9375rem; font-weight: 700; color: var(--fg); text-decoration: none; }
+.closing-links a:hover { color: var(--primary-ink); }
+.foot { padding-block: 22px calc(32px + env(safe-area-inset-bottom, 0px)); font-size: 0.8125rem; color: var(--muted); }
+
+@media (max-width: 640px) {
+  .doc-head .wrap { padding-bottom: 64px; }
+  .sheet { gap: 30px; margin-top: -40px; padding: 26px 20px 22px; border-radius: 18px; }
+  /* 휴대폰: 문장마다 줄을 바꾸고, 줄 길이를 고르게 맞춤 (메인 페이지와 같은 방식) */
+  .s { display: block; }
+  .s, .sec p, .bul li, .closing p { text-wrap: balance; }
+  .rows .row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+</style>
+</head>
+<body>
+<header class="doc-head">
+  <div class="wrap">
+    <a class="back" href="index.html">← 우진물류 기사모집 홈으로</a>
+    <h1 id="doc-title">이용약관</h1>
+    <p class="doc-meta">(주)우진물류 · 2026년 10월 21일 시행</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <article class="sheet" aria-labelledby="doc-title">
+      <section class="sec" id="a1">
+        <h2><span class="no">제1조</span>(목적)</h2>
+        <p>이 약관은 (주)우진물류(이하 “회사”)가 운영하는 화물기사 모집 사이트(이하 “사이트”)의 이용 조건과 절차, 회사와 이용자의 권리·의무 및 책임 사항을 정하는 것을 목적으로 합니다.</p>
+      </section>
+      <section class="sec" id="a2">
+        <h2><span class="no">제2조</span>(정의)</h2>
+        <ul class="bul"><li>“사이트”란 회사가 5톤 고정노선 기사 모집 정보와 기사용 도구를 제공하는 웹사이트를 말합니다.</li><li>“이용자”란 이 약관에 따라 사이트를 이용하는 모든 사람을 말합니다.</li><li>“노선 정보”란 사이트에 실린 모집 노선별 지역, 운행 방식, 상하차 방식, 휴무, 월 매출, 예상 순수익 등의 정보를 말합니다.</li></ul>
+      </section>
+      <section class="sec" id="a3">
+        <h2><span class="no">제3조</span>(서비스의 내용)</h2>
+        <p><span class="s">회사는 사이트에서 다음 서비스를 제공합니다.</span> <span class="s">사이트는 회원가입 없이 무료로 이용할 수 있습니다.</span></p>
+        <ul class="bul"><li>모집 노선 정보와 지원·상담 안내</li><li>지원 문자 작성(간편 지원)</li><li>수입 계산기와 전국 평균 유가 정보</li><li>화물운송종사 자격시험 모의시험과 오늘의 운세</li><li>회사 소식과 공식 채널 안내</li></ul>
+      </section>
+      <section class="sec" id="a4">
+        <h2><span class="no">제4조</span>(노선 정보와 계약)</h2>
+        <p><span class="s">노선 정보의 월 매출과 예상 순수익은 예상 금액이며, 운행량, 유가, 차량 조건 등에 따라 달라질 수 있습니다.</span> <span class="s">실제 계약 조건은 상담에서 안내하고, 회사와 이용자가 따로 맺는 위수탁(지입) 계약서에 따라 정합니다.</span> <span class="s">사이트의 내용과 계약서가 다르면 계약서를 따릅니다.</span></p>
+        <p>모집 노선은 예고 없이 마감되거나 조건이 바뀔 수 있습니다.</p>
+      </section>
+      <section class="sec" id="a5">
+        <h2><span class="no">제5조</span>(참고용 정보)</h2>
+        <p><span class="s">수입 계산기의 결과는 이용자가 넣은 숫자로 계산한 참고 값입니다.</span> <span class="s">유가 정보는 한국석유공사 오피넷 자료를 기준으로 하며 실제 주유 가격과 다를 수 있습니다.</span> <span class="s">모의시험 문제는 연습용으로 실제 시험 문제와 다를 수 있고, 오늘의 운세는 재미로 제공합니다.</span></p>
+      </section>
+      <section class="sec" id="a6">
+        <h2><span class="no">제6조</span>(이용자의 의무)</h2>
+        <p><span class="s">이용자는 지원하거나 상담할 때 정확한 정보를 알려야 하며, 다른 사람의 정보를 도용하거나 사이트 운영을 방해해서는 안 됩니다.</span> <span class="s">사이트의 글, 사진, 로고, 모의시험 문제 등은 회사의 허락 없이 복제하거나 상업적으로 이용할 수 없습니다.</span></p>
+      </section>
+      <section class="sec" id="a7">
+        <h2><span class="no">제7조</span>(서비스의 변경 및 중단)</h2>
+        <p><span class="s">회사는 운영에 필요한 경우 사이트의 내용을 바꾸거나 서비스 제공을 중단할 수 있습니다.</span> <span class="s">천재지변, 통신 장애, 시스템 점검 등으로 서비스가 일시 중단될 수 있습니다.</span></p>
+      </section>
+      <section class="sec" id="a8">
+        <h2><span class="no">제8조</span>(책임의 제한)</h2>
+        <p><span class="s">회사는 천재지변, 통신 장애 등 회사가 통제할 수 없는 사유로 서비스를 제공하지 못한 경우 책임을 지지 않습니다.</span> <span class="s">사이트에서 연결되는 외부 사이트(카카오톡, 유튜브, 네이버 블로그, 틱톡, 오피넷 등)의 내용과 서비스는 각 운영자가 책임집니다.</span> <span class="s">회사는 고의 또는 중대한 과실이 없는 한, 이용자가 참고용 정보만을 근거로 내린 판단에 대해 책임을 지지 않습니다.</span></p>
+      </section>
+      <section class="sec" id="a9">
+        <h2><span class="no">제9조</span>(개인정보 보호)</h2>
+        <p>회사는 이용자의 개인정보를 <a class="inline" href="privacy.html">개인정보처리방침</a>에 따라 처리합니다.</p>
+      </section>
+      <section class="sec" id="a10">
+        <h2><span class="no">제10조</span>(약관의 변경)</h2>
+        <p>회사는 관련 법령을 위반하지 않는 범위에서 이 약관을 바꿀 수 있으며, 바뀐 약관은 시행 전에 사이트에 알립니다.</p>
+      </section>
+      <section class="sec" id="a11">
+        <h2><span class="no">제11조</span>(준거법 및 관할)</h2>
+        <p><span class="s">이 약관은 대한민국 법령에 따라 해석합니다.</span> <span class="s">회사와 이용자 사이에 분쟁이 생기면 성실히 협의하여 해결하고, 협의가 되지 않으면 민사소송법에 따른 관할 법원에서 해결합니다.</span></p>
+      </section>
+      <section class="sec" id="a12">
+        <h2><span class="no">제12조</span>(문의)</h2>
+        <dl class="rows"><div class="row"><dt>대표번호</dt><dd><a href="tel:16004438" class="num">1600-4438</a> <span class="sub">평일 09:30~17:00</span></dd></div><div class="row"><dt>채용 문의</dt><dd><a href="tel:01080294438" class="num">010-8029-4438</a> <span class="sub">전화·문자</span></dd></div><div class="row"><dt>카카오톡 상담</dt><dd><a href="https://open.kakao.com/o/sc74MZji" target="_blank" rel="noopener">오픈채팅으로 문의</a></dd></div><div class="row"><dt>사업자등록번호</dt><dd><span class="num">510-87-02904</span></dd></div><div class="row"><dt>주소</dt><dd><span class="nw">경기 광명시 덕안로 104번길 17</span> <span class="nw">광명역M클러스터 1502호</span></dd></div></dl>
+      </section>
+      <div class="closing">
+        <p>이 약관은 <span class="nw">2026년 10월 21일</span>부터 시행합니다.</p>
+        <div class="closing-links">
+          <a href="privacy.html">개인정보처리방침 보기</a>
+          <a href="index.html">기사모집 홈으로</a>
+        </div>
+      </div>
+  </article>
+</main>
+
+<footer class="wrap foot">
+  <p>© 2026 (주)우진물류 · <span class="nw">사업자등록번호 <span class="num">510-87-02904</span></span></p>
+</footer>
+
+<script>
+/* 줄 끝에서 어색하게 갈라지지 않게 보이지 않는 이음 글자(U+2060)를 넣음
+   · '정정·삭제·처리정지'처럼 가운뎃점으로 이은 짧은 말(12글자 이하)
+   · '(이하 “회사”)가'처럼 닫는 괄호·따옴표 바로 뒤에 붙는 조사 */
+(() => {
+  const WJ = '⁠';
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const list = [];
+  for (let n = w.nextNode(); n; n = w.nextNode()) list.push(n);
+  list.forEach((n) => {
+    if (n.parentElement && n.parentElement.closest('script, style')) return;
+    const v = n.nodeValue
+      .replace(/[가-힣A-Za-z0-9]+(?:·[가-힣A-Za-z0-9]+)+/g,
+        (m) => (m.replace(/·/g, '').length <= 12 ? m.replace(/·/g, WJ + '·' + WJ) : m))
+      .replace(/([)”’」])(?=[가-힣])/g, '$1' + WJ);
+    if (v !== n.nodeValue) n.nodeValue = v;
+  });
+})();
+</script>
+</body>
+</html>
