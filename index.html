@@ -74,8 +74,11 @@
   --kakao-bg: #FEE500;        /* 카카오톡 버튼 노란색 */
   --kakao-hover: #F4D900;
   --kakao-fg: #191919;
-  --logo-tile: transparent;   /* 머리말 로고 바탕 (다크 모드에서는 흰색) */
-  --logo-solid: #FFFFFF;
+  --mark-bg: #0B2A4A;         /* 로고 타일 (다크 모드에서는 흰색) */
+  --mark-fg: #FFFFFF;         /* 로고 W 선 */
+  --mark-dot: #22B5E6;        /* 로고 도착 점 */
+  --wordmark: #0B2A4A;        /* 로고 글자 '우진물류' */
+  --wordmark-sub: #5B6B80;    /* 로고 영문 'WOOJIN LOGISTICS' */
   --scrim: rgba(7, 15, 28, 0.55);
   --toast-bg: #101828;
   --toast-fg: #FFFFFF;
@@ -132,7 +135,10 @@
     --focus-ring: rgba(138, 184, 255, 0.3);
     --up: #F97066;
     --down: #6CE3A9;
-    --logo-tile: #FFFFFF;
+    --mark-bg: #FFFFFF;
+    --mark-fg: #0B2A4A;
+    --wordmark: #FFFFFF;
+    --wordmark-sub: #AFC0D6;
     --scrim: rgba(0, 0, 0, 0.62);
     --toast-bg: #F2F4F7;
     --toast-fg: #0A1220;
@@ -179,7 +185,10 @@
   --focus-ring: rgba(138, 184, 255, 0.3);
   --up: #F97066;
   --down: #6CE3A9;
-  --logo-tile: #FFFFFF;
+  --mark-bg: #FFFFFF;
+  --mark-fg: #0B2A4A;
+  --wordmark: #FFFFFF;
+  --wordmark-sub: #AFC0D6;
   --scrim: rgba(0, 0, 0, 0.62);
   --toast-bg: #F2F4F7;
   --toast-fg: #0A1220;
@@ -229,7 +238,10 @@ button { font: inherit; color: inherit; letter-spacing: inherit; }
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
 .ic { width: 1.25em; height: 1.25em; flex: none; }
-.num { font-family: "Inter", var(--font); font-variant-numeric: tabular-nums; }
+.num { font-family: "Inter", var(--font); } /* 전화번호: 고정폭 숫자를 쓰면 '-' 양옆이 벌어져 보여서 기본 숫자 사용 */
+/* 글자 배치: 줄 끝에 낱말 하나만 남지 않게, 붙어 다녀야 하는 말은 한 줄에 */
+p, li, dd, dt, label { text-wrap: pretty; }
+.nw { white-space: nowrap; }
 
 /* Buttons */
 .btn {
@@ -270,12 +282,12 @@ button { font: inherit; color: inherit; letter-spacing: inherit; }
 .nb-tag { flex: none; padding: 2px 9px; border-radius: 999px; background: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; }
 .nb-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .nb-link { flex: none; color: var(--primary-ink); font-weight: 700; text-decoration: none; }
+.nb-short { display: none; }
 .topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); }
 .topbar-inner { display: flex; align-items: center; gap: 16px; min-height: var(--header-h); }
 .brand { display: inline-flex; align-items: center; gap: 9px; color: var(--fg); text-decoration: none; }
-.brand-logo { display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; background: var(--logo-tile); }
-.brand-logo img { width: 30px; height: auto; }
-.brand-name { font-size: 1.1875rem; font-weight: 800; letter-spacing: -0.03em; }
+.brand-mark { flex: none; width: 36px; height: 36px; }
+.brand-word { flex: none; width: 79px; height: 22px; }
 .brand-badge { padding: 3px 8px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-ink); font-size: 0.75rem; font-weight: 700; }
 .nav { display: flex; gap: 2px; margin-left: 12px; }
 .nav a, .nav button {
@@ -412,8 +424,8 @@ button { font: inherit; color: inherit; letter-spacing: inherit; }
 .pill[aria-pressed="true"] .ic { display: block; }
 .list-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-bottom: 16px; }
 .result-count { font-weight: 700; }
-.money-hint { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; font-size: 0.875rem; color: var(--muted); }
-.money-hint .ic { width: 16px; height: 16px; }
+.money-hint { display: inline-flex; align-items: flex-start; gap: 6px; margin-left: auto; font-size: 0.875rem; color: var(--muted); }
+.money-hint .ic { width: 16px; height: 16px; margin-top: 3px; }
 .job-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .job {
   display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 20px;
@@ -431,15 +443,16 @@ button { font: inherit; color: inherit; letter-spacing: inherit; }
 .job-route { font-size: 0.9375rem; color: var(--fg-2); }
 .job-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .job-tags li { padding: 3px 9px; border-radius: 7px; background: var(--surface-2); border: 1px solid var(--line); color: var(--fg-2); font-size: 0.8125rem; font-weight: 600; }
+/* 금액: 윗줄에 이름(예상 순수익·월 매출), 아랫줄에 금액을 같은 기준선에 맞춤 */
 .job-money {
-  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 6px 12px;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 0 12px;
   margin-top: auto; padding-top: 14px; border-top: 1px dashed var(--line-strong);
 }
 .jm-label { display: block; font-size: 0.8125rem; font-weight: 600; color: var(--muted); }
-.jm-net { font-family: "Inter", var(--font); font-size: 1.75rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; color: var(--primary-ink); font-variant-numeric: tabular-nums; }
+.jm-net { font-family: "Inter", var(--font); font-size: 1.75rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; color: var(--primary-ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .jm-net small { margin-left: 2px; font-size: 0.875rem; font-weight: 700; letter-spacing: 0; opacity: 0.85; }
-.jm-rev { text-align: right; }
-.jm-rev-val { font-size: 0.9375rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.jm-rev { justify-self: end; text-align: right; }
+.jm-rev-val { font-size: 0.9375rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .job-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.875rem; color: var(--muted); }
 .job-more { display: inline-flex; align-items: center; gap: 2px; padding: 6px 4px 6px 10px; border: 0; border-radius: 8px; background: none; color: var(--primary-ink); font-size: 0.875rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
 .job-more .ic { width: 16px; height: 16px; }
@@ -493,18 +506,18 @@ button { font: inherit; color: inherit; letter-spacing: inherit; }
 .cr-sub { margin-top: 6px; font-size: 0.9375rem; color: var(--on-dark-2); }
 .bk { display: grid; gap: 10px; margin: 18px 0 0; padding: 16px 0 0; list-style: none; border-top: 1px solid var(--glass-line); }
 .bk li { display: grid; grid-template-columns: 116px minmax(0, 1fr) 92px; align-items: center; gap: 10px; font-size: 0.875rem; }
-.bk-label { color: var(--on-dark-2); }
+.bk-label { color: var(--on-dark-2); white-space: nowrap; }
 .bk-bar { height: 8px; border-radius: 4px; background: var(--panel-track); overflow: hidden; }
 .bk-bar i { display: block; height: 100%; border-radius: 4px; background: var(--panel-bar-cost); }
 .bk .net .bk-bar i { background: var(--panel-bar-net); }
-.bk-val { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.bk-val { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bk .net .bk-label, .bk .net .bk-val { color: var(--on-dark); font-weight: 800; }
 .calc-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 14px; font-size: 0.8125rem; color: var(--muted); }
 
 .fuel-items { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
 .fuel-item { padding: 14px; border-radius: var(--r-lg); background: var(--surface-2); border: 1px solid var(--line); }
 .fuel-name { font-size: 0.875rem; font-weight: 700; color: var(--fg-2); }
-.fuel-price { margin-top: 2px; font-family: "Inter", var(--font); font-size: 1.625rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.fuel-price { margin-top: 2px; font-family: "Inter", var(--font); font-size: 1.625rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .fuel-price small { margin-left: 2px; font-size: 0.875rem; font-weight: 600; letter-spacing: 0; color: var(--muted); }
 .fuel-diff { display: inline-flex; align-items: center; gap: 2px; margin-top: 2px; font-size: 0.8125rem; font-weight: 700; }
 .fuel-diff .ic { width: 14px; height: 14px; }
@@ -558,7 +571,9 @@ button { font: inherit; color: inherit; letter-spacing: inherit; }
 .news-title { font-weight: 700; }
 .news-desc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.875rem; color: var(--muted); }
 .news-date { font-size: 0.8125rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.news-date:empty { display: none; }
 .side-title { margin-bottom: 14px; font-size: 1.125rem; font-weight: 800; }
+.news-eyebrow { margin-bottom: 10px; letter-spacing: -0.01em; }
 .channels { display: grid; gap: 12px; }
 .channel { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 16px; border-radius: var(--r-lg); background: var(--surface-2); border: 1px solid var(--line); color: var(--fg); text-decoration: none; transition: border-color .15s ease; }
 .channel:hover { border-color: var(--primary); }
@@ -580,7 +595,7 @@ button { font: inherit; color: inherit; letter-spacing: inherit; }
 .contact-ic .ic { width: 24px; height: 24px; }
 .contact-ic.kakao { background: var(--kakao-bg); color: var(--kakao-fg); }
 .contact-label { font-size: 0.875rem; font-weight: 600; color: var(--fg-2); }
-.contact-num { font-family: "Inter", var(--font); font-size: 1.3125rem; font-weight: 800; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; user-select: all; }
+.contact-num { font-family: "Inter", var(--font); font-size: 1.3125rem; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; user-select: all; }
 .contact-title { font-size: 1.125rem; font-weight: 800; }
 .contact-sub { font-size: 0.8125rem; color: var(--muted); }
 /* 누르면 바로 전화가 걸리는 연락처 카드 */
@@ -589,6 +604,7 @@ a.contact-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md
 a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 .call-go { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; background: var(--primary); color: var(--on-primary); }
 .call-go .ic { width: 20px; height: 20px; }
+.call-go.go-kakao { background: var(--kakao-bg); color: var(--kakao-fg); }
 .form-card { display: grid; gap: 18px; padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-xl); box-shadow: var(--shadow-md); }
 .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .field { display: grid; gap: 6px; min-width: 0; }
@@ -624,8 +640,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 /* Company */
 .about-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
 .about-brand { display: flex; align-items: center; gap: 14px; margin-top: 6px; }
-.about-logo { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 18px; background: var(--logo-solid); border: 1px solid var(--line); }
-.about-logo img { width: 42px; height: auto; }
+.about-mark { flex: none; width: 56px; height: 56px; }
 .about-brand h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 800; }
 .about-text { margin-top: 14px; max-width: 32em; color: var(--fg-2); }
 .values { display: grid; gap: 14px; margin: 22px 0 0; padding: 0; list-style: none; }
@@ -647,8 +662,8 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 .footer-top { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr)); gap: 28px; padding-block: 48px 32px; }
 .f-brand { display: grid; align-content: start; gap: 12px; }
 .f-logo { display: inline-flex; align-items: center; gap: 10px; color: var(--on-dark); font-size: 1.125rem; font-weight: 800; }
-.f-logo .tile { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--logo-solid); }
-.f-logo .tile img { width: 24px; height: auto; }
+.f-logo { --mark-bg: #FFFFFF; --mark-fg: #0B2A4A; }
+.f-mark { flex: none; width: 36px; height: 36px; }
 .f-col h3 { margin-bottom: 12px; color: var(--on-dark); font-size: 0.9375rem; font-weight: 700; letter-spacing: -0.01em; }
 .f-col ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .f-col a, .f-col button { padding: 0; border: 0; background: none; color: var(--on-dark-2); font-size: 0.875rem; text-align: left; text-decoration: none; cursor: pointer; }
@@ -687,6 +702,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 .sheet-close { position: absolute; top: 14px; right: 14px; display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 999px; background: var(--surface-2); color: var(--fg); cursor: pointer; }
 .sheet-close .ic { width: 22px; height: 22px; }
 .sheet h3 { padding-right: 48px; font-size: 1.4375rem; font-weight: 800; line-height: 1.35; }
+.sheet [id$="-title"]:focus { outline: none; } /* 시트를 열면 제목으로 초점을 옮김(닫기 버튼에 파란 테두리가 생기지 않게) */
 .sheet-sub { font-size: 0.9375rem; color: var(--fg-2); }
 .sheet-form { display: grid; gap: 14px; }
 .sheet-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-right: 52px; }
@@ -695,9 +711,8 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 .spec-list .row:first-child { border-top: 1px solid var(--line); }
 .spec-list dt { padding-top: 1px; font-size: 0.875rem; font-weight: 700; color: var(--muted); }
 .spec-list dd { margin: 0; font-weight: 600; }
-.sheet-money { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 16px; border-radius: var(--r-lg); background: var(--primary-soft); }
+.sheet-money { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: baseline; gap: 2px 12px; padding: 16px; border-radius: var(--r-lg); background: var(--primary-soft); }
 .sheet-money .jm-net { font-size: 1.625rem; }
-.sheet-money .jm-rev { text-align: left; }
 .sheet-money .jm-rev-val { font-family: "Inter", var(--font); font-size: 1.25rem; font-weight: 800; }
 .sheet-note { font-size: 0.875rem; color: var(--fg-2); }
 .sheet-actions { display: grid; gap: 10px; }
@@ -714,6 +729,9 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 .exam-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
 .exam-facts li { padding: 14px 8px; border-radius: var(--r-md); background: var(--surface-2); border: 1px solid var(--line); text-align: center; font-size: 0.875rem; color: var(--fg-2); }
 .exam-facts b { display: block; font-family: "Inter", var(--font); font-size: 1.375rem; font-weight: 800; color: var(--fg); }
+.exam-notes { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 0.9375rem; color: var(--fg-2); }
+.exam-notes li { position: relative; padding-left: 16px; }
+.exam-notes li::before { content: ""; position: absolute; left: 3px; top: 0.7em; width: 5px; height: 5px; border-radius: 50%; background: var(--primary); }
 .exam-top { display: flex; align-items: center; gap: 10px; padding-right: 52px; }
 .exam-subj { padding: 4px 10px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-ink); font-size: 0.8125rem; font-weight: 700; }
 .exam-step { font-family: "Inter", var(--font); font-size: 0.875rem; font-weight: 700; color: var(--muted); }
@@ -780,6 +798,17 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   .zodiac { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .steps { grid-template-columns: minmax(0, 1fr); }
   .footer-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 16px; }
+  /* 휴대폰: 문장마다 줄을 바꾸고, 줄 길이를 고르게 맞춤 */
+  .s { display: block; }
+  .s, .lead, .sec-desc, .card-desc, .money-hint span, .job-route, .step p, .value p, .fr-main, .fr-rows dd,
+  .fineprint, .sheet-sub, .sheet-note, .spec-list dd, .news-title, .ch-desc, .exam-promo p, .calc-foot p,
+  .empty p, .exam-notes li, .cr-sub, .opt > span:last-child { text-wrap: balance; }
+  .f-label { flex-basis: 100%; width: auto; }
+  .fuel-items { grid-template-columns: minmax(0, 1fr); }
+  .fuel-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; column-gap: 12px; }
+  .fuel-name { grid-column: 1 / -1; }
+  .fuel-diff { justify-self: end; }
+  .fuel .card-actions > * { flex: 1 1 100%; }
 }
 @media (max-width: 560px) {
   .header-phone { display: none; }
@@ -787,7 +816,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   .calc-grid, .form-row, .checks { grid-template-columns: minmax(0, 1fr); }
   .row3 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .row3 .cf:first-child { grid-column: 1 / -1; }
-  .bk li { grid-template-columns: 92px minmax(0, 1fr) 80px; gap: 8px; }
+  .bk li { grid-template-columns: 7.25rem minmax(0, 1fr) 5.25rem; gap: 8px; }
   .cr-net { font-size: 2.375rem; }
   .form-card { padding: 20px; }
   .contact-card { grid-template-columns: 44px minmax(0, 1fr); }
@@ -795,8 +824,9 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   .contact-card.is-call { grid-template-columns: 44px minmax(0, 1fr) auto; }
   .call-go { width: 40px; height: 40px; }
   .contact-ic { width: 44px; height: 44px; }
-  .news-item { grid-template-columns: auto minmax(0, 1fr); }
-  .news-date { grid-column: 2; }
+  /* 소식: 꼬리표를 제목 위에 두어 제목이 한 줄을 다 쓰고 왼쪽 끝이 맞게 */
+  .news-item { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 16px 2px; }
+  .news-tag { justify-self: start; min-width: 0; padding: 2px 9px; font-size: 0.75rem; }
   .news-desc { white-space: normal; }
   .info-card { padding: 4px 18px; }
   .info-card .row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
@@ -811,6 +841,14 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 }
 @media (max-width: 420px) {
   .brand-badge { display: none; }
+  .nb-long { display: none; }
+  .nb-short { display: inline; }
+  .row3 { grid-template-columns: minmax(0, 1fr); }
+  .sheet-money .jm-net { font-size: 1.5rem; }
+  .sheet-money .jm-rev-val { font-size: 1.0625rem; white-space: nowrap; }
+}
+@media (max-width: 359px) {
+  .nb-call { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -828,6 +866,10 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.3 4.3L19 7.2"/></symbol>
   <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M12 11v6"/><circle cx="12" cy="7.6" r="1.3" fill="currentColor"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M10 9.2v5.6l4.8-2.8z"/></symbol>
+  <!-- 우진물류 로고: 심볼(루트 타일), 글자(우진물류), 영문. 색은 CSS 변수 --mark-*, --wordmark* 로 바뀝니다 -->
+  <symbol id="logo-mark" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" style="fill: var(--mark-bg, #0B2A4A)"/><path d="M13.5 21.5 21.8 43 32 25.5 42.2 43 49 25.5" fill="none" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--mark-fg, #FFFFFF)"/><circle cx="50.5" cy="20" r="5.6" style="fill: var(--mark-dot, #22B5E6)"/></symbol>
+  <symbol id="logo-word" viewBox="0 -33 135 37.5"><path style="fill: var(--wordmark, #0B2A4A)" d="M33.67 -12.23H0.9V-7.66H14.38V3.79H19.96V-7.66H33.67ZM17.19 -30.98C9.45 -30.98 4.02 -27.77 4.06 -22.77C4.02 -17.85 9.45 -14.73 17.19 -14.73C24.92 -14.73 30.39 -17.85 30.39 -22.77C30.39 -27.77 24.92 -30.98 17.19 -30.98ZM17.19 -26.52C21.8 -26.48 24.57 -25.23 24.57 -22.77C24.57 -20.39 21.8 -19.14 17.19 -19.14C12.62 -19.14 9.84 -20.39 9.84 -22.77C9.84 -25.23 12.62 -26.48 17.19 -26.52Z M48.4 -25.2H55.28V-29.69H35.63V-25.2H42.7C42.7 -20.82 40.28 -16.17 34.15 -14.3L37.04 -9.88C41.2 -11.21 44.01 -13.89 45.67 -17.27C47.25 -14.2 49.95 -11.76 53.87 -10.55L56.76 -14.92C50.71 -16.72 48.4 -21.09 48.4 -25.2ZM64.22 -32.07H58.6V-6.29H64.22ZM65.12 -1.33H45.63V-8.59H39.93V3.16H65.12Z M99.97 -18.16H67.28V-13.75H80.72V-11.88H70.99V-7.66H90.48V-6.25H70.99V3.55H96.93V-0.66H76.54V-2.3H96.07V-11.88H86.38V-13.75H99.97ZM95.87 -31.09H71.26V-19.69H95.87ZM76.77 -26.76H90.25V-23.98H76.77Z M133.18 -11.17H100.41V-6.8H107.75V3.75H113.42V-6.8H120.25V3.75H125.96V-6.8H133.18ZM129.47 -31.09H104.16V-26.6H123.69V-24.38H104.24V-13.4H130.33V-17.89H109.94V-20.31H129.47Z"/></symbol>
+  <symbol id="logo-sub" viewBox="0 -8.3 138 8.6"><path style="fill: var(--wordmark-sub, #5B6B80)" d="M2.41 0H3.82L5.41 -5.57H5.47L7.05 0H8.47L10.7 -7.92H9.17L7.73 -2.08H7.67L6.14 -7.92H4.74L3.22 -2.09H3.14L1.71 -7.92H0.17Z M20.91 -3.96C20.91 -6.52 19.36 -8.03 17.28 -8.03C15.2 -8.03 13.65 -6.52 13.65 -3.96C13.65 -1.41 15.2 0.11 17.28 0.11C19.36 0.11 20.91 -1.4 20.91 -3.96ZM19.48 -3.96C19.48 -2.15 18.57 -1.17 17.28 -1.17C15.99 -1.17 15.08 -2.15 15.08 -3.96C15.08 -5.76 15.99 -6.75 17.28 -6.75C18.57 -6.75 19.48 -5.76 19.48 -3.96Z M31.48 -3.96C31.48 -6.52 29.93 -8.03 27.85 -8.03C25.78 -8.03 24.22 -6.52 24.22 -3.96C24.22 -1.41 25.78 0.11 27.85 0.11C29.93 0.11 31.48 -1.4 31.48 -3.96ZM30.05 -3.96C30.05 -2.15 29.14 -1.17 27.85 -1.17C26.56 -1.17 25.65 -2.15 25.65 -3.96C25.65 -5.76 26.56 -6.75 27.85 -6.75C29.14 -6.75 30.05 -5.76 30.05 -3.96Z M38.12 -7.92V-2.35C38.11 -1.51 37.73 -1.06 37.04 -1.06C36.39 -1.06 35.96 -1.45 35.96 -2.1H34.53C34.53 -0.65 35.59 0.11 36.98 0.11C38.5 0.11 39.53 -0.82 39.53 -2.35V-7.92Z M44.66 -7.92H43.24V0H44.66Z M54.88 -7.92H53.47V-2.5H53.4L49.67 -7.92H48.38V0H49.8V-5.41H49.86L53.62 0H54.88Z M63.49 0H68.41V-1.2H64.91V-7.92H63.49Z M78.85 -3.96C78.85 -6.52 77.3 -8.03 75.22 -8.03C73.14 -8.03 71.59 -6.52 71.59 -3.96C71.59 -1.41 73.14 0.11 75.22 0.11C77.3 0.11 78.85 -1.4 78.85 -3.96ZM77.42 -3.96C77.42 -2.15 76.51 -1.17 75.22 -1.17C73.93 -1.17 73.02 -2.15 73.02 -3.96C73.02 -5.76 73.93 -6.75 75.22 -6.75C76.51 -6.75 77.42 -5.76 77.42 -3.96Z M87.67 -5.39H89.12C88.88 -6.95 87.53 -8.03 85.78 -8.03C83.71 -8.03 82.16 -6.5 82.16 -3.96C82.16 -1.44 83.64 0.11 85.83 0.11C87.79 0.11 89.19 -1.16 89.19 -3.19V-4.15H85.97V-3.02H87.81C87.79 -1.89 87.02 -1.17 85.83 -1.17C84.51 -1.17 83.6 -2.17 83.6 -3.97C83.6 -5.75 84.52 -6.75 85.8 -6.75C86.76 -6.75 87.41 -6.23 87.67 -5.39Z M94.14 -7.92H92.72V0H94.14Z M102.16 -5.74H103.53C103.51 -7.08 102.37 -8.03 100.69 -8.03C99.03 -8.03 97.78 -7.1 97.78 -5.7C97.78 -4.56 98.59 -3.9 99.89 -3.57L100.79 -3.34C101.64 -3.12 102.22 -2.85 102.22 -2.23C102.22 -1.55 101.57 -1.09 100.63 -1.09C99.74 -1.09 99.04 -1.5 98.97 -2.33H97.57C97.64 -0.77 98.8 0.12 100.64 0.12C102.55 0.12 103.64 -0.83 103.64 -2.22C103.64 -3.6 102.5 -4.22 101.32 -4.5L100.58 -4.69C99.92 -4.85 99.22 -5.12 99.22 -5.79C99.22 -6.38 99.77 -6.81 100.67 -6.81C101.52 -6.81 102.1 -6.42 102.16 -5.74Z M106.71 -6.73H109.16V0H110.58V-6.73H113.02V-7.92H106.71Z M117.8 -7.92H116.38V0H117.8Z M126.86 -5.25H128.29C128.05 -7.01 126.69 -8.03 124.94 -8.03C122.87 -8.03 121.32 -6.52 121.32 -3.96C121.32 -1.41 122.85 0.11 124.94 0.11C126.82 0.11 128.07 -1.1 128.29 -2.62H126.86C126.67 -1.7 125.9 -1.17 124.96 -1.17C123.67 -1.17 122.75 -2.14 122.75 -3.96C122.75 -5.75 123.66 -6.75 124.96 -6.75C125.93 -6.75 126.69 -6.2 126.86 -5.25Z M136.06 -5.74H137.43C137.41 -7.08 136.27 -8.03 134.59 -8.03C132.92 -8.03 131.68 -7.1 131.68 -5.7C131.68 -4.56 132.49 -3.9 133.79 -3.57L134.68 -3.34C135.54 -3.12 136.12 -2.85 136.12 -2.23C136.12 -1.55 135.47 -1.09 134.53 -1.09C133.63 -1.09 132.93 -1.5 132.87 -2.33H131.47C131.53 -0.77 132.69 0.12 134.54 0.12C136.45 0.12 137.54 -0.83 137.54 -2.22C137.54 -3.6 136.4 -4.22 135.22 -4.5L134.48 -4.69C133.82 -4.85 133.12 -5.12 133.12 -5.79C133.12 -6.38 133.67 -6.81 134.56 -6.81C135.42 -6.81 136 -6.42 136.06 -5.74Z"/></symbol>
   <symbol id="i-short" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M10.4 9.1v5.8l4.9-2.9z"/></symbol>
   <symbol id="i-doc" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M6.5 3h7.5l4.5 4.5V21h-12z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M9.5 12h5.5M9.5 16h5.5"/></symbol>
   <symbol id="i-out" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M8 16L16 8M10 8h6v6"/></symbol>
@@ -851,8 +893,8 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 <div class="notice-bar">
   <div class="wrap notice-inner">
     <span class="nb-tag">안내</span>
-    <p class="nb-text">전화 상담 평일 09:30~17:00<span class="nb-extra"> · 카카오톡 오픈채팅으로도 상담할 수 있어요</span></p>
-    <a class="nb-link" href="https://open.kakao.com/o/sc74MZji" target="_blank" rel="noopener">카카오톡 상담 →</a>
+    <p class="nb-text"><span class="nb-call">전화 </span>상담 평일 09:30~17:00<span class="nb-extra"> · 카카오톡 오픈채팅으로도 상담할 수 있어요</span></p>
+    <a class="nb-link" href="https://open.kakao.com/o/sc74MZji" target="_blank" rel="noopener"><span class="nb-long">카카오톡</span><span class="nb-short">카톡</span> 상담 →</a>
   </div>
 </div>
 </head>
@@ -860,8 +902,8 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 <header class="topbar">
   <div class="wrap topbar-inner">
     <a class="brand" href="#top">
-      <span class="brand-logo"><img src="logo.png" alt="" width="30" height="34"></span>
-      <span class="brand-name">우진물류</span>
+      <svg class="brand-mark" aria-hidden="true"><use href="#logo-mark"></use></svg>
+      <svg class="brand-word" role="img" aria-label="우진물류"><use href="#logo-word"></use></svg>
       <span class="brand-badge">기사모집</span>
     </a>
     <nav class="nav" aria-label="주요 메뉴">
@@ -883,18 +925,18 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   <section class="hero" id="top">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="hero-chip"><span class="live-dot" aria-hidden="true"></span>지금 <b data-count="total">6</b>개 노선 모집 중</p>
+        <p class="hero-chip"><span class="live-dot" aria-hidden="true"></span><span>지금 <b data-count="total">6</b>개 노선 모집 중</span></p>
         <h1>5톤 고정노선,<br><span class="grad">직접 보고</span> 고르세요</h1>
-        <p class="lead">지역과 상하차 방식, 휴무, 월 매출과 예상 순수익까지 노선마다 공개해요. 마음에 드는 노선이 있으면 바로 상담하세요.</p>
+        <p class="lead"><span class="s">지역과 상하차 방식, 휴무, 월 매출과 예상 순수익까지 노선마다 공개해요.</span> <span class="s">마음에 드는 노선이 있으면 바로 상담하세요.</span></p>
         <div class="hero-cta">
           <a class="btn btn-light btn-lg" href="#jobs">모집 노선 보기</a>
           <a class="btn btn-kakao btn-lg" href="https://open.kakao.com/o/sc74MZji" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-chat"></use></svg>카카오톡 상담</a>
           <a class="btn btn-ghost-dark btn-lg" href="tel:16004438"><svg class="ic" aria-hidden="true"><use href="#i-phone"></use></svg><span class="num">1600-4438</span></a>
         </div>
         <ul class="trust">
-          <li><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg>매출·순수익 공개</li>
-          <li><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg>상하차 수작업 없는 노선 <b data-count="noHand">5</b>곳</li>
-          <li><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg>일요일 휴무 <b data-fact="sundayOff">전 노선</b></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg><span>매출·순수익 공개</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg><span>상하차 수작업 없는 노선 <b data-count="noHand">5</b>곳</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg><span>일요일 휴무 <b data-fact="sundayOff">전 노선</b></span></li>
         </ul>
       </div>
 
@@ -904,9 +946,11 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
           <ellipse class="t-shadow" cx="236" cy="252" rx="206" ry="10"/>
           <rect class="t-box" x="36" y="74" width="272" height="128" rx="14"/>
           <path class="t-seam" d="M52 92 H292"/>
-          <image href="logo.png" x="60" y="111" width="42" height="48"/>
-          <text class="t-name" x="114" y="147">우진물류</text>
-          <rect class="t-accent" x="116" y="160" width="44" height="5" rx="2.5"/>
+          <g style="--mark-bg: #0B2A4A; --mark-fg: #FFFFFF; --wordmark: #0B2A4A; --wordmark-sub: #5B6B80;">
+            <use href="#logo-mark" x="58" y="114" width="58" height="58"/>
+            <use href="#logo-word" x="130" y="118" width="122" height="34"/>
+            <use href="#logo-sub" x="131" y="158" width="118" height="7.4"/>
+          </g>
           <rect class="t-dark" x="36" y="204" width="398" height="12" rx="6"/>
           <path class="t-cab" d="M318 216 V118 Q318 98 338 98 H378 Q392 98 399 110 L426 160 Q434 174 434 188 V216 Z"/>
           <path class="t-glass" d="M336 112 H374 Q382 112 386 119 L406 156 H336 Z"/>
@@ -938,7 +982,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       <ul class="quick-grid">
         <li><a class="q-item" href="#jobs"><span class="q-ic c-blue"><svg class="ic" aria-hidden="true"><use href="#i-truck"></use></svg></span>채용공고</a></li>
         <li><a class="q-item" href="#calc"><span class="q-ic c-sky"><svg class="ic" aria-hidden="true"><use href="#i-calc"></use></svg></span>수입 계산기</a></li>
-        <li><button class="q-item" type="button" data-open-exam><span class="q-ic c-purple"><svg class="ic" aria-hidden="true"><use href="#i-pencil"></use></svg></span>자격증 모의시험</button></li>
+        <li><button class="q-item" type="button" data-open-exam><span class="q-ic c-purple"><svg class="ic" aria-hidden="true"><use href="#i-pencil"></use></svg></span>모의시험</button></li>
         <li><a class="q-item" href="#fuel"><span class="q-ic c-green"><svg class="ic" aria-hidden="true"><use href="#i-fuel"></use></svg></span>유가 정보</a></li>
         <li><a class="q-item" href="#fortune"><span class="q-ic c-amber"><svg class="ic" aria-hidden="true"><use href="#i-sparkle"></use></svg></span>오늘의 운세</a></li>
         <li><a class="q-item" href="#news"><span class="q-ic c-navy"><svg class="ic" aria-hidden="true"><use href="#i-news"></use></svg></span>우진뉴스</a></li>
@@ -980,7 +1024,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       <div class="list-meta">
         <p class="result-count" id="result-count" aria-live="polite">전체 6개 노선</p>
         <button class="text-btn" type="button" id="reset-filters" hidden>조건 초기화</button>
-        <p class="money-hint"><svg class="ic" aria-hidden="true"><use href="#i-info"></use></svg>예상 순수익은 월 매출에서 유류비·통행료·차량 할부금 등을 뺀 금액이에요</p>
+        <p class="money-hint"><svg class="ic" aria-hidden="true"><use href="#i-info"></use></svg><span>예상 순수익은 월 매출에서 유류비·통행료·차량 할부금 등을 뺀 금액이에요</span></p>
       </div>
 
       <div class="job-grid" id="board"></div>
@@ -1008,7 +1052,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
             <h3 class="card-title" id="calc-title"><svg class="ic" aria-hidden="true"><use href="#i-calc"></use></svg>수입 계산기</h3>
             <span class="badge badge-blue" id="calc-badge">예시 값</span>
           </div>
-          <p class="card-desc">한 달 매출에서 비용을 빼서 예상 순수익을 계산해요. 칸의 숫자를 내 숫자로 바꿔 보세요.</p>
+          <p class="card-desc"><span class="s">한 달 매출에서 비용을 빼서 예상 순수익을 계산해요.</span> <span class="s">칸의 숫자를 내 숫자로 바꿔 보세요.</span></p>
           <div class="calc-grid">
             <div class="cf">
               <label for="c-revenue">월 매출</label>
@@ -1059,7 +1103,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
             <ul class="bk" id="c-bk" aria-label="비용 구성"></ul>
           </div>
           <div class="calc-foot">
-            <p>유가보조금은 반영하지 않았어요. 실제 비용은 노선과 차량에 따라 달라요.</p>
+            <p><span class="s">유가보조금은 반영하지 않았어요.</span> <span class="s">실제 비용은 노선과 차량에 따라 달라요.</span></p>
             <button class="text-btn" type="button" id="calc-reset">예시 값으로 되돌리기</button>
           </div>
         </article>
@@ -1091,7 +1135,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
         <article class="card exam-promo" aria-labelledby="exam-promo-title">
           <p class="eyebrow">화물운송종사 자격시험</p>
           <h3 id="exam-promo-title">모의시험 10문제로 실력 점검</h3>
-          <p>실제 시험은 4과목 80문항, 80분이고 60점 이상이면 합격이에요.</p>
+          <p><span class="s">문제 1,000개에서 과목별로 골고루 뽑아 바로 채점해요.</span> <span class="s">실제 시험은 4과목 <span class="nw">80문항, 80분</span>이고 60점 이상이면 합격이에요.</span></p>
           <div class="card-actions">
             <button class="btn btn-light btn-sm" type="button" data-open-exam>모의시험 시작</button>
             <a class="link-light" href="https://lic.kotsa.or.kr" target="_blank" rel="noopener">시험 접수 사이트<svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg></a>
@@ -1103,7 +1147,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
             <h3 class="card-title" id="fortune-title"><svg class="ic" aria-hidden="true"><use href="#i-sparkle"></use></svg>오늘의 운세</h3>
             <span class="badge" id="fortune-date">오늘</span>
           </div>
-          <p class="card-desc">띠를 고르면 오늘의 운세와 운전 한마디를 알려 드려요. 매일 자정에 새 운세로 바뀌어요. 재미로 봐 주세요.</p>
+          <p class="card-desc"><span class="s">띠를 고르면 오늘의 운세와 운전 한마디를 알려 드려요.</span> <span class="s">매일 자정에 새 운세로 바뀌어요.</span> <span class="s">재미로 봐 주세요.</span></p>
           <div class="zodiac" id="zodiac" role="group" aria-label="띠 고르기"></div>
           <div class="fortune-result" id="fortune-result" aria-live="polite"></div>
         </article>
@@ -1130,9 +1174,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 
   <section class="section section-white" id="news" aria-labelledby="news-title">
     <div class="wrap">
-      <div class="sec-head">
-        <h2 id="news-title">우진뉴스</h2>
-      </div>
+      <h2 class="eyebrow news-eyebrow" id="news-title">우진뉴스</h2>
       <div class="news-grid">
       <div>
         <h3 class="side-title">새 소식</h3>
@@ -1175,7 +1217,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
             <p class="eyebrow">간편 지원</p>
             <h2 id="apply-title">문자 한 통으로 지원하세요</h2>
           </div>
-          <p class="sec-desc">이름과 연락처, 관심 있는 노선만 적어 주세요. 담당자가 노선과 계약 조건을 자세히 안내해 드려요.</p>
+          <p class="sec-desc"><span class="s">이름과 연락처, 관심 있는 노선만 적어 주세요.</span> <span class="s">담당자가 노선과 계약 조건을 자세히 안내해 드려요.</span></p>
         </div>
         <div class="contact-cards">
           <a class="contact-card is-call" href="tel:16004438">
@@ -1187,14 +1229,14 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
             </div>
             <span class="call-go" aria-hidden="true"><svg class="ic"><use href="#i-phone"></use></svg></span>
           </a>
-          <div class="contact-card">
+          <a class="contact-card is-call" href="https://open.kakao.com/o/sc74MZji" target="_blank" rel="noopener">
             <span class="contact-ic kakao"><svg class="ic" aria-hidden="true"><use href="#i-chat"></use></svg></span>
             <div>
               <p class="contact-label">카카오톡 상담</p>
               <p class="contact-title">오픈채팅으로 문의</p>
             </div>
-            <a class="link-btn" href="https://open.kakao.com/o/sc74MZji" target="_blank" rel="noopener">열기<svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg></a>
-          </div>
+            <span class="call-go go-kakao" aria-hidden="true"><svg class="ic"><use href="#i-out"></use></svg></span>
+          </a>
           <a class="contact-card is-call" href="tel:01080294438">
             <span class="contact-ic"><svg class="ic" aria-hidden="true"><use href="#i-message"></use></svg></span>
             <div>
@@ -1204,7 +1246,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
             <span class="call-go" aria-hidden="true"><svg class="ic"><use href="#i-phone"></use></svg></span>
           </a>
         </div>
-        <p class="fineprint">이 페이지는 입력한 내용을 저장하지 않아요. '지원 문자 만들기'를 누르면 휴대폰 문자로 보낼 내용이 만들어집니다.</p>
+        <p class="fineprint"><span class="s">이 페이지는 입력한 내용을 저장하지 않아요.</span> <span class="s"><span class="nw">'지원 문자 만들기'</span>를 누르면 휴대폰 문자로 보낼 내용이 만들어집니다.</span></p>
       </div>
 
       <form class="form-card" id="apply-form" novalidate>
@@ -1286,10 +1328,10 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       <div>
         <p class="eyebrow">회사소개</p>
         <div class="about-brand">
-          <span class="about-logo"><img src="logo.png" alt="우진물류 로고" width="42" height="48"></span>
+          <svg class="about-mark" role="img" aria-label="우진물류 로고"><use href="#logo-mark"></use></svg>
           <h2 id="about-title">(주)우진물류</h2>
         </div>
-        <p class="about-text">경기도 광명시에 있는 화물운송 회사입니다. 5톤 윙바디 고정노선을 중심으로 지입 차주와 함께 일합니다.</p>
+        <p class="about-text"><span class="s">경기도 광명시에 있는 화물운송 회사입니다.</span> <span class="s">5톤 윙바디 고정노선을 중심으로 지입 차주와 함께 일합니다.</span></p>
         <ul class="values">
           <li class="value"><span class="v-ic"><svg class="ic" aria-hidden="true"><use href="#i-shield"></use></svg></span><div><strong>안전이 먼저</strong><p>기사님의 안전과 안정적인 수익을 가장 먼저 생각해요.</p></div></li>
           <li class="value"><span class="v-ic"><svg class="ic" aria-hidden="true"><use href="#i-route"></use></svg></span><div><strong>체계적인 배차</strong><p>배차 시스템으로 처음 시작하는 기사님도 빨리 자리 잡을 수 있게 도와요.</p></div></li>
@@ -1300,7 +1342,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
         <div class="row">
           <dt>주소</dt>
           <dd>
-            <span id="addr">경기 광명시 덕안로 104번길 17 (일직동 501-4) 광명역M클러스터 1502호</span>
+            <span id="addr"><span class="nw">경기 광명시 덕안로 104번길 17</span> <span class="nw">(일직동 501-4)</span> <span class="nw">광명역M클러스터 1502호</span></span>
             <span class="row-actions">
               <button class="copy-btn" type="button" data-copy="경기 광명시 덕안로 104번길 17 광명역M클러스터 1502호" data-copy-target="#addr">주소 복사</button>
               <a class="link-btn" href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EA%B4%91%EB%AA%85%EC%8B%9C%20%EB%8D%95%EC%95%88%EB%A1%9C%20104%EB%B2%88%EA%B8%B8%2017" target="_blank" rel="noopener">네이버 지도<svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg></a>
@@ -1320,7 +1362,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   <div class="wrap">
     <div class="footer-top">
       <div class="f-brand">
-        <span class="f-logo"><span class="tile"><img src="logo.png" alt="" width="24" height="28"></span>(주)우진물류</span>
+        <span class="f-logo"><svg class="f-mark" aria-hidden="true"><use href="#logo-mark"></use></svg>(주)우진물류</span>
         <p>5톤 윙바디 고정노선 기사 모집</p>
       </div>
       <div class="f-col">
@@ -1363,7 +1405,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     <div class="footer-bottom">
       <ul class="biz">
         <li>(주)우진물류</li>
-        <li>경기 광명시 덕안로 104번길 17 광명역M클러스터 1502호</li>
+        <li>경기 광명시 덕안로 104번길 17 <span class="nw">광명역M클러스터 1502호</span></li>
         <li>사업자등록번호 510-87-02904</li>
         <li>대표번호 1600-4438</li>
       </ul>
@@ -1407,7 +1449,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   <div class="sheet-inner">
     <button class="sheet-close" type="button" data-close aria-label="닫기"><svg class="ic" aria-hidden="true"><use href="#i-close"></use></svg></button>
     <h3 id="contact-title">상담 신청</h3>
-    <p class="sheet-sub">편한 방법을 골라 주세요. 전화 상담은 평일 09:30~17:00이에요.</p>
+    <p class="sheet-sub"><span class="s">편한 방법을 골라 주세요.</span> <span class="s">전화 상담은 평일 <span class="nw">09:30~17:00</span>이에요.</span></p>
     <div class="contact-opts">
       <a class="contact-opt" href="tel:16004438"><span class="contact-ic"><svg class="ic" aria-hidden="true"><use href="#i-phone"></use></svg></span><span><strong>전화 상담</strong><small class="num">1600-4438</small></span><svg class="ic" aria-hidden="true"><use href="#i-right"></use></svg></a>
       <a class="contact-opt" href="https://open.kakao.com/o/sc74MZji" target="_blank" rel="noopener"><span class="contact-ic kakao"><svg class="ic" aria-hidden="true"><use href="#i-chat"></use></svg></span><span><strong>카카오톡 상담</strong><small>오픈채팅으로 바로 문의</small></span><svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg></a>
@@ -1539,12 +1581,17 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   const NEWS_LABEL = { youtube: '유튜브', blog: '블로그', tiktok: '틱톡', video: '영상', recruit: '모집', notice: '공지' };
 
   /* ▼ 모의시험 문제 은행
-     시작할 때마다 과목별로 골고루 EXAM_SIZE개를 뽑고, 보기 순서도 섞어서 냅니다(숫자 보기는 순서 그대로).
-     바로 전에 푼 문제는 되도록 다시 나오지 않아요.
+     문제 1,000개는 같은 폴더의 exam.json 에 있고, 모의시험을 열 때 불러와요.
+     exam.json 을 못 불러오면 아래 EXAM 목록(33문제)으로 대신 냅니다.
+     시작할 때마다 과목별로 골고루 EXAM_SIZE개를 뽑고, 보기 순서도 섞어서 냅니다(숫자 보기는 작은 수부터 그대로).
+     최근에 푼 문제(EXAM_HISTORY개)는 되도록 다시 나오지 않아요.
      subj: 과목 / q: 문제 / opts: 보기 4개 / answer: 정답 보기의 순서(0부터 시작) / exp: 해설
      group: 이름이 같은 문제는 한 번에 함께 나오지 않아요(서로 답을 알려 주는 문제끼리 묶음). */
   const EXAM_SIZE = 10;
-  const EXAM_MIX = { '법규': 3, '안전운행': 3, '화물취급': 2, '운송서비스': 1, '응시 안내': 1 };
+  const EXAM_MIX = { '법규': 3, '안전운행': 3, '화물취급': 2, '운송서비스': 2 }; /* 실제 시험 과목 비율(25:25:15:15)에 맞춤 */
+  const EXAM_POOL = { '응시 안내': '법규' }; /* 응시 안내 문제는 법규 몫에서 함께 뽑음 */
+  const EXAM_HISTORY = 60;
+  const EXAM_BANK_URL = 'exam.json?v=1020'; /* exam.json 을 바꾸면 뒤의 숫자도 바꿔 주세요 */
   const EXAM = [
     /* 교통 및 화물자동차 운수사업 관련 법규 */
     { subj: '법규', group: 'size', q: '자동차관리법상 최대적재량이 5톤인 화물자동차는 규모별로 어디에 속하나요?',
@@ -1743,6 +1790,29 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const icon = (name) => `<svg class="ic" aria-hidden="true"><use href="#i-${name}"></use></svg>`;
+  /* 문장마다 <span class="s"> 로 감쌈 → 휴대폰에서는 문장 단위로 줄이 바뀜 */
+  const sentHTML = (text) => String(text ?? '').trim().replace(/([.?!])\s+/g, '$1\n').split('\n')
+    .map((s) => `<span class="s">${esc(s)}</span>`).join(' ');
+  /* '유류비·통행료·차량'처럼 가운뎃점으로 이은 짧은 말(12글자 이하)이 줄 끝에서 갈라지지 않게
+     보이지 않는 이음 글자(U+2060)를 넣음. 나중에 그려지는 노선·시험·운세 글에도 자동으로 적용 */
+  const DOT_WORD = /[가-힣A-Za-z0-9]+(?:·[가-힣A-Za-z0-9]+)+/g;
+  const DOT_SKIP = 'script, style, option, select, textarea, pre, [data-raw]';
+  const joinText = (n) => {
+    if (!n.nodeValue.includes('·') || (n.parentElement && n.parentElement.closest(DOT_SKIP))) return;
+    const v = n.nodeValue.replace(DOT_WORD, (w) => (w.replace(/·/g, '').length <= 12 ? w.replace(/·/g, '⁠·⁠') : w));
+    if (v !== n.nodeValue) n.nodeValue = v;
+  };
+  const joinDots = (root) => {
+    if (root.nodeType === 3) { joinText(root); return; }
+    if (root.nodeType !== 1) return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const list = [];
+    for (let n = walker.nextNode(); n; n = walker.nextNode()) list.push(n);
+    list.forEach(joinText);
+  };
+  joinDots(document.body);
+  new MutationObserver((records) => records.forEach((r) => r.addedNodes.forEach(joinDots)))
+    .observe(document.body, { childList: true, subtree: true });
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const scrollToEl = (el, block = 'start') => el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block });
   const fmt = (n, d = 1) => Number(n).toLocaleString('ko-KR', { maximumFractionDigits: d });
@@ -1796,11 +1866,18 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       toast('자동 복사가 막혀 있어요. 선택된 내용을 길게 눌러 복사해 주세요.');
     }
   };
+  /* 시트 제목으로 초점을 옮김: 화면 읽기 프로그램이 제목부터 읽고, 닫기 버튼에 테두리가 생기지 않음 */
+  const focusTitle = (dlg) => {
+    const title = document.getElementById(dlg.getAttribute('aria-labelledby') || '');
+    if (!title || !dlg.contains(title)) return;
+    if (!title.hasAttribute('tabindex')) title.setAttribute('tabindex', '-1');
+    title.focus({ preventScroll: true });
+  };
   const openSheet = (id) => {
     $$('dialog[open]').forEach((d) => d.close());
     const dlg = $('#' + id);
     if (dlg && !dlg.open) dlg.showModal();
-    if (dlg) dlg.scrollTop = 0;
+    if (dlg) { dlg.scrollTop = 0; focusTitle(dlg); }
     return dlg;
   };
   $$('dialog.sheet').forEach((dlg) => {
@@ -1840,10 +1917,10 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       <p class="job-route">${esc(job.route)}</p>
       ${tags ? `<ul class="job-tags" aria-label="조건">${tags}</ul>` : ''}
       <div class="job-money">
-        <div><span class="jm-label">예상 순수익</span>${netHTML(job.net)}</div>
-        <div class="jm-rev"><span class="jm-label">월 매출</span><span class="jm-rev-val">${esc(moneyText(job.revenue))}</span></div>
+        <span class="jm-label">예상 순수익</span><span class="jm-label jm-rev">월 매출</span>
+        ${netHTML(job.net)}<span class="jm-rev-val jm-rev">${esc(moneyText(job.revenue))}</span>
       </div>
-      <div class="job-foot"><span>${esc(job.vehicle)} · ${esc(job.workShort)}</span><button class="job-more" type="button" aria-label="${esc(job.title)} 상세 조건 보기">상세보기${icon('right')}</button></div>
+      <div class="job-foot"><span>${esc(job.vehicle)} · <span class="nw">${esc(job.workShort)}</span></span><button class="job-more" type="button" aria-label="${esc(job.title)} 상세 조건 보기">상세보기${icon('right')}</button></div>
     </article>`;
   };
 
@@ -1875,8 +1952,8 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
         <div class="sheet-head"><span class="status"><span class="dot"></span>모집 중</span><span class="job-area">${icon('pin')}${esc(job.area)}</span><span class="kind">${esc(job.kind)}</span></div>
         <h3 id="sheet-title">${esc(job.title)}</h3>
         <div class="sheet-money">
-          <div><span class="jm-label">예상 순수익</span>${netHTML(job.net)}</div>
-          <div class="jm-rev"><span class="jm-label">월 매출</span><span class="jm-rev-val">${esc(moneyText(job.revenue))}</span></div>
+          <span class="jm-label">예상 순수익</span><span class="jm-label">월 매출</span>
+          ${netHTML(job.net)}<span class="jm-rev-val">${esc(moneyText(job.revenue))}</span>
         </div>
         <dl class="spec-list">
           ${specRow('계약 형태', CONTRACT)}
@@ -1888,7 +1965,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
           ${specRow('거주 조건', job.residence)}
           ${specRow('추가 매출', job.extra)}
         </dl>
-        <p class="sheet-note">${job.netNote ? esc(job.netNote) + ' ' : ''}월 매출은 한 달 운송료 합계이고, 예상 순수익은 월 매출에서 유류비·통행료·차량 할부금 등을 뺀 금액이에요. 운행량과 차량 조건에 따라 달라질 수 있어요.</p>
+        <p class="sheet-note">${sentHTML(`${job.netNote ? job.netNote + ' ' : ''}월 매출은 한 달 운송료 합계이고, 예상 순수익은 월 매출에서 유류비·통행료·차량 할부금 등을 뺀 금액이에요. 운행량과 차량 조건에 따라 달라질 수 있어요.`)}</p>
       </div>`;
     openSheet('job-sheet');
   };
@@ -2068,11 +2145,11 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     $$('.zd', zodiacEl).forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.z) === zi)));
     $('#fortune-result').innerHTML = `
       <p class="fr-title">${ZODIAC[zi]}띠 오늘의 운세</p>
-      <p class="fr-main">${pickDaily(FORTUNE_MAIN, ORDER_MAIN, today.day, zi)}</p>
+      <p class="fr-main">${sentHTML(pickDaily(FORTUNE_MAIN, ORDER_MAIN, today.day, zi))}</p>
       <dl class="fr-rows">
         <div class="row"><dt>재물운</dt><dd><span class="stars" aria-label="5점 중 ${money}점">${stars(money)}</span></dd></div>
         <div class="row"><dt>컨디션</dt><dd><span class="stars" aria-label="5점 중 ${cond}점">${stars(cond)}</span></dd></div>
-        <div class="row"><dt>운전 한마디</dt><dd>${pickDaily(FORTUNE_DRIVE, ORDER_DRIVE, today.day, zi)}</dd></div>
+        <div class="row"><dt>운전 한마디</dt><dd>${sentHTML(pickDaily(FORTUNE_DRIVE, ORDER_DRIVE, today.day, zi))}</dd></div>
         <div class="row"><dt>행운</dt><dd>숫자 ${1 + (seed('num') % 9)} · ${pickDaily(LUCKY_COLORS, ORDER_COLOR, today.day, zi)}</dd></div>
       </dl>`;
     store.set('wj-zodiac', String(zi));
@@ -2108,34 +2185,64 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     }
     return a;
   };
-  /* 과목별로 골고루, 바로 전에 푼 문제는 피해서 뽑고 보기 순서를 섞음 */
+  /* 문제 은행: 처음에는 페이지 안의 EXAM, exam.json 을 불러오면 1,000문제로 바뀜 */
+  let bank = EXAM.map((r, i) => ({
+    id: 'e' + i, subj: r.subj, group: r.group ? 'e:' + r.group : '', q: r.q, opts: r.opts, answer: r.answer, exp: r.exp,
+    keep: r.opts.every((o) => /\d/.test(o)),
+  }));
+  let bankFull = false;
+  let bankLoad = null;
+  const loadBank = () => {
+    if (bankFull) return Promise.resolve(bank);
+    if (!bankLoad) {
+      bankLoad = fetch(EXAM_BANK_URL)
+        .then((res) => (res.ok ? res.json() : Promise.reject(new Error('HTTP ' + res.status))))
+        .then((rows) => {
+          const ok = (r) => r && typeof r.s === 'string' && typeof r.q === 'string' && Array.isArray(r.o) && r.o.length === 4
+            && r.o.every((o) => typeof o === 'string') && Number.isInteger(r.a) && r.a >= 0 && r.a < 4;
+          const list = Array.isArray(rows) ? rows.filter(ok) : [];
+          if (list.length < 100) throw new Error('문제 수 부족');
+          bank = list.map((r, i) => ({
+            id: 'j' + i, subj: r.s, group: r.g ? 'j:' + r.g : '', q: r.q, opts: r.o, answer: r.a, exp: r.e || '', keep: r.k === 1,
+          }));
+          bankFull = true;
+          return bank;
+        })
+        .catch(() => { bankLoad = null; return bank; }); /* 실패하면 다음에 다시 시도 */
+    }
+    return bankLoad;
+  };
+  const poolOf = (subj) => EXAM_POOL[subj] || subj;
+  /* 과목별로 골고루, 최근에 푼 문제는 피해서 뽑고 보기 순서를 섞음 */
   const drawExam = () => {
     let last = [];
     try { last = JSON.parse(store.get('wj-exam-last') || '[]'); } catch (err) { last = []; }
-    const lastSet = new Set(Array.isArray(last) ? last : []);
+    const recent = new Map((Array.isArray(last) ? last : []).map((id, n) => [String(id), n])); /* 0 = 가장 최근 */
     const picked = [];
     const groups = new Set();
     const take = (pool, count) => {
       let n = count;
-      const fresh = shuffle(pool.filter((i) => !lastSet.has(i)));
-      const seen = shuffle(pool.filter((i) => lastSet.has(i)));
+      const fresh = shuffle(pool.filter((i) => !recent.has(bank[i].id)));
+      const seen = shuffle(pool.filter((i) => recent.has(bank[i].id)))
+        .sort((x, y) => recent.get(bank[y].id) - recent.get(bank[x].id)); /* 오래전에 푼 것부터 */
       for (const i of fresh.concat(seen)) {
         if (n <= 0) break;
-        const g = EXAM[i].group;
+        const g = bank[i].group;
         if (picked.includes(i) || (g && groups.has(g))) continue;
         picked.push(i);
         if (g) groups.add(g);
         n -= 1;
       }
     };
-    const all = EXAM.map((_, i) => i);
-    Object.entries(EXAM_MIX).forEach(([subj, n]) => take(all.filter((i) => EXAM[i].subj === subj), n));
-    take(all, Math.min(EXAM_SIZE, EXAM.length) - picked.length);
-    store.set('wj-exam-last', JSON.stringify(picked));
+    const all = bank.map((_, i) => i);
+    Object.entries(EXAM_MIX).forEach(([pool, n]) => take(all.filter((i) => poolOf(bank[i].subj) === pool), n));
+    take(all, Math.min(EXAM_SIZE, bank.length) - picked.length);
+    const ids = picked.map((i) => bank[i].id);
+    const history = ids.concat([...recent.keys()].filter((id) => !ids.includes(id))).slice(0, EXAM_HISTORY);
+    store.set('wj-exam-last', JSON.stringify(history));
     return shuffle(picked).map((i) => {
-      const item = EXAM[i];
-      const keep = item.opts.every((o) => /\d/.test(o)); /* 숫자 보기는 작은 수부터 그대로 */
-      const order = keep ? item.opts.map((_, k) => k) : shuffle(item.opts.map((_, k) => k));
+      const item = bank[i];
+      const order = item.keep ? item.opts.map((_, k) => k) : shuffle(item.opts.map((_, k) => k)); /* 숫자 보기는 작은 수부터 그대로 */
       return { subj: item.subj, q: item.q, exp: item.exp, opts: order.map((k) => item.opts[k]), answer: order.indexOf(item.answer) };
     });
   };
@@ -2158,12 +2265,18 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   };
   const startExam = () => { exam = { i: 0, score: 0, set: drawExam() }; examQuestion(); };
   const examIntro = () => {
-    const size = Math.min(EXAM_SIZE, EXAM.length);
+    const size = Math.min(EXAM_SIZE, bank.length);
     examBody.innerHTML = `
       <p class="eyebrow">화물운송종사 자격시험</p>
       <h3 id="exam-title">모의시험</h3>
-      <ul class="exam-facts"><li><b>${size}</b>문제</li><li><b>4</b>지선다</li><li><b>${Math.ceil(size * 0.6)}</b>문제 이상 합격선</li></ul>
-      <p class="sheet-sub">풀 때마다 문제 ${EXAM.length}개 중에서 ${size}개를 과목별로 골고루 뽑고, 보기 순서도 바꿔서 내요. 실제 시험은 법규, 화물취급요령, 안전운행, 운송서비스 4과목 80문항(80분)이고 60점 이상이면 합격이에요. 연습용 문제라 실제 시험 문제와는 다를 수 있어요.</p>
+      <ul class="exam-facts"><li><b>${size}</b>문제</li><li><b>4</b>지선다</li><li><b>60점</b>합격선</li></ul>
+      <ul class="exam-notes">
+        <li>풀 때마다 문제 ${bank.length.toLocaleString('ko-KR')}개 중에서 ${size}개를 과목별로 골고루 뽑아요.</li>
+        <li>보기 순서가 매번 바뀌고, 최근에 푼 문제는 되도록 다시 나오지 않아요.</li>
+        <li>실제 시험은 법규, 화물취급요령, 안전운행, 운송서비스 4과목이에요.</li>
+        <li>80문항을 80분 동안 풀고, 60점 이상이면 합격이에요.</li>
+      </ul>
+      <p class="fineprint">연습용 문제라 실제 시험 문제와는 다를 수 있어요.</p>
       <button class="btn btn-primary btn-block" type="button" id="exam-start">시작하기</button>
       <div class="link-row"><a class="link-btn" href="https://lic.kotsa.or.kr" target="_blank" rel="noopener">시험 접수 사이트 (TS국가자격시험)${icon('out')}</a></div>`;
     $('#exam-start').addEventListener('click', startExam);
@@ -2179,7 +2292,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       else if (n === k) b.classList.add('wrong');
     });
     const exp = $('#exam-explain');
-    exp.innerHTML = `<strong>${ok ? '정답이에요!' : `아쉬워요. 정답은 ${item.answer + 1}번이에요.`}</strong><span>${esc(item.exp)}</span>`;
+    exp.innerHTML = `<strong>${ok ? '정답이에요!' : `아쉬워요. 정답은 ${item.answer + 1}번이에요.`}</strong><span>${sentHTML(item.exp)}</span>`;
     exp.hidden = false;
     const next = $('#exam-next');
     next.hidden = false;
@@ -2194,7 +2307,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       <p class="eyebrow">모의시험 결과</p>
       <h3 id="exam-title" tabindex="-1">${total}문제 중 ${exam.score}문제 맞혔어요</h3>
       <div class="exam-score ${pass ? 'pass' : 'fail'}"><b>${point}</b><span>점 · 합격선 60점</span></div>
-      <p class="sheet-sub">${pass ? '합격선을 넘었어요. 실제 시험은 80문항이니 과목별로 꾸준히 복습해 보세요.' : '조금만 더 하면 돼요. 해설을 다시 보고 한 번 더 풀어 보세요.'}</p>
+      <p class="sheet-sub">${sentHTML(pass ? '합격선을 넘었어요. 실제 시험은 80문항이니 과목별로 꾸준히 복습해 보세요.' : '조금만 더 하면 돼요. 해설을 다시 보고 한 번 더 풀어 보세요.')}</p>
       <button class="btn btn-primary btn-block" type="button" id="exam-retry">새 문제로 다시 풀기</button>
       <div class="link-row">
         <a class="link-btn" href="${BLOG_URL}" target="_blank" rel="noopener">블로그에서 자격증 정보 보기${icon('out')}</a>
@@ -2211,7 +2324,24 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       if (exam.i < exam.set.length) examQuestion(); else examResult();
     }
   });
-  const openExam = () => { examIntro(); openSheet('exam-sheet'); };
+  /* 문제 은행을 아직 못 받았으면 잠깐(최대 2.5초) 기다렸다가 안내 화면을 보여 줌 */
+  let examOpenSeq = 0;
+  const openExam = () => {
+    const seq = ++examOpenSeq;
+    if (!bankFull) examBody.innerHTML = '<p class="sheet-sub" id="exam-title" role="status">모의시험 문제를 준비하고 있어요…</p>';
+    else examIntro();
+    openSheet('exam-sheet');
+    if (bankFull) return;
+    Promise.race([loadBank(), new Promise((done) => setTimeout(done, 2500))]).then(() => {
+      if (seq === examOpenSeq && $('#exam-sheet').open) { examIntro(); focusTitle($('#exam-sheet')); }
+    });
+  };
+  /* 모의시험 버튼에 손가락이나 마우스가 올라가면 미리 불러 둠 */
+  ['pointerover', 'pointerdown', 'focusin'].forEach((type) => {
+    document.addEventListener(type, (e) => {
+      if (!bankFull && e.target instanceof Element && e.target.closest('[data-open-exam]')) loadBank();
+    }, { passive: true });
+  });
 
   /* ───────── 간편 지원 ───────── */
   const form = $('#apply-form');
