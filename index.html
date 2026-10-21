@@ -441,6 +441,7 @@ p, li, dd, dt, label { text-wrap: pretty; }
 .job-area .ic { width: 16px; height: 16px; }
 .job-title { font-size: 1.125rem; font-weight: 800; line-height: 1.4; }
 .job-route { font-size: 0.9375rem; color: var(--fg-2); }
+.lane { display: block; } /* 구간이 여러 개인 노선: 한 줄에 한 구간 */
 .job-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .job-tags li { padding: 3px 9px; border-radius: 7px; background: var(--surface-2); border: 1px solid var(--line); color: var(--fg-2); font-size: 0.8125rem; font-weight: 600; }
 /* 금액: 윗줄에 이름(예상 순수익·월 매출), 아랫줄에 금액을 같은 기준선에 맞춤 */
@@ -720,8 +721,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 .sheet-money .jm-rev-val { font-family: "Inter", var(--font); font-size: 1.25rem; font-weight: 800; }
 .sheet-note { font-size: 0.875rem; color: var(--fg-2); }
 .sheet-actions { display: grid; gap: 10px; }
-.sheet-phone { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; font-size: 0.9375rem; color: var(--fg-2); }
-.sheet-phone strong { font-family: "Inter", var(--font); color: var(--fg); }
+.sheet-call .ic { color: var(--primary-ink); } /* 노선 상세의 '전화 문의': 누르면 바로 전화 연결 */
 .contact-opts { display: grid; gap: 10px; }
 .contact-opt { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 14px; border-radius: var(--r-lg); border: 1px solid var(--line); background: var(--surface); color: var(--fg); text-decoration: none; }
 .contact-opt:hover { border-color: var(--primary); }
@@ -874,6 +874,8 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
 </style>
+</head>
+<body>
 
 <svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
   <symbol id="i-phone" viewBox="0 0 24 24"><path fill="currentColor" d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z"/></symbol>
@@ -916,8 +918,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     <a class="nb-link" href="https://open.kakao.com/o/sc74MZji" target="_blank" rel="noopener"><span class="nb-long">카카오톡</span><span class="nb-short">카톡</span> 상담 →</a>
   </div>
 </div>
-</head>
-<body>
+
 <header class="topbar">
   <div class="wrap topbar-inner">
     <a class="brand" href="#top">
@@ -944,7 +945,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   <section class="hero" id="top">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="hero-chip"><span class="live-dot" aria-hidden="true"></span><span>지금 <b data-count="total">6</b>개 노선 모집 중</span></p>
+        <p class="hero-chip"><span class="live-dot" aria-hidden="true"></span><span>지금 <b data-count="total">8</b>개 노선 모집 중</span></p>
         <h1>5톤 고정노선,<br><span class="grad">직접 보고</span> 고르세요</h1>
         <p class="lead"><span class="s">지역과 상하차 방식, 휴무, 월 매출과 예상 순수익까지 노선마다 공개해요.</span> <span class="s">마음에 드는 노선이 있으면 바로 상담하세요.</span></p>
         <div class="hero-cta">
@@ -955,7 +956,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
         <ul class="trust">
           <li><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg><span>매출·순수익 공개</span></li>
           <li><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg><span>상하차 수작업 없는 노선 <b data-count="noHand">5</b>곳</span></li>
-          <li><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg><span>일요일 휴무 <b data-fact="sundayOff">전 노선</b></span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg><span>일요일 휴무 <b data-fact="sundayOff">7곳</b></span></li>
         </ul>
       </div>
 
@@ -1016,7 +1017,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       <div class="sec-head">
         <div>
           <p class="eyebrow">채용공고</p>
-          <h2 id="jobs-title">지금 모집 중인 노선<span class="count" id="total-count">6</span></h2>
+          <h2 id="jobs-title">지금 모집 중인 노선<span class="count" id="total-count">8</span></h2>
         </div>
         <p class="sec-desc">노선을 누르면 계약 형태, 근무, 상하차, 거주 조건까지 한 번에 볼 수 있어요.</p>
       </div>
@@ -1024,12 +1025,12 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       <div class="filterbar">
         <div class="f-row" role="group" aria-labelledby="lbl-region">
           <span class="f-label" id="lbl-region">지역</span>
-          <button class="pill" type="button" data-region="all" aria-pressed="true">전체 <span class="n">6</span></button>
-          <button class="pill" type="button" data-region="경기" aria-pressed="false">경기 <span class="n">2</span></button>
+          <button class="pill" type="button" data-region="all" aria-pressed="true">전체 <span class="n">8</span></button>
+          <button class="pill" type="button" data-region="인천·경기" aria-pressed="false">인천·경기 <span class="n">3</span></button>
           <button class="pill" type="button" data-region="충청" aria-pressed="false">충청 <span class="n">1</span></button>
           <button class="pill" type="button" data-region="대구·경북" aria-pressed="false">대구·경북 <span class="n">1</span></button>
-          <button class="pill" type="button" data-region="부산·울산·경남" aria-pressed="false">부산·울산·경남 <span class="n">2</span></button>
-          <button class="pill" type="button" data-region="광주·전라" aria-pressed="false">광주·전라 <span class="n">1</span></button>
+          <button class="pill" type="button" data-region="부산·울산·경남" aria-pressed="false">부산·울산·경남 <span class="n">3</span></button>
+          <button class="pill" type="button" data-region="광주·전라" aria-pressed="false">광주·전라 <span class="n">3</span></button>
         </div>
         <div class="f-row" role="group" aria-labelledby="lbl-cond">
           <span class="f-label" id="lbl-cond">조건</span>
@@ -1041,7 +1042,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       </div>
 
       <div class="list-meta">
-        <p class="result-count" id="result-count" aria-live="polite">전체 6개 노선</p>
+        <p class="result-count" id="result-count" aria-live="polite">전체 8개 노선</p>
         <button class="text-btn" type="button" id="reset-filters" hidden>조건 초기화</button>
         <p class="money-hint"><svg class="ic" aria-hidden="true"><use href="#i-info"></use></svg><span>예상 순수익은 월 매출에서 유류비·통행료·차량 할부금 등을 뺀 금액이에요</span></p>
       </div>
@@ -1291,7 +1292,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
             <div class="select-wrap">
               <select id="f-region" name="region">
                 <option value="상관없음">상관없음</option>
-                <option value="경기">경기</option>
+                <option value="인천·경기">인천·경기</option>
                 <option value="충청">충청</option>
                 <option value="대구·경북">대구·경북</option>
                 <option value="부산·울산·경남">부산·울산·경남</option>
@@ -1451,7 +1452,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     <div class="sheet-actions">
       <button class="btn btn-primary btn-block" type="button" id="sheet-apply">이 노선으로 지원하기</button>
       <a class="btn btn-kakao btn-block" href="https://open.kakao.com/o/sc74MZji" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-chat"></use></svg>카카오톡으로 물어보기</a>
-      <p class="sheet-phone">전화 문의 <strong>1600-4438</strong><button class="copy-btn" type="button" data-copy="1600-4438">번호 복사</button></p>
+      <a class="btn btn-secondary btn-block sheet-call" href="tel:16004438"><svg class="ic" aria-hidden="true"><use href="#i-phone"></use></svg>전화 문의 <span class="num">1600-4438</span></a>
     </div>
   </div>
 </dialog>
@@ -1504,19 +1505,27 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     noHand: '상하차 수작업 없음',
     extraCall: '퇴근 후 추가 매출',
     longHaul: '장거리 왕복',
+    noEmpty: '공차 없는 왕복',
   };
-  const CARD_TAGS = ['noStay', 'sundayOff', 'noHand', 'extraCall'];
+  const CARD_TAGS = ['noStay', 'sundayOff', 'noHand', 'extraCall', 'noEmpty'];
 
   /* ▼ 노선 목록: { ... } 블록 하나가 노선 하나입니다.
      추가: 블록 하나를 통째로 복사해 붙여 넣고 내용만 바꾸세요. 삭제: 블록을 지우세요.
+     카드는 이 목록 순서대로 보여요(지금은 지역 버튼 순서대로). 맨 위 노선은 첫 화면의 '지금 모집 중' 카드에도 나와요.
      id      : 영문 이름. 주소 뒤에 #paju 처럼 붙이면 그 노선이 바로 열립니다. 서로 겹치면 안 됩니다.
      area    : 카드에 보이는 지역 이름
+     route   : 운행 구간. 구간이 여러 개면 ['인천 ⇄ 전주', '전라도 광주 ⇄ 전주'] 처럼 [ ] 안에 나눠 적으면 한 줄에 하나씩 보여요.
+     workShort : 카드 아래쪽에 보이는 근무 일수(예: '주 6일'). 모르면 '' 로 두면 빠져요.
+     qual    : 자격 요건. 적으면 상세 화면에 보이고, '' 로 두거나 빼면 안 보여요.
      revenue : 월 매출, net : 예상 순수익. 만원 단위로 적습니다. 예: '1,100~1,300', '500+α', '1,200 이상'
                모르면 null 로 두면 '상담 시 안내'로 보입니다.
-     regions : '경기', '충청', '대구·경북', '부산·울산·경남', '광주·전라' 중에서 고르세요.
-               새 지역(예: 강원)을 쓰려면 위쪽 HTML의 지역 버튼과 회원가입 지역 목록에도 추가해야 합니다.
+     netNote : 이 노선에만 해당하는 매출·순수익 설명(없으면 빼도 됩니다)
+     regions : '인천·경기', '충청', '대구·경북', '부산·울산·경남', '광주·전라' 중에서 고르세요.
+               첫 번째 지역이 간편 지원의 '희망 근무 지역'에 자동으로 들어가요.
+               새 지역(예: 강원)을 쓰려면 위쪽 HTML의 지역 버튼과 간편 지원의 희망 근무 지역 목록에도 추가해야 합니다.
      tags    : noStay 차숙 없음 · sundayOff 일요일 휴무 · noHand 상하차 수작업 없음
-               extraCall 퇴근 후 추가 매출 · longHaul 장거리 왕복 */
+               extraCall 퇴근 후 추가 매출 · longHaul 장거리 왕복
+               noEmpty 공차 없는 왕복(카드에만 보이고, 조건 버튼은 없어요) */
   const JOBS = [
     {
       id: 'paju', area: '파주', kind: '근거리 회전',
@@ -1527,7 +1536,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       loading: '지게차 상하차 (수작업 없음)', stay: '차숙 없음, 출퇴근',
       residence: '경기 북부권', extra: '퇴근 후 일반짐 콜 배차로 추가 매출 가능',
       revenue: '1,100~1,300', net: '500+α',
-      regions: ['경기'], tags: ['noStay', 'sundayOff', 'noHand', 'extraCall'],
+      regions: ['인천·경기'], tags: ['noStay', 'sundayOff', 'noHand', 'extraCall'],
     },
     {
       id: 'ottogi-lg', area: '평택 ⇄ 창원', kind: '장거리 왕복',
@@ -1539,7 +1548,19 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       residence: '상담 시 안내', extra: '',
       revenue: '1,800+α', net: '700+α',
       netNote: '이 노선의 예상 순수익은 개인 경비까지 뺀 기준이에요.',
-      regions: ['경기', '부산·울산·경남'], tags: ['sundayOff', 'noHand', 'longHaul'],
+      regions: ['인천·경기', '부산·울산·경남'], tags: ['sundayOff', 'noHand', 'longHaul'],
+    },
+    {
+      id: 'coupang', area: '인천·전주·광주', kind: '중장거리 왕복',
+      title: '쿠팡 물류센터 운송',
+      route: ['인천 ⇄ 경기도 광주', '인천 ⇄ 전주', '전라도 광주 ⇄ 전주'],
+      vehicle: '5톤 화물차', workShort: '',
+      work: '상담 시 안내',
+      loading: '상담 시 안내', stay: '상담 시 안내',
+      residence: '상담 시 안내', extra: '',
+      qual: '1종 보통 면허 이상, 화물운송종사자격증 보유',
+      revenue: '1,500+α', net: '700+α',
+      regions: ['인천·경기', '광주·전라'], tags: [],
     },
     {
       id: 'cheongju', area: '청주', kind: '근거리 회전',
@@ -1573,6 +1594,19 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       residence: '경남권', extra: '',
       revenue: '1,100~1,300', net: '500+α',
       regions: ['부산·울산·경남'], tags: ['noStay', 'sundayOff', 'noHand'],
+    },
+    {
+      id: 'lg-jeonnam', area: '경남 ⇄ 전남', kind: '장거리 왕복',
+      title: 'LG전자 가전제품 납품 고정노선',
+      route: ['경남 → 전남: LG전자 가전제품 납품', '전남 → 경남: 쿠팡·일반짐 배차'],
+      vehicle: '5톤 윙바디', workShort: '주 6일',
+      work: '주 6일 (월~토, 일요일 휴무)',
+      loading: '상담 시 안내', stay: '상담 시 안내',
+      residence: '경남권 거주자 우대', extra: '',
+      qual: '1종 보통 면허 이상, 화물운송종사자격증 보유',
+      revenue: '1,500+α', net: '500+α',
+      netNote: '이 노선의 월 매출은 26일 운행 기준이고, 예상 순수익은 보험료 등 개인 경비까지 뺀 기준이에요. 차종과 할부 조건에 따라 차이가 있어 현장 미팅 때 자세히 안내해 드려요.',
+      regions: ['부산·울산·경남', '광주·전라'], tags: ['sundayOff', 'longHaul', 'noEmpty'],
     },
     {
       id: 'gwangju', area: '광주', kind: '근거리 회전',
@@ -1929,19 +1963,23 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   const matches = (job, region = state.region, conds = state.conds) =>
     (region === 'all' || job.regions.includes(region)) && [...conds].every((c) => job.tags.includes(c));
 
+  /* 구간을 여러 개 적은 노선(['인천 ⇄ 전주', ...])은 한 줄에 하나씩 보여 줌 */
+  const linesHTML = (v) => (Array.isArray(v) ? v.map((s) => `<span class="lane">${esc(s)}</span>`).join('') : esc(v));
+  const hasValue = (v) => (Array.isArray(v) ? v.length > 0 : Boolean(v));
+
   const jobHTML = (job) => {
     const tags = CARD_TAGS.filter((t) => job.tags.includes(t)).map((t) => `<li>${TAG_LABEL[t]}</li>`).join('');
     return `<article class="job" data-id="${esc(job.id)}">
       <div class="job-top"><span class="status"><span class="dot"></span>모집 중</span><span class="kind">${esc(job.kind)}</span></div>
       <p class="job-area">${icon('pin')}${esc(job.area)}</p>
       <h3 class="job-title">${esc(job.title)}</h3>
-      <p class="job-route">${esc(job.route)}</p>
+      <p class="job-route">${linesHTML(job.route)}</p>
       ${tags ? `<ul class="job-tags" aria-label="조건">${tags}</ul>` : ''}
       <div class="job-money">
         <span class="jm-label">예상 순수익</span><span class="jm-label jm-rev">월 매출</span>
         ${netHTML(job.net)}<span class="jm-rev-val jm-rev">${esc(moneyText(job.revenue))}</span>
       </div>
-      <div class="job-foot"><span>${esc(job.vehicle)} · <span class="nw">${esc(job.workShort)}</span></span><button class="job-more" type="button" aria-label="${esc(job.title)} 상세 조건 보기">상세보기${icon('right')}</button></div>
+      <div class="job-foot"><span>${esc(job.vehicle)}${job.workShort ? ` · <span class="nw">${esc(job.workShort)}</span>` : ''}</span><button class="job-more" type="button" aria-label="${esc(job.title)} 상세 조건 보기">상세보기${icon('right')}</button></div>
     </article>`;
   };
 
@@ -1963,7 +2001,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   const resetFilters = () => { state.region = 'all'; state.conds.clear(); render(); };
 
   let currentJob = null;
-  const specRow = (label, value) => (value ? `<div class="row"><dt>${label}</dt><dd>${esc(value)}</dd></div>` : '');
+  const specRow = (label, value) => (hasValue(value) ? `<div class="row"><dt>${label}</dt><dd>${linesHTML(value)}</dd></div>` : '');
   const openJob = (id) => {
     const job = JOBS.find((j) => j.id === id);
     if (!job) return;
@@ -1984,6 +2022,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
           ${specRow('상하차', job.loading)}
           ${specRow('숙박', job.stay)}
           ${specRow('거주 조건', job.residence)}
+          ${specRow('자격 요건', job.qual)}
           ${specRow('추가 매출', job.extra)}
         </dl>
         <p class="sheet-note">${sentHTML(`${job.netNote ? job.netNote + ' ' : ''}월 매출은 한 달 운송료 합계이고, 예상 순수익은 월 매출에서 유류비·통행료·차량 할부금 등을 뺀 금액이에요. 운행량과 차량 조건에 따라 달라질 수 있어요.`)}</p>
