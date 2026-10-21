@@ -1,8 +1,10 @@
 # 우진물류 채용 사이트 - 전국 평균 유가 자동 갱신 + 사이트 배포
 # 하는 일: 매일 2번(오전 9시 17분, 오후 4시 17분) 오피넷에서 전국 평균 유가를 받아 fuel.json을 만들고,
 #          사이트를 다시 배포합니다. 파일을 올릴 때(push)도 사이트를 배포합니다.
+#          GitHub 사정으로 실행이 몇십 분 늦어질 수 있어요.
 # 미리 할 일: 1) 저장소 Settings > Secrets and variables > Actions 에 OPINET_KEY(오피넷 인증키) 등록
 #             2) 저장소 Settings > Pages > Source 를 "GitHub Actions" 로 변경
+# 잘 됐는지 보기: Actions 탭에서 실행을 누르면 맨 아래 요약에 '유가 갱신 완료' 또는 '유가 갱신 안 됨'과 이유가 나와요.
 name: 유가 갱신 및 사이트 배포
 
 on:
@@ -37,22 +39,26 @@ jobs:
           OPINET_KEY: ${{ secrets.OPINET_KEY }}
         run: |
           python3 - <<'PY'
-          import json, os, urllib.request
+          import json, os, urllib.parse, urllib.request
           from datetime import datetime, timedelta, timezone
+
+          kst = timezone(timedelta(hours=9))
+          summary_path = os.environ.get('GITHUB_STEP_SUMMARY')
+
+          def report(text):
+              # 실행 화면 맨 아래 '요약'에 결과를 적어 둠
+              if summary_path:
+                  with open(summary_path, 'a', encoding='utf-8') as f:
+                      f.write(text + '\n')
+
+          def stop(reason, detail=''):
+              print('::warning::' + reason + (' (' + detail + ')' if detail else ''))
+              report('### 유가 갱신 안 됨\n' + reason + ('\n\n' + detail if detail else '') + '\n\n사이트는 이전 유가 그대로 배포했어요.')
+              raise SystemExit(0)
 
           key = os.environ.get('OPINET_KEY', '').strip()
           if not key:
-              print('::warning::OPINET_KEY가 등록되지 않아 유가를 갱신하지 않았어요.')
-              raise SystemExit(0)
-
-          url = 'https://www.opinet.co.kr/api/avgAllPrice.do?out=json&certkey=' + key
-          try:
-              req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-              with urllib.request.urlopen(req, timeout=30) as res:
-                  data = json.loads(res.read().decode('utf-8', errors='replace'))
-          except Exception as err:
-              print(f'::warning::오피넷에서 유가를 받지 못했어요 ({type(err).__name__}). 이전 값을 그대로 둡니다.')
-              raise SystemExit(0)
+              stop('OPINET_KEY가 등록되지 않아 유가를 갱신하지 않았어요.')
 
           def find_rows(node):
               if isinstance(node, list):
@@ -72,13 +78,38 @@ jobs:
               except ValueError:
                   return None
 
-          rows = {str(row.get('PRODCD')): row for row in find_rows(data)}
-          diesel, gasoline = rows.get('D047'), rows.get('B027')
-          if not diesel or not gasoline or num(diesel.get('PRICE')) is None or num(gasoline.get('PRICE')) is None:
-              print('::warning::오피넷 응답에서 경유·휘발유 가격을 찾지 못했어요. 인증키를 확인해 주세요.')
-              raise SystemExit(0)
+          def fetch(param):
+              url = 'https://www.opinet.co.kr/api/avgAllPrice.do?out=json&' + param + '=' + urllib.parse.quote(key, safe='')
+              req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+              with urllib.request.urlopen(req, timeout=30) as res:
+                  body = res.read().decode('utf-8-sig', errors='replace')
+              try:
+                  data = json.loads(body)
+              except ValueError:
+                  data = None
+              rows = {str(row.get('PRODCD')): row for row in find_rows(data)} if data is not None else {}
+              return rows, body
 
-          kst = timezone(timedelta(hours=9))
+          # 오피넷은 인증키를 code 라는 이름으로 받는 경우와 certkey 로 받는 경우가 있어서 둘 다 시도해요.
+          rows, notes = {}, []
+          for param in ('code', 'certkey'):
+              try:
+                  got, body = fetch(param)
+              except Exception as err:
+                  notes.append(f'{param}: 연결 실패 {type(err).__name__}')
+                  continue
+              d, g = got.get('D047'), got.get('B027')
+              if d and g and num(d.get('PRICE')) is not None and num(g.get('PRICE')) is not None:
+                  rows = got
+                  print(f'오피넷 응답 확인 ({param})')
+                  break
+              snippet = ' '.join(body.replace(key, '***').split())[:150]
+              notes.append(f'{param}: 오피넷 답 {snippet or "(빈 응답)"}')
+
+          if not rows:
+              stop('오피넷 응답에서 경유·휘발유 가격을 찾지 못했어요. 인증키를 확인해 주세요.', ' / '.join(notes))
+
+          diesel, gasoline = rows['D047'], rows['B027']
           trade = str(diesel.get('TRADE_DT') or gasoline.get('TRADE_DT') or '')
           if len(trade) == 8 and trade.isdigit():
               day = f'{trade[:4]}-{trade[4:6]}-{trade[6:8]}'
@@ -98,6 +129,7 @@ jobs:
               json.dump(fuel, f, ensure_ascii=False, indent=2)
               f.write('\n')
           print('유가 갱신:', fuel)
+          report(f"### 유가 갱신 완료\n경유 {fuel['diesel']:,.2f}원 · 휘발유 {fuel['gasoline']:,.2f}원 ({day} 기준, {fuel['updated']}에 받음)")
           PY
 
       - name: 바뀐 유가 저장
