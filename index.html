@@ -481,6 +481,10 @@ p, li, dd, dt, label { text-wrap: pretty; }
 .card-desc { font-size: 0.9375rem; color: var(--muted); }
 .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); color: var(--fg-2); font-size: 0.8125rem; font-weight: 700; }
 .badge-blue { background: var(--primary-soft); border-color: transparent; color: var(--primary-ink); }
+/* 유가 '실시간' 표시: 오늘 받은 값일 때 초록색으로 */
+.badge.is-live { background: var(--green-soft); border-color: transparent; color: var(--green-ink); }
+.badge.is-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green-dot); box-shadow: 0 0 0 3px var(--green-ring); }
+.fc-label .is-live { color: var(--green-ink); font-weight: 700; }
 .card-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 
 .calc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
@@ -1487,8 +1491,9 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   const CONTRACT = '지입(위수탁) 차주';
 
   /* ▼ 전국 평균 유가
-     자동 갱신(fuel.json)을 켜 두면 그 값을 먼저 보여 주고, 아래 값은 fuel.json이 없을 때만 보여요.
-     'O월 O째 주'는 date(가격 기준일)로 저절로 계산돼요. 그 주의 목요일이 있는 달로 셉니다.
+     자동 갱신(fuel.json)이 켜져 있으면 그 값을 보여 줘요. 오늘 받은 값이면 '실시간', 지난 날짜 값이면 'O월 O일 기준'으로 나와요.
+     페이지를 열어 둔 동안에도 5분마다 새 값이 들어왔는지 확인해서 저절로 바꿔요.
+     아래 값은 fuel.json이 없을 때만 보여요. 이때 'O월 O째 주'는 date(가격 기준일)로 계산돼요(그 주의 목요일이 있는 달로 셈).
      예: 10월 21일 → 10월 넷째 주, 11월 1일(일) → 10월 다섯째 주, 11월 2일(월) → 11월 첫째 주
      직접 바꿀 때: date('2026-10-09'처럼)와 가격을 적고, diff는 전주 대비 변동(내렸으면 마이너스)으로 적습니다. */
   let FUEL = { basis: 'week', date: '2026-10-09', diesel: 1842.8, dieselDiff: -0.5, gasoline: 1856.6, gasolineDiff: -0.9 };
@@ -2046,12 +2051,20 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     const d = parseDay(iso);
     return d ? `${d.getUTCMonth() + 1}월 ${d.getUTCDate()}일` : '';
   };
+  /* 한국 시간 기준 오늘 날짜('2026-10-21') */
+  const todayKST = () => new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
+  const FUEL_AUTO = '<span class="nw">매일 오전 9시·오후 4시쯤 자동 갱신</span>';
   const renderFuel = () => {
     const daily = FUEL.basis === 'day';
+    const today = todayKST();
+    const live = daily && FUEL.date === today; /* 오늘 받은 값일 때만 '실시간' */
+    const stamp = String(FUEL.updated || '').match(/^(\d{4}-\d{2}-\d{2})[ T](\d{2}:\d{2})/);
+    const period = live ? '실시간' : daily ? `${dayLabel(FUEL.date)} 기준` : weekLabel(FUEL.date);
+    const when = live && stamp && stamp[1] === today ? `오늘 ${stamp[2]} 갱신` : `${dayLabel(FUEL.date)} 기준`;
     $$('[data-fuel]').forEach((el) => {
       const key = el.dataset.fuel;
-      if (key === 'period') el.textContent = weekLabel(FUEL.date);
-      else if (key === 'src') el.innerHTML = daily ? `한국석유공사 오피넷 전국 주유소 평균가격 · <span class="nw">${dayLabel(FUEL.date)} 기준</span> · <span class="nw">매일 자동 갱신</span>` : '한국석유공사 오피넷 주간 평균 판매가격 기준';
+      if (key === 'period') { el.textContent = period; el.classList.toggle('is-live', live); }
+      else if (key === 'src') el.innerHTML = daily ? `한국석유공사 오피넷 전국 주유소 평균가격 · <span class="nw">${when}</span> · ${FUEL_AUTO}` : '한국석유공사 오피넷 주간 평균 판매가격 기준';
       else if (key === 'diesel' || key === 'gasoline') el.textContent = fmt(FUEL[key], 2);
       else {
         const d = FUEL[key];
@@ -2118,7 +2131,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       if (!m || !ok) return;
       const wasExample = isExample();
       FUEL = {
-        basis: 'day', date: f.date,
+        basis: 'day', date: f.date, updated: typeof f.updated === 'string' ? f.updated : '',
         diesel: Number(f.diesel), dieselDiff: Number(f.dieselDiff) || 0,
         gasoline: Number(f.gasoline), gasolineDiff: Number(f.gasolineDiff) || 0,
       };
@@ -2128,6 +2141,11 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     } catch (err) { /* 파일이 없거나 읽을 수 없으면 기본값 유지 */ }
   };
   loadFuel();
+  /* 페이지를 열어 둔 동안 5분마다, 다른 화면을 보다 돌아왔을 때도 새 유가가 들어왔는지 확인
+     (자정이 지나면 '실시간' 표시도 날짜 표시로 바뀜) */
+  const refreshFuel = () => { if (document.hidden) return; renderFuel(); loadFuel(); };
+  setInterval(refreshFuel, 5 * 60 * 1000);
+  document.addEventListener('visibilitychange', refreshFuel);
 
   /* ───────── 오늘의 운세 ───────── */
   const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
