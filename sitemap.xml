@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 검색엔진에 알려 주는 사이트 페이지 목록. 페이지를 새로 만들면 <url> 블록을 하나 추가하고,
+     내용을 크게 바꾼 페이지는 lastmod 날짜를 바꾼 날로 고쳐 주세요. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://wjanffb23.github.io/woojin/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://wjanffb23.github.io/woojin/privacy.html</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://wjanffb23.github.io/woojin/terms.html</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+</urlset>
