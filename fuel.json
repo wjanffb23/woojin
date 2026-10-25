@@ -1,9 +1,9 @@
 {
   "date": "2026-10-25",
-  "diesel": 1841.45,
-  "dieselDiff": -0.48,
-  "gasoline": 1855.54,
-  "gasolineDiff": -0.32,
+  "diesel": 1841.7,
+  "dieselDiff": -0.23,
+  "gasoline": 1855.68,
+  "gasolineDiff": -0.18,
   "source": "한국석유공사 오피넷 전국 주유소 평균가격",
-  "updated": "2026-10-25 09:55"
+  "updated": "2026-10-25 16:48"
 }
