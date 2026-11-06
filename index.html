@@ -255,6 +255,8 @@ button { font: inherit; color: inherit; letter-spacing: inherit; }
 /* 글자 배치: 줄 끝에 낱말 하나만 남지 않게, 붙어 다녀야 하는 말은 한 줄에 */
 p, li, dd, dt, label { text-wrap: pretty; }
 .nw { white-space: nowrap; }
+/* 한 덩어리로 다니는 말: 줄은 덩어리 사이에서만 바뀌고, 덩어리가 칸보다 길 때만 그 안에서 나뉨 (칸 밖으로 넘치지 않음) */
+.ph { display: inline-block; max-width: 100%; text-wrap: balance; } /* 덩어리 안에서 나뉠 때는 반반 고르게 */
 
 /* Buttons */
 .btn {
@@ -710,10 +712,11 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 .info-card .row { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 14px; padding: 15px 0; border-bottom: 1px solid var(--line); }
 .info-card .row:last-child { border-bottom: 0; }
 .info-card dt { padding-top: 1px; font-size: 0.875rem; font-weight: 700; color: var(--muted); }
-.info-card dd { display: grid; gap: 8px; margin: 0; font-weight: 600; }
+.info-card dd { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin: 0; font-weight: 600; } /* 긴 글자가 있어도 칸이 상자보다 넓어지지 않게 */
 .info-card .sub { font-size: 0.875rem; font-weight: 500; color: var(--muted); }
 .row-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.addr-tag { font-weight: 800; color: var(--primary-ink); }
+.addr-tag { display: block; font-weight: 800; color: var(--primary-ink); } /* 본사·배차부 이름은 따로 한 줄 */
+.addr-road { display: block; } /* 도로명 주소도 한 줄, 나머지(층·호수·동 이름)는 그 아래에 덩어리별로 */
 .info-card .addr-next { margin-top: 10px; padding-top: 14px; border-top: 1px dashed var(--line); } /* 본사·배차부 주소 사이 구분선 */
 
 /* Footer */
@@ -861,6 +864,9 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   .s, .lead, .sec-desc, .card-desc, .money-hint span, .job-route, .step p, .value p, .fr-main, .fr-rows dd,
   .fineprint, .sheet-sub, .sheet-note, .spec-list dd, .news-title, .ch-desc, .exam-promo p, .calc-foot p,
   .empty p, .exam-notes li, .cr-sub, .opt > span:last-child { text-wrap: balance; }
+  /* 순수익 아래 설명(하루 평균 · 매출 비율)은 한 줄로: 상자가 좁으면 상자 폭에 맞춰 글자 크기만 줄어듦 (문장 폭 ≈ 글자 크기 × 15.2, 여유 포함) */
+  .calc-result { container-type: inline-size; }
+  .cr-sub { font-size: clamp(0.75rem, 6.3cqi, 0.9375rem); } /* 12px보다 작아지면 가운뎃점 뒤에서 줄을 바꿈 */
   .f-label { flex-basis: 100%; width: auto; }
   .fuel-items { grid-template-columns: minmax(0, 1fr); }
   .fuel-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; column-gap: 12px; }
@@ -1273,7 +1279,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
             <div class="cr-head">
               <p class="cr-label">예상 월 순수익</p>
               <p class="cr-net"><span id="c-net">604</span><small>만원</small></p>
-              <p class="cr-sub" id="c-sub">하루 평균 약 25.2만원 · 매출의 50%</p>
+              <p class="cr-sub" id="c-sub"><span class="ph">하루 평균 약 25.2만원&nbsp;·</span> <span class="ph">매출의 50%</span></p>
             </div>
             <dl class="cr-kpis" aria-label="한 달 요약">
               <div class="cr-kpi"><dt>월 매출</dt><dd><span id="c-k-rev">1,200</span><small>만원</small></dd></div>
@@ -1318,7 +1324,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
         <article class="card exam-promo" aria-labelledby="exam-promo-title">
           <p class="eyebrow">화물운송종사 자격시험</p>
           <h3 id="exam-promo-title">모의시험 10문제로 실력 점검</h3>
-          <p><span class="s">문제 1,000개에서 과목별로 골고루 뽑아 바로 채점해요.</span> <span class="s">실제 시험은 4과목 <span class="nw">80문항, 80분</span>이고 60점 이상이면 합격이에요.</span></p>
+          <p><span class="s">문제 1,000개에서 과목별로 골고루 뽑아 바로 채점해요.</span> <span class="s"><span class="ph">실제 시험은 4과목 80문항,</span> <span class="ph">80분이고 60점 이상이면 합격이에요.</span></span></p>
           <div class="card-actions">
             <button class="btn btn-light btn-sm" type="button" data-open-exam>모의시험 시작</button>
             <a class="link-light" href="https://lic.kotsa.or.kr" target="_blank" rel="noopener">시험 접수 사이트<svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg></a>
@@ -1348,9 +1354,9 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       </div>
       <ol class="steps">
         <li class="step"><span class="step-no">01</span><h3>노선 고르기</h3><p>지역과 조건으로 노선을 비교하고 상세 조건을 확인해요.</p></li>
-        <li class="step"><span class="step-no">02</span><h3>상담 신청</h3><p>전화, 카카오톡, 문자, 간편 지원 중 편한 방법으로 연락하세요.</p></li>
+        <li class="step"><span class="step-no">02</span><h3>상담 신청</h3><p><span class="ph">전화, 카카오톡, 문자, 간편 지원 중</span> <span class="ph">편한 방법으로 연락하세요.</span></p></li>
         <li class="step"><span class="step-no">03</span><h3>조건 안내</h3><p>담당자가 노선, 계약 형태, 차량 준비 방법을 자세히 안내해요.</p></li>
-        <li class="step"><span class="step-no">04</span><h3>계약하고 운행 시작</h3><p>조건을 확인하고 계약한 뒤 배정된 노선으로 운행을 시작해요.</p></li>
+        <li class="step"><span class="step-no">04</span><h3>계약하고 운행 시작</h3><p><span class="ph">조건을 확인하고 계약한 뒤</span> <span class="ph">배정된 노선으로 운행을 시작해요.</span></p></li>
       </ol>
     </div>
   </section>
@@ -1365,12 +1371,12 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
           <!-- ▼ 검색로봇용으로 미리 그려 둔 소식이에요. 화면을 열면 스크립트의 NEWS 목록으로 다시 그려져요. -->
           <li><a class="news-item" href="https://youtu.be/kVQgJFkI5EI" target="_blank" rel="noopener">
       <span class="news-tag" data-type="youtube">유튜브</span>
-      <span class="news-body"><span class="news-title">큰 사고로 번지지 않으려면? 평범해 보이는 버튼 하나가 생명줄입니다</span><span class="news-desc">우진물류TV · 우진연수 EP.01</span></span>
+      <span class="news-body"><span class="news-title"><span class="ph">큰 사고로 번지지 않으려면?</span> <span class="ph">평범해 보이는 버튼 하나가 생명줄입니다</span></span><span class="news-desc">우진물류TV · 우진연수 EP.01</span></span>
       <span class="news-date"></span>
     </a></li>
           <li><a class="news-item" href="https://www.youtube.com/shorts/9QCfdVsehRc" target="_blank" rel="noopener">
       <span class="news-tag" data-type="youtube">유튜브</span>
-      <span class="news-body"><span class="news-title">까대기 없는 5톤 찾으셨죠? 손 하나 까딱 안 하는 대구 골판지 납품</span><span class="news-desc">우진물류 기사모집 · 쇼츠</span></span>
+      <span class="news-body"><span class="news-title"><span class="ph">까대기 없는 5톤 찾으셨죠?</span> <span class="ph">손 하나 까딱 안 하는 대구 골판지 납품</span></span><span class="news-desc">우진물류 기사모집 · 쇼츠</span></span>
       <span class="news-date"></span>
     </a></li>
           <li><a class="news-item" href="https://blog.naver.com/wjanffblog/224407129213" target="_blank" rel="noopener">
@@ -1380,7 +1386,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     </a></li>
           <li><a class="news-item" href="https://www.instagram.com/reel/DfZIIstSmNf/" target="_blank" rel="noopener">
       <span class="news-tag" data-type="instagram">인스타</span>
-      <span class="news-body"><span class="news-title">차에서 자지말고 집에 가세요! (5톤 취업 안내)</span><span class="news-desc">우진물류 인스타 · 릴스</span></span>
+      <span class="news-body"><span class="news-title"><span class="ph">차에서 자지말고 집에 가세요!</span> <span class="ph">(5톤 취업 안내)</span></span><span class="news-desc">우진물류 인스타 · 릴스</span></span>
       <span class="news-date"></span>
     </a></li>
           <li><a class="news-item" href="https://www.tiktok.com/@wjqmffhrm/video/7697258114503970100" target="_blank" rel="noopener">
@@ -1557,12 +1563,12 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
         <div class="row">
           <dt>주소</dt>
           <dd>
-            <span class="addr-line" id="addr"><span class="nw"><b class="addr-tag">본사 (광명):</b> 경기 광명시 덕안로 104번길 17</span> <span class="nw">(일직동 501-4)</span> <span class="nw">광명역M클러스터 1502호</span></span>
+            <span class="addr-line" id="addr"><b class="addr-tag">본사 (광명)</b> <span class="addr-road">경기 광명시 덕안로 104번길 17</span> <span class="ph">(일직동 501-4)</span> <span class="ph">광명역M클러스터 1502호</span></span>
             <span class="row-actions">
               <button class="copy-btn" type="button" data-copy="경기 광명시 덕안로 104번길 17 (일직동 501-4) 광명역M클러스터 1502호" data-copy-target="#addr">주소 복사</button>
               <a class="link-btn" href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EA%B4%91%EB%AA%85%EC%8B%9C%20%EB%8D%95%EC%95%88%EB%A1%9C%20104%EB%B2%88%EA%B8%B8%2017" target="_blank" rel="noopener">네이버 지도<svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg></a>
             </span>
-            <span class="addr-line addr-next" id="addr2"><span class="nw"><b class="addr-tag">배차부 (남양주):</b> 경기 남양주시 다산순환로 20</span> <span class="nw">제2층 제에이씨02-048호</span> <span class="nw">(다산동, 다산현대프리미어캠퍼스)</span></span>
+            <span class="addr-line addr-next" id="addr2"><b class="addr-tag">배차부 (남양주)</b> <span class="addr-road">경기 남양주시 다산순환로 20</span> <span class="ph">제2층 제에이씨02-048호</span> <span class="ph">(다산동, 다산현대프리미어캠퍼스)</span></span>
             <span class="row-actions">
               <button class="copy-btn" type="button" data-copy="경기 남양주시 다산순환로 20 제2층 제에이씨02-048호 (다산동, 다산현대프리미어캠퍼스)" data-copy-target="#addr2">주소 복사</button>
               <a class="link-btn" href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EB%82%A8%EC%96%91%EC%A3%BC%EC%8B%9C%20%EB%8B%A4%EC%82%B0%EC%88%9C%ED%99%98%EB%A1%9C%2020" target="_blank" rel="noopener">네이버 지도<svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg></a>
@@ -1822,12 +1828,13 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 
   /* ▼ 우진뉴스: 위에 있는 소식이 먼저 보입니다.
      type: youtube(유튜브) · blog(블로그) · tiktok(틱톡) · instagram(인스타) · recruit(모집) · notice(공지)
-     title: 제목 / desc: 제목 아래 작은 글씨 / date: 날짜(비워도 됩니다) / href: 눌렀을 때 갈 곳 */
+     title: 제목 / desc: 제목 아래 작은 글씨 / date: 날짜(비워도 됩니다) / href: 눌렀을 때 갈 곳
+     제목을 ['앞부분', '뒷부분']처럼 나눠 적으면, 휴대폰처럼 한 줄에 다 안 들어갈 때 그 사이에서만 줄이 바뀝니다. */
   const NEWS = [
-    { type: 'youtube', title: '큰 사고로 번지지 않으려면? 평범해 보이는 버튼 하나가 생명줄입니다', desc: '우진물류TV · 우진연수 EP.01', date: '', href: 'https://youtu.be/kVQgJFkI5EI' },
-    { type: 'youtube', title: '까대기 없는 5톤 찾으셨죠? 손 하나 까딱 안 하는 대구 골판지 납품', desc: '우진물류 기사모집 · 쇼츠', date: '', href: 'https://www.youtube.com/shorts/9QCfdVsehRc' },
+    { type: 'youtube', title: ['큰 사고로 번지지 않으려면?', '평범해 보이는 버튼 하나가 생명줄입니다'], desc: '우진물류TV · 우진연수 EP.01', date: '', href: 'https://youtu.be/kVQgJFkI5EI' },
+    { type: 'youtube', title: ['까대기 없는 5톤 찾으셨죠?', '손 하나 까딱 안 하는 대구 골판지 납품'], desc: '우진물류 기사모집 · 쇼츠', date: '', href: 'https://www.youtube.com/shorts/9QCfdVsehRc' },
     { type: 'blog', title: '지입차란? 치킨집 가맹점 하나면 5분 만에 이해됩니다', desc: '우진물류 공식 블로그', date: '', href: 'https://blog.naver.com/wjanffblog/224407129213' },
-    { type: 'instagram', title: '차에서 자지말고 집에 가세요! (5톤 취업 안내)', desc: '우진물류 인스타 · 릴스', date: '', href: 'https://www.instagram.com/reel/DfZIIstSmNf/' },
+    { type: 'instagram', title: ['차에서 자지말고 집에 가세요!', '(5톤 취업 안내)'], desc: '우진물류 인스타 · 릴스', date: '', href: 'https://www.instagram.com/reel/DfZIIstSmNf/' },
     { type: 'tiktok', title: '직영기사와 지입기사. 나에게 딱 맞는 선택은?', desc: '우진물류 틱톡', date: '', href: 'https://www.tiktok.com/@wjqmffhrm/video/7697258114503970100' },
   ];
   const NEWS_LABEL = { youtube: '유튜브', blog: '블로그', tiktok: '틱톡', instagram: '인스타', video: '영상', recruit: '모집', notice: '공지' };
@@ -2342,7 +2349,8 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     if (days > 0) parts.push(`하루 평균 약 ${fmt(net / days)}만원`);
     if (revenue > 0) parts.push(`매출의 ${fmt((net / revenue) * 100, 0)}%`);
     if (net < 0) parts.push('비용이 매출보다 많아요');
-    $('#c-sub').textContent = parts.join(' · ');
+    /* 숫자 중간(예: 25. / 2만원)에서 줄이 갈리지 않게 항목마다 한 덩어리로 묶고, 가운뎃점은 앞 항목 끝에 붙임 */
+    $('#c-sub').innerHTML = parts.map((p, i) => `<span class="ph">${esc(p)}${i < parts.length - 1 ? '&nbsp;·' : ''}</span>`).join(' ');
     const pct = (v) => (revenue > 0 ? Math.max(0, Math.min(100, (v / revenue) * 100)) : 0);
     const rows = items.map(([label, v]) => ({ label, v, net: false })).concat([{ label: '예상 순수익', v: net, net: true }]);
     $('#c-bk').innerHTML = rows.map((r) => `<li class="${r.net ? 'net' : ''}"><span class="bk-label">${r.label}</span><span class="bk-bar"><i style="width:${pct(r.v).toFixed(1)}%"></i></span><span class="bk-val">${fmt(r.v)}만원</span></li>`).join('');
@@ -2461,7 +2469,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     const external = /^https?:/.test(n.href);
     return `<li><a class="news-item" href="${esc(n.href)}"${external ? ' target="_blank" rel="noopener"' : ''}>
       <span class="news-tag" data-type="${esc(n.type)}">${NEWS_LABEL[n.type] || '소식'}</span>
-      <span class="news-body"><span class="news-title">${esc(n.title)}</span><span class="news-desc">${esc(n.desc)}</span></span>
+      <span class="news-body"><span class="news-title">${Array.isArray(n.title) ? n.title.map((t) => `<span class="ph">${esc(t)}</span>`).join(' ') : esc(n.title)}</span><span class="news-desc">${esc(n.desc)}</span></span>
       <span class="news-date">${esc(n.date)}</span>
     </a></li>`;
   }).join('');
