@@ -585,6 +585,7 @@ p, li, dd, dt, label { text-wrap: pretty; }
 .news-tag[data-type="blog"] { background: var(--green-soft); color: var(--green-ink); }
 .news-tag[data-type="video"], .news-tag[data-type="youtube"] { background: var(--purple-soft); color: var(--purple-ink); }
 .news-tag[data-type="tiktok"] { background: var(--sky-soft); color: var(--sky-ink); }
+.news-tag[data-type="instagram"] { background: var(--amber-soft); color: var(--amber-ink); }
 .news-body { display: grid; gap: 2px; min-width: 0; }
 .news-title { font-weight: 700; }
 .news-desc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.875rem; color: var(--muted); }
@@ -602,6 +603,25 @@ p, li, dd, dt, label { text-wrap: pretty; }
 .ch-name { font-weight: 800; }
 .ch-desc { font-size: 0.875rem; color: var(--muted); }
 .channel > .ic { width: 18px; height: 18px; color: var(--muted); }
+/* ▼ 넓은 화면(1025px 이상): 새 소식 한 줄과 채널 카드 하나가 양옆으로 나란히 맞도록 같은 줄을 나눠 씁니다.
+   줄 수(--news-rows)는 '제목 1줄 + 새 소식·채널 중 많은 쪽 개수'이고, 화면을 열면 스크립트가 자동으로 맞춥니다.
+   이 기능을 모르는 오래된 브라우저에서는 예전처럼 양쪽이 따로 쌓여 보입니다. */
+@media (min-width: 1025px) {
+  @supports (grid-template-rows: subgrid) {
+    .news-grid { row-gap: 12px; align-items: stretch; }
+    .news-grid > div { display: grid; grid-template-rows: subgrid; grid-row: 1 / span var(--news-rows, 6); row-gap: normal; }
+    .news-grid .side-title { margin-bottom: 2px; } /* 줄 간격 12px + 2px = 예전 14px */
+    .news-list, .channels { display: grid; grid-template-rows: subgrid; grid-row: 2 / -1; row-gap: normal; }
+    .news-list { border-top: 0; }
+    .news-list > li { position: relative; display: flex; }
+    .news-list > li > .news-item { flex: 1; border-bottom: 0; }
+    /* 구분선: 맨 위는 첫 카드 윗변, 사이사이는 카드 간격 한가운데, 맨 아래는 마지막 카드 아랫변 */
+    .news-list > li::before, .news-list > li:last-child::after { content: ""; position: absolute; left: 0; right: 0; height: 1px; background: var(--line); pointer-events: none; }
+    .news-list > li::before { top: -7px; }
+    .news-list > li:first-child::before { top: 0; }
+    .news-list > li:last-child::after { bottom: 0; }
+  }
+}
 
 /* Apply */
 .apply-grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 48px; align-items: start; }
@@ -904,7 +924,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   <symbol id="logo-mark" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" style="fill: var(--mark-bg, #0B2A4A)"/><path d="M13.5 21.5 21.8 43 32 25.5 42.2 43 49 25.5" fill="none" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--mark-fg, #FFFFFF)"/><circle cx="50.5" cy="20" r="5.6" style="fill: var(--mark-dot, #22B5E6)"/></symbol>
   <symbol id="logo-word" viewBox="0 -33 135 37.5"><path style="fill: var(--wordmark, #0B2A4A)" d="M33.67 -12.23H0.9V-7.66H14.38V3.79H19.96V-7.66H33.67ZM17.19 -30.98C9.45 -30.98 4.02 -27.77 4.06 -22.77C4.02 -17.85 9.45 -14.73 17.19 -14.73C24.92 -14.73 30.39 -17.85 30.39 -22.77C30.39 -27.77 24.92 -30.98 17.19 -30.98ZM17.19 -26.52C21.8 -26.48 24.57 -25.23 24.57 -22.77C24.57 -20.39 21.8 -19.14 17.19 -19.14C12.62 -19.14 9.84 -20.39 9.84 -22.77C9.84 -25.23 12.62 -26.48 17.19 -26.52Z M48.4 -25.2H55.28V-29.69H35.63V-25.2H42.7C42.7 -20.82 40.28 -16.17 34.15 -14.3L37.04 -9.88C41.2 -11.21 44.01 -13.89 45.67 -17.27C47.25 -14.2 49.95 -11.76 53.87 -10.55L56.76 -14.92C50.71 -16.72 48.4 -21.09 48.4 -25.2ZM64.22 -32.07H58.6V-6.29H64.22ZM65.12 -1.33H45.63V-8.59H39.93V3.16H65.12Z M99.97 -18.16H67.28V-13.75H80.72V-11.88H70.99V-7.66H90.48V-6.25H70.99V3.55H96.93V-0.66H76.54V-2.3H96.07V-11.88H86.38V-13.75H99.97ZM95.87 -31.09H71.26V-19.69H95.87ZM76.77 -26.76H90.25V-23.98H76.77Z M133.18 -11.17H100.41V-6.8H107.75V3.75H113.42V-6.8H120.25V3.75H125.96V-6.8H133.18ZM129.47 -31.09H104.16V-26.6H123.69V-24.38H104.24V-13.4H130.33V-17.89H109.94V-20.31H129.47Z"/></symbol>
   <symbol id="logo-sub" viewBox="0 -8.3 138 8.6"><path style="fill: var(--wordmark-sub, #5B6B80)" d="M2.41 0H3.82L5.41 -5.57H5.47L7.05 0H8.47L10.7 -7.92H9.17L7.73 -2.08H7.67L6.14 -7.92H4.74L3.22 -2.09H3.14L1.71 -7.92H0.17Z M20.91 -3.96C20.91 -6.52 19.36 -8.03 17.28 -8.03C15.2 -8.03 13.65 -6.52 13.65 -3.96C13.65 -1.41 15.2 0.11 17.28 0.11C19.36 0.11 20.91 -1.4 20.91 -3.96ZM19.48 -3.96C19.48 -2.15 18.57 -1.17 17.28 -1.17C15.99 -1.17 15.08 -2.15 15.08 -3.96C15.08 -5.76 15.99 -6.75 17.28 -6.75C18.57 -6.75 19.48 -5.76 19.48 -3.96Z M31.48 -3.96C31.48 -6.52 29.93 -8.03 27.85 -8.03C25.78 -8.03 24.22 -6.52 24.22 -3.96C24.22 -1.41 25.78 0.11 27.85 0.11C29.93 0.11 31.48 -1.4 31.48 -3.96ZM30.05 -3.96C30.05 -2.15 29.14 -1.17 27.85 -1.17C26.56 -1.17 25.65 -2.15 25.65 -3.96C25.65 -5.76 26.56 -6.75 27.85 -6.75C29.14 -6.75 30.05 -5.76 30.05 -3.96Z M38.12 -7.92V-2.35C38.11 -1.51 37.73 -1.06 37.04 -1.06C36.39 -1.06 35.96 -1.45 35.96 -2.1H34.53C34.53 -0.65 35.59 0.11 36.98 0.11C38.5 0.11 39.53 -0.82 39.53 -2.35V-7.92Z M44.66 -7.92H43.24V0H44.66Z M54.88 -7.92H53.47V-2.5H53.4L49.67 -7.92H48.38V0H49.8V-5.41H49.86L53.62 0H54.88Z M63.49 0H68.41V-1.2H64.91V-7.92H63.49Z M78.85 -3.96C78.85 -6.52 77.3 -8.03 75.22 -8.03C73.14 -8.03 71.59 -6.52 71.59 -3.96C71.59 -1.41 73.14 0.11 75.22 0.11C77.3 0.11 78.85 -1.4 78.85 -3.96ZM77.42 -3.96C77.42 -2.15 76.51 -1.17 75.22 -1.17C73.93 -1.17 73.02 -2.15 73.02 -3.96C73.02 -5.76 73.93 -6.75 75.22 -6.75C76.51 -6.75 77.42 -5.76 77.42 -3.96Z M87.67 -5.39H89.12C88.88 -6.95 87.53 -8.03 85.78 -8.03C83.71 -8.03 82.16 -6.5 82.16 -3.96C82.16 -1.44 83.64 0.11 85.83 0.11C87.79 0.11 89.19 -1.16 89.19 -3.19V-4.15H85.97V-3.02H87.81C87.79 -1.89 87.02 -1.17 85.83 -1.17C84.51 -1.17 83.6 -2.17 83.6 -3.97C83.6 -5.75 84.52 -6.75 85.8 -6.75C86.76 -6.75 87.41 -6.23 87.67 -5.39Z M94.14 -7.92H92.72V0H94.14Z M102.16 -5.74H103.53C103.51 -7.08 102.37 -8.03 100.69 -8.03C99.03 -8.03 97.78 -7.1 97.78 -5.7C97.78 -4.56 98.59 -3.9 99.89 -3.57L100.79 -3.34C101.64 -3.12 102.22 -2.85 102.22 -2.23C102.22 -1.55 101.57 -1.09 100.63 -1.09C99.74 -1.09 99.04 -1.5 98.97 -2.33H97.57C97.64 -0.77 98.8 0.12 100.64 0.12C102.55 0.12 103.64 -0.83 103.64 -2.22C103.64 -3.6 102.5 -4.22 101.32 -4.5L100.58 -4.69C99.92 -4.85 99.22 -5.12 99.22 -5.79C99.22 -6.38 99.77 -6.81 100.67 -6.81C101.52 -6.81 102.1 -6.42 102.16 -5.74Z M106.71 -6.73H109.16V0H110.58V-6.73H113.02V-7.92H106.71Z M117.8 -7.92H116.38V0H117.8Z M126.86 -5.25H128.29C128.05 -7.01 126.69 -8.03 124.94 -8.03C122.87 -8.03 121.32 -6.52 121.32 -3.96C121.32 -1.41 122.85 0.11 124.94 0.11C126.82 0.11 128.07 -1.1 128.29 -2.62H126.86C126.67 -1.7 125.9 -1.17 124.96 -1.17C123.67 -1.17 122.75 -2.14 122.75 -3.96C122.75 -5.75 123.66 -6.75 124.96 -6.75C125.93 -6.75 126.69 -6.2 126.86 -5.25Z M136.06 -5.74H137.43C137.41 -7.08 136.27 -8.03 134.59 -8.03C132.92 -8.03 131.68 -7.1 131.68 -5.7C131.68 -4.56 132.49 -3.9 133.79 -3.57L134.68 -3.34C135.54 -3.12 136.12 -2.85 136.12 -2.23C136.12 -1.55 135.47 -1.09 134.53 -1.09C133.63 -1.09 132.93 -1.5 132.87 -2.33H131.47C131.53 -0.77 132.69 0.12 134.54 0.12C136.45 0.12 137.54 -0.83 137.54 -2.22C137.54 -3.6 136.4 -4.22 135.22 -4.5L134.48 -4.69C133.82 -4.85 133.12 -5.12 133.12 -5.79C133.12 -6.38 133.67 -6.81 134.56 -6.81C135.42 -6.81 136 -6.42 136.06 -5.74Z"/></symbol>
-  <symbol id="i-short" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M10.4 9.1v5.8l4.9-2.9z"/></symbol>
+  <symbol id="i-short" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M10.4 9.1v5.8l4.9-2.9z"/></symbol><symbol id="i-camera" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3 8.5A2.5 2.5 0 0 1 5.5 6h2l1.6-2.2h5.8L16.5 6h2A2.5 2.5 0 0 1 21 8.5v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><circle cx="12" cy="13" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
   <symbol id="i-doc" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M6.5 3h7.5l4.5 4.5V21h-12z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M9.5 12h5.5M9.5 16h5.5"/></symbol>
   <symbol id="i-out" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M8 16L16 8M10 8h6v6"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
@@ -1307,7 +1327,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   <section class="section section-white" id="news" aria-labelledby="news-title">
     <div class="wrap">
       <h2 class="eyebrow news-eyebrow" id="news-title">우진뉴스</h2>
-      <div class="news-grid">
+      <div class="news-grid" style="--news-rows: 6">
       <div>
         <h3 class="side-title">새 소식</h3>
         <ul class="news-list" id="news-list">
@@ -1322,14 +1342,14 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       <span class="news-body"><span class="news-title">까대기 없는 5톤 찾으셨죠? 손 하나 까딱 안 하는 대구 골판지 납품</span><span class="news-desc">우진물류 기사모집 · 쇼츠</span></span>
       <span class="news-date"></span>
     </a></li>
-          <li><a class="news-item" href="https://blog.naver.com/wjanffblog/224435323499" target="_blank" rel="noopener">
-      <span class="news-tag" data-type="blog">블로그</span>
-      <span class="news-body"><span class="news-title">화물운송자격 시험장 선택부터 합격까지 한 번에 정리</span><span class="news-desc">우진물류 공식 블로그</span></span>
-      <span class="news-date"></span>
-    </a></li>
           <li><a class="news-item" href="https://blog.naver.com/wjanffblog/224407129213" target="_blank" rel="noopener">
       <span class="news-tag" data-type="blog">블로그</span>
       <span class="news-body"><span class="news-title">지입차란? 치킨집 가맹점 하나면 5분 만에 이해됩니다</span><span class="news-desc">우진물류 공식 블로그</span></span>
+      <span class="news-date"></span>
+    </a></li>
+          <li><a class="news-item" href="https://www.instagram.com/reel/DfZIIstSmNf/" target="_blank" rel="noopener">
+      <span class="news-tag" data-type="instagram">인스타</span>
+      <span class="news-body"><span class="news-title">차에서 자지말고 집에 가세요! (5톤 취업 안내)</span><span class="news-desc">우진물류 인스타 · 릴스</span></span>
       <span class="news-date"></span>
     </a></li>
           <li><a class="news-item" href="https://www.tiktok.com/@wjqmffhrm/video/7697258114503970100" target="_blank" rel="noopener">
@@ -1342,19 +1362,24 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       <div>
         <h3 class="side-title">우진물류 채널</h3>
         <div class="channels">
-          <a class="channel" href="https://www.youtube.com/@wjanffrndls" target="_blank" rel="noopener">
-            <span class="ch-ic c-purple"><svg class="ic" aria-hidden="true"><use href="#i-play"></use></svg></span>
-            <span class="ch-text"><span class="ch-platform">유튜브</span><span class="ch-name">우진물류 기사모집</span><span class="ch-desc">노선별 기사 모집 영상</span></span>
-            <svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg>
-          </a>
           <a class="channel" href="https://www.youtube.com/@wjlogis" target="_blank" rel="noopener">
             <span class="ch-ic c-purple"><svg class="ic" aria-hidden="true"><use href="#i-play"></use></svg></span>
             <span class="ch-text"><span class="ch-platform">유튜브</span><span class="ch-name">우진물류TV</span><span class="ch-desc">회사와 현장 이야기</span></span>
             <svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg>
           </a>
+          <a class="channel" href="https://www.youtube.com/@wjanffrndls" target="_blank" rel="noopener">
+            <span class="ch-ic c-purple"><svg class="ic" aria-hidden="true"><use href="#i-play"></use></svg></span>
+            <span class="ch-text"><span class="ch-platform">유튜브</span><span class="ch-name">우진물류 기사모집</span><span class="ch-desc">노선별 기사 모집 영상</span></span>
+            <svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg>
+          </a>
           <a class="channel" href="https://blog.naver.com/wjanffblog" target="_blank" rel="noopener">
             <span class="ch-ic c-green"><svg class="ic" aria-hidden="true"><use href="#i-doc"></use></svg></span>
             <span class="ch-text"><span class="ch-platform">네이버 블로그</span><span class="ch-name">우진물류 공식 블로그</span><span class="ch-desc">지입·자격증·안전 운행 정보 연재</span></span>
+            <svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg>
+          </a>
+          <a class="channel" href="https://www.instagram.com/wjlogis/" target="_blank" rel="noopener">
+            <span class="ch-ic c-amber"><svg class="ic" aria-hidden="true"><use href="#i-camera"></use></svg></span>
+            <span class="ch-text"><span class="ch-platform">인스타그램</span><span class="ch-name">우진물류 인스타</span><span class="ch-desc">5톤 취업 안내 릴스</span></span>
             <svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg>
           </a>
           <a class="channel" href="https://www.tiktok.com/@wjqmffhrm" target="_blank" rel="noopener">
@@ -1760,16 +1785,16 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   const AREAS = [...new Set(JOBS.map((j) => j.area.split(' ')[0]))].join('·');
 
   /* ▼ 우진뉴스: 위에 있는 소식이 먼저 보입니다.
-     type: youtube(유튜브) · blog(블로그) · tiktok(틱톡) · recruit(모집) · notice(공지)
+     type: youtube(유튜브) · blog(블로그) · tiktok(틱톡) · instagram(인스타) · recruit(모집) · notice(공지)
      title: 제목 / desc: 제목 아래 작은 글씨 / date: 날짜(비워도 됩니다) / href: 눌렀을 때 갈 곳 */
   const NEWS = [
     { type: 'youtube', title: '큰 사고로 번지지 않으려면? 평범해 보이는 버튼 하나가 생명줄입니다', desc: '우진물류TV · 우진연수 EP.01', date: '', href: 'https://youtu.be/kVQgJFkI5EI' },
     { type: 'youtube', title: '까대기 없는 5톤 찾으셨죠? 손 하나 까딱 안 하는 대구 골판지 납품', desc: '우진물류 기사모집 · 쇼츠', date: '', href: 'https://www.youtube.com/shorts/9QCfdVsehRc' },
-    { type: 'blog', title: '화물운송자격 시험장 선택부터 합격까지 한 번에 정리', desc: '우진물류 공식 블로그', date: '', href: 'https://blog.naver.com/wjanffblog/224435323499' },
     { type: 'blog', title: '지입차란? 치킨집 가맹점 하나면 5분 만에 이해됩니다', desc: '우진물류 공식 블로그', date: '', href: 'https://blog.naver.com/wjanffblog/224407129213' },
+    { type: 'instagram', title: '차에서 자지말고 집에 가세요! (5톤 취업 안내)', desc: '우진물류 인스타 · 릴스', date: '', href: 'https://www.instagram.com/reel/DfZIIstSmNf/' },
     { type: 'tiktok', title: '직영기사와 지입기사. 나에게 딱 맞는 선택은?', desc: '우진물류 틱톡', date: '', href: 'https://www.tiktok.com/@wjqmffhrm/video/7697258114503970100' },
   ];
-  const NEWS_LABEL = { youtube: '유튜브', blog: '블로그', tiktok: '틱톡', video: '영상', recruit: '모집', notice: '공지' };
+  const NEWS_LABEL = { youtube: '유튜브', blog: '블로그', tiktok: '틱톡', instagram: '인스타', video: '영상', recruit: '모집', notice: '공지' };
 
   /* ▼ 모의시험 문제 은행
      문제 1,000개는 같은 폴더의 exam.json 에 있고, 모의시험을 열 때 불러와요.
@@ -2401,6 +2426,8 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
       <span class="news-date">${esc(n.date)}</span>
     </a></li>`;
   }).join('');
+  /* 새 소식과 채널 카드가 양옆으로 맞도록 줄 수를 알려 줌 (넓은 화면 정렬용) */
+  $('.news-grid').style.setProperty('--news-rows', String(1 + Math.max(NEWS.length, $$('.channels .channel').length)));
 
   /* ───────── 모의시험 ───────── */
   const shuffle = (arr) => {
