@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="우진물류 5톤 윙바디 지입 기사 모집. 지역별 고정노선의 상하차 방식, 휴무, 월 매출과 예상 순수익을 확인하고 전화·문자로 바로 지원하세요.">
 <link rel="canonical" href="https://wjanffb23.github.io/woojin/">
-<link rel="icon" href="logo.png">
-<link rel="apple-touch-icon" href="logo.png">
+<link rel="icon" href="logo.png?v=2">
+<link rel="apple-touch-icon" href="logo.png?v=2">
 <!-- ▼ 링크 미리보기: 카카오톡·문자·SNS에 주소를 붙여 넣으면 뜨는 카드(이미지 + 제목 + 설명)
      사이트 주소가 바뀌면(예: recruit.wjlogis.com) 위의 canonical과 og:url, og:image의 주소도 함께 바꾸세요.
      og-image.png를 새 그림으로 바꿨다면 끝의 ?v= 숫자를 하나 올려야 카카오톡이 새 그림을 가져가요. -->
@@ -87,9 +87,10 @@
   --kakao-bg: #FEE500;        /* 카카오톡 버튼 노란색 */
   --kakao-hover: #F4D900;
   --kakao-fg: #191919;
-  --mark-bg: #0B2A4A;         /* 로고 타일 (다크 모드에서는 흰색) */
-  --mark-fg: #FFFFFF;         /* 로고 W 선 */
-  --mark-dot: #22B5E6;        /* 로고 도착 점 */
+  --logo-navy: #002248;       /* 로고 W 바닥(남색). 어두운 바탕에서는 흰색 */
+  --logo-gray: #7C8594;       /* 로고 W 기둥(회색) */
+  --logo-blue: #1068B0;       /* 로고 J 바닥(파랑) */
+  --logo-sky: #1FB6E3;        /* 로고 J 기둥(하늘색) */
   --wordmark: #0B2A4A;        /* 로고 글자 '우진물류' */
   --wordmark-sub: #5B6B80;    /* 로고 영문 'WOOJIN LOGISTICS' */
   --scrim: rgba(7, 15, 28, 0.55);
@@ -148,8 +149,7 @@
     --focus-ring: rgba(138, 184, 255, 0.3);
     --up: #F97066;
     --down: #6CE3A9;
-    --mark-bg: #FFFFFF;
-    --mark-fg: #0B2A4A;
+    --logo-navy: #F2F6FB;
     --wordmark: #FFFFFF;
     --wordmark-sub: #AFC0D6;
     --scrim: rgba(0, 0, 0, 0.62);
@@ -198,8 +198,7 @@
   --focus-ring: rgba(138, 184, 255, 0.3);
   --up: #F97066;
   --down: #6CE3A9;
-  --mark-bg: #FFFFFF;
-  --mark-fg: #0B2A4A;
+  --logo-navy: #F2F6FB;
   --wordmark: #FFFFFF;
   --wordmark-sub: #AFC0D6;
   --scrim: rgba(0, 0, 0, 0.62);
@@ -700,7 +699,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 .footer-top { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr)); gap: 28px; padding-block: 48px 32px; }
 .f-brand { display: grid; align-content: start; gap: 12px; }
 .f-logo { display: inline-flex; align-items: center; gap: 10px; color: var(--on-dark); font-size: 1.125rem; font-weight: 800; }
-.f-logo { --mark-bg: #FFFFFF; --mark-fg: #0B2A4A; }
+.f-logo { --logo-navy: #FFFFFF; }
 .f-mark { flex: none; width: 36px; height: 36px; }
 .f-col h3 { margin-bottom: 12px; color: var(--on-dark); font-size: 0.9375rem; font-weight: 700; letter-spacing: -0.01em; }
 .f-col ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
@@ -920,8 +919,8 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.3 4.3L19 7.2"/></symbol>
   <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M12 11v6"/><circle cx="12" cy="7.6" r="1.3" fill="currentColor"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M10 9.2v5.6l4.8-2.8z"/></symbol>
-  <!-- 우진물류 로고: 심볼(루트 타일), 글자(우진물류), 영문. 색은 CSS 변수 --mark-*, --wordmark* 로 바뀝니다 -->
-  <symbol id="logo-mark" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" style="fill: var(--mark-bg, #0B2A4A)"/><path d="M13.5 21.5 21.8 43 32 25.5 42.2 43 49 25.5" fill="none" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--mark-fg, #FFFFFF)"/><circle cx="50.5" cy="20" r="5.6" style="fill: var(--mark-dot, #22B5E6)"/></symbol>
+  <!-- 우진물류 로고: 심볼(회사 로고를 벡터로 다듬은 W·J 입체 마크), 글자(우진물류), 영문. 색은 CSS 변수 --logo-*, --wordmark* 로 바뀝니다 -->
+  <symbol id="logo-mark" viewBox="0 0 100 100"><path style="fill: var(--logo-navy, #002248)" d="M8.21 72.55L24.41 63.57L32.09 67.83L55.35 54.95L70.4 63.29L31.75 84.7A1.66 1.66 0 0 1 30.14 84.7Z"/><path style="fill: var(--logo-blue, #1068B0)" d="M75.59 66.73L91.79 75.71L52.36 97.55A1.66 1.66 0 0 1 50.75 97.55L37.98 90.48A1.66 1.66 0 0 1 37.98 87.57Z"/><path style="fill: var(--logo-gray, #7C8594)" d="M8.21 25.04A1.66 1.66 0 0 1 9.07 23.59L21.94 16.46A1.66 1.66 0 0 1 24.41 17.91L24.41 63.57L8.21 72.55Z"/><path style="fill: var(--logo-gray, #7C8594)" d="M32.09 11.71A1.66 1.66 0 0 1 32.95 10.26L44.26 3.99A1.66 1.66 0 0 1 46.73 5.44L46.73 59.72L32.09 67.83Z"/><path style="fill: var(--logo-gray, #7C8594)" d="M55.35 4.82A1.66 1.66 0 0 1 57.81 3.37L69.54 9.87A1.66 1.66 0 0 1 70.4 11.32L70.4 63.29L55.35 54.95Z"/><path style="fill: var(--logo-sky, #1FB6E3)" d="M75.59 16.5A1.66 1.66 0 0 1 78.06 15.05L90.93 22.18A1.66 1.66 0 0 1 91.79 23.63L91.79 75.71L75.59 66.73Z"/></symbol>
   <symbol id="logo-word" viewBox="0 -33 135 37.5"><path style="fill: var(--wordmark, #0B2A4A)" d="M33.67 -12.23H0.9V-7.66H14.38V3.79H19.96V-7.66H33.67ZM17.19 -30.98C9.45 -30.98 4.02 -27.77 4.06 -22.77C4.02 -17.85 9.45 -14.73 17.19 -14.73C24.92 -14.73 30.39 -17.85 30.39 -22.77C30.39 -27.77 24.92 -30.98 17.19 -30.98ZM17.19 -26.52C21.8 -26.48 24.57 -25.23 24.57 -22.77C24.57 -20.39 21.8 -19.14 17.19 -19.14C12.62 -19.14 9.84 -20.39 9.84 -22.77C9.84 -25.23 12.62 -26.48 17.19 -26.52Z M48.4 -25.2H55.28V-29.69H35.63V-25.2H42.7C42.7 -20.82 40.28 -16.17 34.15 -14.3L37.04 -9.88C41.2 -11.21 44.01 -13.89 45.67 -17.27C47.25 -14.2 49.95 -11.76 53.87 -10.55L56.76 -14.92C50.71 -16.72 48.4 -21.09 48.4 -25.2ZM64.22 -32.07H58.6V-6.29H64.22ZM65.12 -1.33H45.63V-8.59H39.93V3.16H65.12Z M99.97 -18.16H67.28V-13.75H80.72V-11.88H70.99V-7.66H90.48V-6.25H70.99V3.55H96.93V-0.66H76.54V-2.3H96.07V-11.88H86.38V-13.75H99.97ZM95.87 -31.09H71.26V-19.69H95.87ZM76.77 -26.76H90.25V-23.98H76.77Z M133.18 -11.17H100.41V-6.8H107.75V3.75H113.42V-6.8H120.25V3.75H125.96V-6.8H133.18ZM129.47 -31.09H104.16V-26.6H123.69V-24.38H104.24V-13.4H130.33V-17.89H109.94V-20.31H129.47Z"/></symbol>
   <symbol id="logo-sub" viewBox="0 -8.3 138 8.6"><path style="fill: var(--wordmark-sub, #5B6B80)" d="M2.41 0H3.82L5.41 -5.57H5.47L7.05 0H8.47L10.7 -7.92H9.17L7.73 -2.08H7.67L6.14 -7.92H4.74L3.22 -2.09H3.14L1.71 -7.92H0.17Z M20.91 -3.96C20.91 -6.52 19.36 -8.03 17.28 -8.03C15.2 -8.03 13.65 -6.52 13.65 -3.96C13.65 -1.41 15.2 0.11 17.28 0.11C19.36 0.11 20.91 -1.4 20.91 -3.96ZM19.48 -3.96C19.48 -2.15 18.57 -1.17 17.28 -1.17C15.99 -1.17 15.08 -2.15 15.08 -3.96C15.08 -5.76 15.99 -6.75 17.28 -6.75C18.57 -6.75 19.48 -5.76 19.48 -3.96Z M31.48 -3.96C31.48 -6.52 29.93 -8.03 27.85 -8.03C25.78 -8.03 24.22 -6.52 24.22 -3.96C24.22 -1.41 25.78 0.11 27.85 0.11C29.93 0.11 31.48 -1.4 31.48 -3.96ZM30.05 -3.96C30.05 -2.15 29.14 -1.17 27.85 -1.17C26.56 -1.17 25.65 -2.15 25.65 -3.96C25.65 -5.76 26.56 -6.75 27.85 -6.75C29.14 -6.75 30.05 -5.76 30.05 -3.96Z M38.12 -7.92V-2.35C38.11 -1.51 37.73 -1.06 37.04 -1.06C36.39 -1.06 35.96 -1.45 35.96 -2.1H34.53C34.53 -0.65 35.59 0.11 36.98 0.11C38.5 0.11 39.53 -0.82 39.53 -2.35V-7.92Z M44.66 -7.92H43.24V0H44.66Z M54.88 -7.92H53.47V-2.5H53.4L49.67 -7.92H48.38V0H49.8V-5.41H49.86L53.62 0H54.88Z M63.49 0H68.41V-1.2H64.91V-7.92H63.49Z M78.85 -3.96C78.85 -6.52 77.3 -8.03 75.22 -8.03C73.14 -8.03 71.59 -6.52 71.59 -3.96C71.59 -1.41 73.14 0.11 75.22 0.11C77.3 0.11 78.85 -1.4 78.85 -3.96ZM77.42 -3.96C77.42 -2.15 76.51 -1.17 75.22 -1.17C73.93 -1.17 73.02 -2.15 73.02 -3.96C73.02 -5.76 73.93 -6.75 75.22 -6.75C76.51 -6.75 77.42 -5.76 77.42 -3.96Z M87.67 -5.39H89.12C88.88 -6.95 87.53 -8.03 85.78 -8.03C83.71 -8.03 82.16 -6.5 82.16 -3.96C82.16 -1.44 83.64 0.11 85.83 0.11C87.79 0.11 89.19 -1.16 89.19 -3.19V-4.15H85.97V-3.02H87.81C87.79 -1.89 87.02 -1.17 85.83 -1.17C84.51 -1.17 83.6 -2.17 83.6 -3.97C83.6 -5.75 84.52 -6.75 85.8 -6.75C86.76 -6.75 87.41 -6.23 87.67 -5.39Z M94.14 -7.92H92.72V0H94.14Z M102.16 -5.74H103.53C103.51 -7.08 102.37 -8.03 100.69 -8.03C99.03 -8.03 97.78 -7.1 97.78 -5.7C97.78 -4.56 98.59 -3.9 99.89 -3.57L100.79 -3.34C101.64 -3.12 102.22 -2.85 102.22 -2.23C102.22 -1.55 101.57 -1.09 100.63 -1.09C99.74 -1.09 99.04 -1.5 98.97 -2.33H97.57C97.64 -0.77 98.8 0.12 100.64 0.12C102.55 0.12 103.64 -0.83 103.64 -2.22C103.64 -3.6 102.5 -4.22 101.32 -4.5L100.58 -4.69C99.92 -4.85 99.22 -5.12 99.22 -5.79C99.22 -6.38 99.77 -6.81 100.67 -6.81C101.52 -6.81 102.1 -6.42 102.16 -5.74Z M106.71 -6.73H109.16V0H110.58V-6.73H113.02V-7.92H106.71Z M117.8 -7.92H116.38V0H117.8Z M126.86 -5.25H128.29C128.05 -7.01 126.69 -8.03 124.94 -8.03C122.87 -8.03 121.32 -6.52 121.32 -3.96C121.32 -1.41 122.85 0.11 124.94 0.11C126.82 0.11 128.07 -1.1 128.29 -2.62H126.86C126.67 -1.7 125.9 -1.17 124.96 -1.17C123.67 -1.17 122.75 -2.14 122.75 -3.96C122.75 -5.75 123.66 -6.75 124.96 -6.75C125.93 -6.75 126.69 -6.2 126.86 -5.25Z M136.06 -5.74H137.43C137.41 -7.08 136.27 -8.03 134.59 -8.03C132.92 -8.03 131.68 -7.1 131.68 -5.7C131.68 -4.56 132.49 -3.9 133.79 -3.57L134.68 -3.34C135.54 -3.12 136.12 -2.85 136.12 -2.23C136.12 -1.55 135.47 -1.09 134.53 -1.09C133.63 -1.09 132.93 -1.5 132.87 -2.33H131.47C131.53 -0.77 132.69 0.12 134.54 0.12C136.45 0.12 137.54 -0.83 137.54 -2.22C137.54 -3.6 136.4 -4.22 135.22 -4.5L134.48 -4.69C133.82 -4.85 133.12 -5.12 133.12 -5.79C133.12 -6.38 133.67 -6.81 134.56 -6.81C135.42 -6.81 136 -6.42 136.06 -5.74Z"/></symbol>
   <symbol id="i-short" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M10.4 9.1v5.8l4.9-2.9z"/></symbol><symbol id="i-camera" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3 8.5A2.5 2.5 0 0 1 5.5 6h2l1.6-2.2h5.8L16.5 6h2A2.5 2.5 0 0 1 21 8.5v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><circle cx="12" cy="13" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
@@ -999,7 +998,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
           <ellipse class="t-shadow" cx="236" cy="252" rx="206" ry="10"/>
           <rect class="t-box" x="36" y="74" width="272" height="128" rx="14"/>
           <path class="t-seam" d="M52 92 H292"/>
-          <g style="--mark-bg: #0B2A4A; --mark-fg: #FFFFFF; --wordmark: #0B2A4A; --wordmark-sub: #5B6B80;">
+          <g style="--logo-navy: #002248; --wordmark: #0B2A4A; --wordmark-sub: #5B6B80;">
             <use href="#logo-mark" x="58" y="114" width="58" height="58"/>
             <use href="#logo-word" x="130" y="118" width="122" height="34"/>
             <use href="#logo-sub" x="131" y="158" width="118" height="7.4"/>
