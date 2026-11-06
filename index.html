@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="(주)우진물류 5톤 윙바디 지입 기사 모집. 지역별 고정노선의 상하차 방식, 휴무, 월 매출과 예상 순수익을 확인하고 전화·문자로 바로 지원하세요.">
 <link rel="canonical" href="https://wjanffb23.github.io/woojin/">
-<link rel="icon" href="logo.png?v=2">
+<link rel="icon" type="image/png" href="favicon.png?v=1">
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=1">
 <link rel="apple-touch-icon" href="logo.png?v=2">
 <!-- ▼ 링크 미리보기: 카카오톡·문자·SNS에 주소를 붙여 넣으면 뜨는 카드(이미지 + 제목 + 설명)
      사이트 주소가 바뀌면(예: recruit.wjlogis.com) 위의 canonical과 og:url, og:image의 주소도 함께 바꾸세요.
@@ -531,6 +532,16 @@ p, li, dd, dt, label { text-wrap: pretty; }
 .bk-val { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bk .net .bk-label, .bk .net .bk-val { color: var(--on-dark); font-weight: 800; }
 .calc-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 14px; font-size: 0.8125rem; color: var(--muted); }
+/* ▼ 넓은 화면(1025px 이상): 계산기 칸은 오른쪽 세 칸(유가·모의시험·운세)과 높이가 같음.
+   안내 문구를 순수익 상자 위로 올리고 상자를 아래까지 늘려서, 순수익 상자 아랫변이 운세 상자 아랫변과 같은 줄에 오게 함.
+   남는 높이는 위아래로 나눠서 순수익 숫자 묶음이 비용 목록 위 빈 곳 가운데에 오게 함 */
+@media (min-width: 1025px) {
+  .calc { display: flex; flex-direction: column; }
+  .calc > .calc-foot { order: 1; }
+  .calc > .calc-result { order: 2; flex: 1 0 auto; display: flex; flex-direction: column; margin-top: 14px; }
+  .calc-result .cr-label { margin-top: auto; }                 /* 늘어난 높이에서 순수익 숫자 묶음을 위쪽 빈 곳 가운데에 */
+  .calc-result .cr-sub { margin-bottom: auto; }                 /* 비용 목록과는 최소 18px(.bk 기본 여백) */
+}
 
 .fuel-items { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
 .fuel-item { padding: 14px; border-radius: var(--r-lg); background: var(--surface-2); border: 1px solid var(--line); }
@@ -694,6 +705,8 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
 .info-card dd { display: grid; gap: 8px; margin: 0; font-weight: 600; }
 .info-card .sub { font-size: 0.875rem; font-weight: 500; color: var(--muted); }
 .row-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.addr-tag { font-weight: 800; color: var(--primary-ink); }
+.info-card .addr-next { margin-top: 10px; padding-top: 14px; border-top: 1px dashed var(--line); } /* 본사·배차부 주소 사이 구분선 */
 
 /* Footer */
 .footer { background: var(--hero-a); color: var(--on-dark-2); font-size: 0.875rem; }
@@ -1526,10 +1539,15 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
         <div class="row">
           <dt>주소</dt>
           <dd>
-            <span id="addr"><span class="nw">경기 광명시 덕안로 104번길 17</span> <span class="nw">(일직동 501-4)</span> <span class="nw">광명역M클러스터 1502호</span></span>
+            <span class="addr-line" id="addr"><span class="nw"><b class="addr-tag">본사 (광명):</b> 경기 광명시 덕안로 104번길 17</span> <span class="nw">(일직동 501-4)</span> <span class="nw">광명역M클러스터 1502호</span></span>
             <span class="row-actions">
-              <button class="copy-btn" type="button" data-copy="경기 광명시 덕안로 104번길 17 광명역M클러스터 1502호" data-copy-target="#addr">주소 복사</button>
+              <button class="copy-btn" type="button" data-copy="경기 광명시 덕안로 104번길 17 (일직동 501-4) 광명역M클러스터 1502호" data-copy-target="#addr">주소 복사</button>
               <a class="link-btn" href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EA%B4%91%EB%AA%85%EC%8B%9C%20%EB%8D%95%EC%95%88%EB%A1%9C%20104%EB%B2%88%EA%B8%B8%2017" target="_blank" rel="noopener">네이버 지도<svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg></a>
+            </span>
+            <span class="addr-line addr-next" id="addr2"><span class="nw"><b class="addr-tag">배차부 (남양주):</b> 경기 남양주시 다산순환로 20</span> <span class="nw">제2층 제에이씨02-048호</span> <span class="nw">(다산동, 다산현대프리미어캠퍼스)</span></span>
+            <span class="row-actions">
+              <button class="copy-btn" type="button" data-copy="경기 남양주시 다산순환로 20 제2층 제에이씨02-048호 (다산동, 다산현대프리미어캠퍼스)" data-copy-target="#addr2">주소 복사</button>
+              <a class="link-btn" href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EB%82%A8%EC%96%91%EC%A3%BC%EC%8B%9C%20%EB%8B%A4%EC%82%B0%EC%88%9C%ED%99%98%EB%A1%9C%2020" target="_blank" rel="noopener">네이버 지도<svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg></a>
             </span>
           </dd>
         </div>
