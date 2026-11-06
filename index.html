@@ -532,15 +532,23 @@ p, li, dd, dt, label { text-wrap: pretty; }
 .bk-val { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bk .net .bk-label, .bk .net .bk-val { color: var(--on-dark); font-weight: 800; }
 .calc-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 14px; font-size: 0.8125rem; color: var(--muted); }
+.cr-kpis, .cr-bk-title { display: none; }
 /* ▼ 넓은 화면(1025px 이상): 계산기 칸은 오른쪽 세 칸(유가·모의시험·운세)과 높이가 같음.
    안내 문구를 순수익 상자 위로 올리고 상자를 아래까지 늘려서, 순수익 상자 아랫변이 운세 상자 아랫변과 같은 줄에 오게 함.
-   남는 높이는 위아래로 나눠서 순수익 숫자 묶음이 비용 목록 위 빈 곳 가운데에 오게 함 */
+   늘어난 상자 안은 세 덩어리(순수익 숫자 / 한 달 요약 3칸 / 비용 구성)로 나눠 위·가운데·아래에 고르게 배치 */
 @media (min-width: 1025px) {
   .calc { display: flex; flex-direction: column; }
   .calc > .calc-foot { order: 1; }
-  .calc > .calc-result { order: 2; flex: 1 0 auto; display: flex; flex-direction: column; margin-top: 14px; }
-  .calc-result .cr-label { margin-top: auto; }                 /* 늘어난 높이에서 순수익 숫자 묶음을 위쪽 빈 곳 가운데에 */
-  .calc-result .cr-sub { margin-bottom: auto; }                 /* 비용 목록과는 최소 18px(.bk 기본 여백) */
+  .calc > .calc-result { order: 2; flex: 1 0 auto; display: flex; flex-direction: column; justify-content: space-between; gap: 20px; margin-top: 14px; padding: 26px; }
+  .calc-result .cr-net { font-size: 3.25rem; }
+  .cr-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0; }
+  .cr-kpi { min-width: 0; padding: 13px 14px; border-radius: var(--r-md); background: var(--glass); border: 1px solid var(--glass-line); }
+  .cr-kpi dt { font-size: 0.8125rem; font-weight: 600; color: var(--on-dark-2); white-space: nowrap; }
+  .cr-kpi dd { margin: 4px 0 0; font-family: "Inter", var(--font); font-size: 1.3125rem; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .cr-kpi dd small { margin-left: 2px; font-size: 0.8125rem; font-weight: 700; letter-spacing: 0; color: var(--on-dark-2); }
+  .cr-bk-wrap { padding-top: 16px; border-top: 1px solid var(--glass-line); }
+  .cr-bk-title { display: flex; justify-content: space-between; gap: 8px; font-size: 0.8125rem; font-weight: 700; color: var(--on-dark-2); }
+  .cr-bk-wrap .bk { margin-top: 12px; padding-top: 0; border-top: 0; }
 }
 
 .fuel-items { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
@@ -1262,10 +1270,20 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
             </div>
           </div>
           <div class="calc-result" aria-live="polite">
-            <p class="cr-label">예상 월 순수익</p>
-            <p class="cr-net"><span id="c-net">604</span><small>만원</small></p>
-            <p class="cr-sub" id="c-sub">하루 평균 약 25.2만원 · 매출의 50%</p>
-            <ul class="bk" id="c-bk" aria-label="비용 구성"></ul>
+            <div class="cr-head">
+              <p class="cr-label">예상 월 순수익</p>
+              <p class="cr-net"><span id="c-net">604</span><small>만원</small></p>
+              <p class="cr-sub" id="c-sub">하루 평균 약 25.2만원 · 매출의 50%</p>
+            </div>
+            <dl class="cr-kpis" aria-label="한 달 요약">
+              <div class="cr-kpi"><dt>월 매출</dt><dd><span id="c-k-rev">1,200</span><small>만원</small></dd></div>
+              <div class="cr-kpi"><dt>월 비용 합계</dt><dd><span id="c-k-cost">595.6</span><small>만원</small></dd></div>
+              <div class="cr-kpi"><dt>1년 예상 순수익</dt><dd><span id="c-k-year">7,253</span><small>만원</small></dd></div>
+            </dl>
+            <div class="cr-bk-wrap">
+              <p class="cr-bk-title"><span>비용 구성</span><span>막대는 매출 대비 비율</span></p>
+              <ul class="bk" id="c-bk" aria-label="비용 구성"></ul>
+            </div>
           </div>
           <div class="calc-foot">
             <p><span class="s">유가보조금은 반영하지 않았어요.</span> <span class="s">실제 비용은 노선과 차량에 따라 달라요.</span></p>
@@ -2317,6 +2335,9 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
     const net = revenue - cost;
     $('#c-fuel-out').textContent = `${fmt(fuel)}만원`;
     $('#c-net').textContent = fmt(net, 0);
+    $('#c-k-rev').textContent = fmt(revenue);
+    $('#c-k-cost').textContent = fmt(cost);
+    $('#c-k-year').textContent = fmt(net * 12, 0);
     const parts = [];
     if (days > 0) parts.push(`하루 평균 약 ${fmt(net / days)}만원`);
     if (revenue > 0) parts.push(`매출의 ${fmt((net / revenue) * 100, 0)}%`);
