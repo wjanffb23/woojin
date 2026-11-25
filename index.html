@@ -2296,7 +2296,7 @@ a.contact-card .contact-num { color: var(--primary-ink); user-select: auto; }
   };
   /* 한국 시간 기준 오늘 날짜('2026-10-21') */
   const todayKST = () => new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
-  const FUEL_AUTO = '<span class="nw">매일 오전 9시·오후 4시쯤 자동 갱신</span>';
+  const FUEL_AUTO = '<span class="nw">하루 두 번 자동 갱신</span>';
   const renderFuel = () => {
     const daily = FUEL.basis === 'day';
     const today = todayKST();
