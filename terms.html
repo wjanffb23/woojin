@@ -249,8 +249,9 @@ a { color: inherit; }
   });
 })();
 </script>
-<!-- 방문자 집계 (우진물류 사이트 방문 기록 시트로 방문 신호를 보냄)
-     · 이름·연락처·IP는 보내지 않아요. 개인정보처리방침 8항 참고
+<!-- 방문자 집계 (우진물류 사이트 방문 기록 시트로 신호를 보냄)
+     · 페이지를 열 때, 전화·카카오톡·문자 버튼이나 '지원 문자 만들기'를 누를 때 한 번씩 보내요
+     · 이름·연락처·IP·간편 지원에 적은 내용은 보내지 않아요. 개인정보처리방침 8항 참고
      · 직원 기기 제외: 주소 뒤에 ?notrack=1 을 붙여 한 번 열기 (다시 집계: ?notrack=0) -->
 <script id="wj-visit">
 (function () {
@@ -281,14 +282,42 @@ a { color: inherit; }
     first = 1;
   }
   var src = (q.match(/[?&]utm_source=([^&#]*)/) || [])[1] || '';
-  function send() {
+  var ua = encodeURIComponent(String(navigator.userAgent || '').slice(0, 300));
+  function hitUrl(path, ref, isFirst, extra) {
+    return EP + '?p=' + encodeURIComponent(path) + '&r=' + encodeURIComponent(ref) +
+      '&v=' + id + '&n=' + isFirst + '&ua=' + ua + (extra || '') + '&t=' + Date.now();
+  }
+  function send() { // 페이지 열림
     var img = new Image();
-    img.src = EP + '?p=' + encodeURIComponent(location.pathname) +
-      '&r=' + encodeURIComponent(String(document.referrer || '').slice(0, 500)) +
-      '&v=' + id + '&n=' + first +
-      '&ua=' + encodeURIComponent(String(navigator.userAgent || '').slice(0, 300)) +
-      (src ? '&s=' + src : '') + '&t=' + Date.now();
+    img.src = hitUrl(location.pathname, String(document.referrer || '').slice(0, 500), first, src ? '&s=' + src : '');
     window.wjVisitBeacon = img;
+  }
+  function act(label) { // 버튼 누름: 앱이 열리거나 페이지를 떠나도 전송되게 keepalive
+    var url = hitUrl(location.pathname + '[클릭]' + label, '', 0, '');
+    try { fetch(url, { mode: 'no-cors', keepalive: true, credentials: 'omit' })['catch'](function () {}); }
+    catch (e) { (new Image()).src = url; }
+  }
+  function phone(h) {
+    var d = h.replace(/\D/g, '');
+    if (/^1\d{7}$/.test(d)) return d.slice(0, 4) + '-' + d.slice(4);
+    if (/^01\d{8,9}$/.test(d)) return d.slice(0, 3) + '-' + d.slice(3, -4) + '-' + d.slice(-4);
+    return d;
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    if (!t || !t.closest) return;
+    if (t.closest('#sms-copy')) { act('지원 내용 복사'); return; }
+    var a = t.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href') || '';
+    if (/^tel:/i.test(h)) act('전화 ' + phone(h));
+    else if (/^sms:/i.test(h)) act(a.id === 'sms-link' ? '지원 문자 앱 열기' : '문자 문의');
+    else if (/^https?:\/\/(open|pf)\.kakao\.com\//i.test(h)) act('카카오톡 상담');
+  }, true);
+  var made = document.getElementById('sms-result'); // '지원 문자 만들기'가 성공하면 나타나는 칸
+  if (made && window.MutationObserver) {
+    new MutationObserver(function () { if (!made.hidden) act('지원 문자 만들기'); })
+      .observe(made, { attributes: true, attributeFilter: ['hidden'] });
   }
   if (document.prerendering) document.addEventListener('prerenderingchange', send, { once: true });
   else send();
