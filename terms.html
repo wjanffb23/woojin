@@ -249,5 +249,50 @@ a { color: inherit; }
   });
 })();
 </script>
+<!-- 방문자 집계 (우진물류 사이트 방문 기록 시트로 방문 신호를 보냄)
+     · 이름·연락처·IP는 보내지 않아요. 개인정보처리방침 8항 참고
+     · 직원 기기 제외: 주소 뒤에 ?notrack=1 을 붙여 한 번 열기 (다시 집계: ?notrack=0) -->
+<script id="wj-visit">
+(function () {
+  var EP = 'https://script.google.com/macros/s/AKfycbwOJJAcfg4_gmudRbL4Kgc908oNAo8aUGBgMmBn9Luzo4nINqte2Jt4zsSiAtTV_9Xv/exec';
+  var q = location.search, ls = null;
+  try { ls = window.localStorage; } catch (e) {}
+  function get(k) { try { return ls ? ls.getItem(k) : null; } catch (e) { return null; } }
+  function set(k, v) { try { if (!ls) return false; ls.setItem(k, v); return ls.getItem(k) === v; } catch (e) { return false; } }
+  function del(k) { try { if (ls) ls.removeItem(k); } catch (e) {} }
+  function toast(msg) {
+    var d = document.createElement('div');
+    d.textContent = msg;
+    d.id = 'wj-visit-toast';
+    d.setAttribute('role', 'status');
+    d.style.cssText = 'position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:2147483647;max-width:90vw;' +
+      'background:#1f3a68;color:#fff;font-family:inherit;font-size:14px;font-weight:600;line-height:1.4;' +
+      'padding:10px 16px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.25);text-align:center';
+    document.body.appendChild(d);
+    setTimeout(function () { if (d.parentNode) d.parentNode.removeChild(d); }, 3500);
+  }
+  if (/[?&]notrack=1(&|$)/.test(q)) { set('wj-notrack', '1'); toast('이 브라우저는 방문자 집계에서 빠졌어요'); return; }
+  if (/[?&]notrack=0(&|$)/.test(q)) { del('wj-notrack'); toast('이 브라우저 방문을 다시 집계해요'); }
+  if (get('wj-notrack') === '1' || navigator.webdriver) return;
+  var id = get('wj-visitor'), first = 0;
+  if (!id) {
+    id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    if (!set('wj-visitor', id)) id = 'x' + id;
+    first = 1;
+  }
+  var src = (q.match(/[?&]utm_source=([^&#]*)/) || [])[1] || '';
+  function send() {
+    var img = new Image();
+    img.src = EP + '?p=' + encodeURIComponent(location.pathname) +
+      '&r=' + encodeURIComponent(String(document.referrer || '').slice(0, 500)) +
+      '&v=' + id + '&n=' + first +
+      '&ua=' + encodeURIComponent(String(navigator.userAgent || '').slice(0, 300)) +
+      (src ? '&s=' + src : '') + '&t=' + Date.now();
+    window.wjVisitBeacon = img;
+  }
+  if (document.prerendering) document.addEventListener('prerenderingchange', send, { once: true });
+  else send();
+})();
+</script>
 </body>
 </html>
